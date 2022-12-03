@@ -7,8 +7,37 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:model/model.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SettingPageData {
+  static IO.Socket? socket;
+  static bool socketIOAvailable = false;
+
+  ///инициирую сокет для всего приложения из init setting на слое бизнес логики
+  void socketConnect({
+    required String? accessToken,
+  }) {
+    socket = IO.io(
+        'http://$urlMainApiConst',
+        IO.OptionBuilder().setTransports(['websocket']).setAuth(
+            {"token": accessToken}).build());
+    socket?.on(
+        'connected',
+        (data) => {
+              print("Socket for RTC connected successfully"),
+              print(data),
+              socketIOAvailable = true
+            });
+
+    socket?.onError((data) => {
+          print(data),
+          socketIOAvailable = false,
+        });
+    socket?.onDisconnect((data) => {
+          socketIOAvailable = false,
+        });
+  }
+
   ///Роут для удаления  файла (только картинки)
   Future<void> deleteStaticFilesAndGetIdImageData({
     required String coverId,
@@ -31,7 +60,6 @@ class SettingPageData {
           'Bad Request deleteStaticFilesAndGetIdImage: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
-
       }
       log(response.body);
     } catch (error) {

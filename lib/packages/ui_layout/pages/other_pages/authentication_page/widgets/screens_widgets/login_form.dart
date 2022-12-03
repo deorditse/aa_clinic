@@ -38,7 +38,7 @@ class _FormSignIn extends StatelessWidget {
       {required String username, required String password}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Get.offNamed('/main');///todo delete
+      // Get.offNamed('/main');///todo delete
       await ImplementAuthController.instance
           .signInUser(username: username.trim(), password: password.trim())
           .then(

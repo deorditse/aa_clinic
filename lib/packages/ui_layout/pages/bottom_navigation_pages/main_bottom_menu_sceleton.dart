@@ -70,7 +70,6 @@ class _MyBottomMenuSceletonState extends State<MyBottomMenuSceleton> {
               curve: Curves.ease,
               duration: Duration(milliseconds: 150),
             ),
-
             customWidget: _CustomNavBarWidget(
               // Your custom widget goes here
               items: _myTabBar(
@@ -81,8 +80,9 @@ class _MyBottomMenuSceletonState extends State<MyBottomMenuSceleton> {
               onItemSelected: (index) {
                 //снять фокус с тектовых полей при переходе
                 FocusScope.of(context).unfocus();
-                // controllerSetting.initializedControllerForPage(
-                //     indexPage: index);
+                //инициирую контроллеры
+                controllerSetting.initializedControllersForPage(
+                    indexPage: index);
 
                 controllerSetting.changeBodyPageForIndex(indexPage: index);
                 print("onItemSelected $index");

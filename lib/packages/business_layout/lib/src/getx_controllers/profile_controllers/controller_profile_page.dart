@@ -13,10 +13,9 @@ import 'package:hive/hive.dart';
 
 class ProfileControllerGetxState extends GetxController {
   static ProfileControllerGetxState instance =
-  Get.find<ProfileControllerGetxState>();
+      Get.find<ProfileControllerGetxState>();
 
   final ProfilePageData _services = ProfilePageData();
-  HealthSnapshotsLoader? _health;
   bool isSearchingDocument = false;
 
   void changeIsSearchingDocument({bool? isSearching}) {
@@ -25,43 +24,16 @@ class ProfileControllerGetxState extends GetxController {
   }
 
   @override
-  Future<void> onInit() async {
-    await initialDataProfile();
-
+  void onInit() {
+    initialDataProfile();
     super.onInit();
-
-    if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-        null) {
-      _health = HealthSnapshotsLoader(
-          accessToken:
-          ImplementAuthController.instance.userAuthorizedData!.accessToken);
-      await _sendHealthDataToServer();
-      await _getActiveValues();
-    }
-  }
-
-  ActiveValue? activeHealthValues;
-
-  /// Запрос на обработку определенных данных здоровья с последующим выводом их на экран active_values
-  /// Инициализируется при переходе на страницу пользователя
-  Future<void> _getActiveValues() async {
-    activeHealthValues = await _health?.getActiveHealthValues();
-    update();
-  }
-
-  /// Получение данных здоровья
-  Future<void> _sendHealthDataToServer() async {
-    return await _health?.fetchData(
-      accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
-    );
   }
 
   Future<void> initialDataProfile() async {
     await ImplementSettingGetXController.instance
         .getFindMe(isUpdateData: true)
         .then(
-          (userAllData) async {
+      (userAllData) async {
         //инициализация списка документов
 
         await getPatientDocumentsByUserId(
@@ -82,7 +54,7 @@ class ProfileControllerGetxState extends GetxController {
   Future<void> getAchievements() async {
     achievementsModelData = await _services.getAchievementsData(
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
     );
     update();
 
@@ -108,7 +80,7 @@ class ProfileControllerGetxState extends GetxController {
   Future<void> getPatientDocumentsByUserId({required String userId}) async {
     documentList = await _services.getPatientDocumentsByUserIdData(
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
       userId: userId,
     );
     update();
@@ -123,7 +95,7 @@ class ProfileControllerGetxState extends GetxController {
     if (_achievement[idAchievement] == null) {
       final result = await _services.getAchievementsWithIdData(
         accessToken:
-        ImplementAuthController.instance.userAuthorizedData!.accessToken,
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
         idAchievement: idAchievement,
       );
       _achievement[idAchievement] = result;
@@ -148,7 +120,7 @@ class ProfileControllerGetxState extends GetxController {
     return await _services.postSetAvatarData(
       avatar: photoProfile!,
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
     );
   }
 
@@ -188,7 +160,7 @@ class ProfileControllerGetxState extends GetxController {
     return await _services.postAttachmentsAndGetIdImageData(
       fileImage: fileImage,
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
     );
   }
 
@@ -201,7 +173,7 @@ class ProfileControllerGetxState extends GetxController {
   }) async {
     DocumentForIdModel? _res = await _services.postPatientDocumentsData(
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
       category: category,
       title: title,
       description: description,

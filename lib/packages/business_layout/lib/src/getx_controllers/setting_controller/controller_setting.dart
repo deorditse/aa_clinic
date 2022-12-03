@@ -6,12 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
-// import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
-//каждый раз при изменении запускать кодогенерацию
-//для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs
-//чтобы зарегистрировать как фабрику для GetIt и обращаться к сервис локатору через  MainSimpleStateManagement
-//для навигации по нажатию кнопкт
 
 //страницы навигации
 enum BodyScreens {
@@ -27,16 +21,21 @@ class ImplementSettingGetXController extends GetxController {
 
   SettingPageData _services = SettingPageData();
 
-//контроллер для управления состоянием меню
-//   PersistentTabController controllerTabIndex =
-//       PersistentTabController(initialIndex: 2);
   int controllerTabIndex = 2;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
 
-    // initializedControllerForPage();
+    initializedControllersForPage();
+
+    ///инициирую сокет для всего приложения
+    if (ImplementAuthController.instance.userAuthorizedData != null) {
+      _services.socketConnect(
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      );
+    }
   }
 
   void goToScreenBody({required BodyScreens bodyScreens}) {
@@ -60,44 +59,35 @@ class ImplementSettingGetXController extends GetxController {
   }
 
   Future<void> changeBodyPageForIndex({required int indexPage}) async {
-    // controllerTabIndex.index = (indexPage);
     controllerTabIndex = indexPage;
     update();
   }
 
-  //
-  // void initializedControllerForPage({int indexPage = 2}) {
-  //   switch (indexPage) {
-  //     case 0:
-  //       print('initState BodyProfilePage');
-  //       // Get.put(ProfileControllerGetxState());
-  //       Get.lazyPut(() => ProfileControllerGetxState(), fenix: true);
-  //
-  //       break;
-  //     case 1:
-  //       print('initState BodyChatPage');
-  //       // Get.put(ChatPageControllerGetx());
-  //       Get.lazyPut(() => ChatPageControllerGetx(), fenix: true);
-  //
-  //       break;
-  //     case 2:
-  //       print('initState BodyHomePage');
-  //       // Get.put(HomePageCalendarControllerGetxState());
-  //       Get.lazyPut(() => HomePageCalendarControllerGetxState(), fenix: true);
-  //
-  //       break;
-  //     case 3:
-  //       print('initState BodyArticlesPage');
-  //       // Get.put(ArticlesControllerGetxState());
-  //       Get.lazyPut(() => ArticlesControllerGetxState(), fenix: true);
-  //       break;
-  //     case 4:
-  //       print('initState BodyOtherPage');
-  //       // Get.put(OtherControllerGetxState());
-  //       Get.lazyPut(() => OtherControllerGetxState(), fenix: true);
-  //       break;
-  //   }
-  // }
+  void initializedControllersForPage({int indexPage = 2}) {
+    switch (indexPage) {
+      case 0:
+        print('initState BodyProfilePage');
+        Get.lazyPut(() => ProfileControllerGetxState(), fenix: true);
+        Get.lazyPut(() => ActiveValueControllerProfilePage(), fenix: true);
+        break;
+      case 1:
+        print('initState BodyChatPage');
+        Get.lazyPut(() => ChatPageControllerGetx(), fenix: true);
+        break;
+      case 2:
+        print('initState BodyHomePage');
+        Get.lazyPut(() => HomePageCalendarControllerGetxState(), fenix: true);
+        break;
+      case 3:
+        print('initState BodyArticlesPage');
+        Get.lazyPut(() => ArticlesControllerGetxState(), fenix: true);
+        break;
+      case 4:
+        print('initState BodyOtherPage');
+        Get.lazyPut(() => OtherControllerGetxState(), fenix: true);
+        break;
+    }
+  }
 
   UserDataModel? userAllData;
 

@@ -79,7 +79,6 @@ class MyGetApp extends StatelessWidget {
           name: MyBottomMenuSceleton.id,
           page: () => MyBottomMenuSceleton(),
           bindings: [
-            AuthBinding(),
             SettingBinding(),
             RTCBinding(),
           ],

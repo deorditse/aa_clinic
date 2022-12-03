@@ -45,7 +45,8 @@ class ActiveValues extends StatelessWidget {
   }
 
   _columnWithValueTitle({required BuildContext context}) {
-    return GetBuilder<ProfileControllerGetxState>(builder: (controllerProfile) {
+    return GetBuilder<ActiveValueControllerProfilePage>(
+        builder: (controllerActiveValue) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,10 +61,11 @@ class ActiveValues extends StatelessWidget {
                   value:
 
                       ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
-                      controllerProfile.activeHealthValues != null &&
-                              controllerProfile.activeHealthValues!.heartRate !=
+                      controllerActiveValue.activeHealthValues != null &&
+                              controllerActiveValue
+                                      .activeHealthValues!.heartRate !=
                                   null
-                          ? '${controllerProfile.activeHealthValues!.heartRate} bpm'
+                          ? '${controllerActiveValue.activeHealthValues!.heartRate} bpm'
                           : '-',
                   context: context,
                 ),
@@ -74,10 +76,11 @@ class ActiveValues extends StatelessWidget {
 
                     ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
                     title: 'Аритмия',
-                    value: controllerProfile.activeHealthValues != null &&
-                            controllerProfile.activeHealthValues!.arrhythmia !=
+                    value: controllerActiveValue.activeHealthValues != null &&
+                            controllerActiveValue
+                                    .activeHealthValues!.arrhythmia !=
                                 null
-                        ? '${controllerProfile.activeHealthValues!.arrhythmia} ms'
+                        ? '${controllerActiveValue.activeHealthValues!.arrhythmia} ms'
                         : '-',
                     context: context),
               ),
@@ -87,9 +90,10 @@ class ActiveValues extends StatelessWidget {
                     title: 'Кислород',
 
                     ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
-                    value: controllerProfile.activeHealthValues != null &&
-                            controllerProfile.activeHealthValues!.oxygen != null
-                        ? '${controllerProfile.activeHealthValues!.oxygen} %'
+                    value: controllerActiveValue.activeHealthValues != null &&
+                            controllerActiveValue.activeHealthValues!.oxygen !=
+                                null
+                        ? '${controllerActiveValue.activeHealthValues!.oxygen} %'
                         : '-',
                     context: context),
               ),
@@ -104,9 +108,10 @@ class ActiveValues extends StatelessWidget {
                   title: 'Шаги',
 
                   ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
-                  value: controllerProfile.activeHealthValues != null &&
-                          controllerProfile.activeHealthValues!.steps != null
-                      ? '${controllerProfile.activeHealthValues!.steps} шт'
+                  value: controllerActiveValue.activeHealthValues != null &&
+                          controllerActiveValue.activeHealthValues!.steps !=
+                              null
+                      ? '${controllerActiveValue.activeHealthValues!.steps} шт'
                       : '-',
                   context: context,
                 ),
@@ -117,11 +122,11 @@ class ActiveValues extends StatelessWidget {
                     title: 'Ккал сожжено',
 
                     ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
-                    value: controllerProfile.activeHealthValues != null &&
-                            controllerProfile
+                    value: controllerActiveValue.activeHealthValues != null &&
+                            controllerActiveValue
                                     .activeHealthValues!.energyBurned !=
                                 null
-                        ? '${controllerProfile.activeHealthValues!.energyBurned} kkal'
+                        ? '${controllerActiveValue.activeHealthValues!.energyBurned} kkal'
                         : '-',
                     context: context),
               ),
@@ -131,10 +136,11 @@ class ActiveValues extends StatelessWidget {
                     title: 'Сон',
 
                     ///Проверяем данные здоровья пользователя на их наличие и выводим на экран полученное значение, иначе поле с текстом ' - '
-                    value: controllerProfile.activeHealthValues != null &&
-                            controllerProfile.activeHealthValues!.sleepinbed !=
+                    value: controllerActiveValue.activeHealthValues != null &&
+                            controllerActiveValue
+                                    .activeHealthValues!.sleepinbed !=
                                 null
-                        ? '${controllerProfile.activeHealthValues!.sleepinbed} hours'
+                        ? '${controllerActiveValue.activeHealthValues!.sleepinbed} hours'
                         : '-',
                     context: context),
               ),

@@ -44,10 +44,8 @@ class RTCControllerGetxState extends GetxController {
 
     if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
         null) {
-      _services.socketConnect(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
+      _services.initializeDataRTC();
+
       _services.setNewRTCCallback(
         (RealTimeCallSocketEvent incomingRTC) async {
           print('INCOMING');

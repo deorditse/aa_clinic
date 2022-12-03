@@ -8,58 +8,33 @@ import 'package:health/health.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class RealTimeCallData {
-  IO.Socket? socket = null;
-  bool socketIOAvailable = false;
   Function newRTCCallback = () {};
   Function finishRTCCallback = () {};
 
-  void socketConnect({
-    required String? accessToken,
-  }){
-    socket = IO.io('http://$urlMainApiConst',
-        IO.OptionBuilder()
-            .setTransports(['websocket'])
-            .setAuth({ "token": accessToken})
-            .build());
-    socket?.on('connected', (data) =>
-    {
-      print("Socket for RTC connected successfully"),
-      print(data),
-      socketIOAvailable = true
-    });
-
-    socket?.onError((data) => {
-      print(data),
-      socketIOAvailable = false,
-    });
-    socket?.onDisconnect((data) => {
-      socketIOAvailable = false,
-    });
-
-    socket?.on('newRealTimeCall', (data) {
+  void initializeDataRTC() {
+    SettingPageData.socket?.on('newRealTimeCall', (data) {
       newRTCCallback(RealTimeCallSocketEvent.fromJson(data));
     });
-    socket?.on('finishRealTimeCall', (data) {
+    SettingPageData.socket?.on('finishRealTimeCall', (data) {
       // TODO: add model for finish callback struct
       finishRTCCallback();
     });
   }
 
-  void setNewRTCCallback(Function callback){
+  void setNewRTCCallback(Function callback) {
     newRTCCallback = callback;
   }
 
-  void setFinishRTCCallback(Function callback){
+  void setFinishRTCCallback(Function callback) {
     finishRTCCallback = callback;
   }
-
 
   Future<RealTimeCallModel?> getIncomingRealTimeCalls(
       {required String accessToken}) async {
     try {
-      Uri url = Uri.parse(
-          'http://$urlMainApiConst/api/realTimeCalls?${makeQuery({
-            'filter': { 'finishedAt': 'null'}
+      Uri url =
+          Uri.parse('http://$urlMainApiConst/api/realTimeCalls?${makeQuery({
+            'filter': {'finishedAt': 'null'}
           })}');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
@@ -77,7 +52,8 @@ class RealTimeCallData {
       }
       return null;
     } catch (error) {
-      Get.snackbar('Exception',
+      Get.snackbar(
+        'Exception',
         'error getTimeCall: $error',
         snackPosition: SnackPosition.TOP,
       );
@@ -90,8 +66,7 @@ class RealTimeCallData {
     required String id,
   }) async {
     try {
-      Uri url = Uri.parse(
-          'http://$urlMainApiConst/api/realTimeCalls/$id');
+      Uri url = Uri.parse('http://$urlMainApiConst/api/realTimeCalls/$id');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
@@ -107,7 +82,8 @@ class RealTimeCallData {
         );
       }
     } catch (error) {
-      Get.snackbar('Exception',
+      Get.snackbar(
+        'Exception',
         'error getTimeCall: $error',
         snackPosition: SnackPosition.TOP,
       );
@@ -119,7 +95,6 @@ class RealTimeCallData {
   Future acceptRealTimeCalls({
     required String id,
     required String accessToken,
-
   }) async {
     try {
       Uri url = Uri.http(urlMainApiConst, 'api/realTimeCalls/accept/$id');

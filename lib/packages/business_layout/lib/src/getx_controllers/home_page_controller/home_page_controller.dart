@@ -17,7 +17,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
       Get.find<HomePageCalendarControllerGetxState>();
 
   final HomePageData _services = HomePageData();
-  HealthSnapshotsLoader? _health;
   DateTime mySelectedDay = DateTime.now();
 
   void changeMySelectedDay({required DateTime newDateTime}) {
@@ -26,38 +25,36 @@ class HomePageCalendarControllerGetxState extends GetxController {
   }
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
-    await _initializeProfileData();
-    // sendHealthDataToServer();
+    _initializeProfileData();
     super.onInit();
   }
 
   ///  инициaлизация данных контроллера
   Future<void> _initializeProfileData() async {
-    //инициирую марки задач в календаре
-    await getMonthlyCalendarMarksForMouth(
-      dateMarksMouth: mySelectedDay,
-      isUpdate: true,
-    ).whenComplete(() async {
-      //загружаю задачи на сегодняшний день
-      await getDailyCalendarEvents(
-        dateDaily: mySelectedDay,
-        isUpdate: true,
-      );
-    });
     await _initializedHiveFromLocalStorageNotifications();
 
     if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
         null) {
-      _health = HealthSnapshotsLoader(
-          accessToken:
-              ImplementAuthController.instance.userAuthorizedData!.accessToken);
-      update();
+      //инициирую марки задач в календаре
+      await getMonthlyCalendarMarksForMouth(
+        dateMarksMouth: mySelectedDay,
+        isUpdate: true,
+      ).whenComplete(() async {
+        //загружаю задачи на сегодняшний день
+        await getDailyCalendarEvents(
+          dateDaily: mySelectedDay,
+          isUpdate: true,
+        );
+      });
 
-      ///отправка данных здоровья на сервер
-      await sendHealthDataToServer();
+      //отправка данных здоровья на сервер при инициализации приложения
+      await HealthSnapshotsLoaderData().safeFetchData(
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      );
     }
   }
 
@@ -253,14 +250,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
         });
       }
     });
-  }
-
-  /// Получение данных здоровья
-  Future<void> sendHealthDataToServer() async {
-    return await _health?.safeFetchData(
-      accessToken:
-          ImplementAuthController.instance.userAuthorizedData!.accessToken,
-    );
   }
 
   ///Роут для отмены календарного события и изменение его на статуса cancel+
