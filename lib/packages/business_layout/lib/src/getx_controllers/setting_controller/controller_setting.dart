@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+// import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 //каждый раз при изменении запускать кодогенерацию
 //для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -28,8 +28,9 @@ class ImplementSettingGetXController extends GetxController {
   SettingPageData _services = SettingPageData();
 
 //контроллер для управления состоянием меню
-  PersistentTabController controllerTabIndex =
-      PersistentTabController(initialIndex: 2);
+//   PersistentTabController controllerTabIndex =
+//       PersistentTabController(initialIndex: 2);
+  int controllerTabIndex = 2;
 
   @override
   void onInit() {
@@ -59,7 +60,8 @@ class ImplementSettingGetXController extends GetxController {
   }
 
   Future<void> changeBodyPageForIndex({required int indexPage}) async {
-    controllerTabIndex.index = (indexPage);
+    // controllerTabIndex.index = (indexPage);
+    controllerTabIndex = indexPage;
     update();
   }
 

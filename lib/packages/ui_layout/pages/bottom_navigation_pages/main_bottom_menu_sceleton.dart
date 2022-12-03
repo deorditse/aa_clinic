@@ -30,21 +30,27 @@ class MyBottomMenuSceleton extends StatefulWidget {
 }
 
 class _MyBottomMenuSceletonState extends State<MyBottomMenuSceleton> {
+  late PersistentTabController controllerTabIndex;
+
   @override
   void initState() {
     super.initState();
     // остановка показа экрана заставки
     FlutterNativeSplash.remove();
+    controllerTabIndex = PersistentTabController(
+      initialIndex: ImplementSettingGetXController.instance.controllerTabIndex,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ImplementSettingGetXController>(
       builder: (controllerSetting) {
+        controllerTabIndex.index = controllerSetting.controllerTabIndex;
         return Scaffold(
           body: PersistentTabView.custom(
             context,
-            controller: controllerSetting.controllerTabIndex,
+            controller: controllerTabIndex,
             itemCount: _myTabBar(context: context).length,
             onWillPop: (context) async => true,
             screens: screensBottomNavigation,
@@ -69,9 +75,9 @@ class _MyBottomMenuSceletonState extends State<MyBottomMenuSceleton> {
               // Your custom widget goes here
               items: _myTabBar(
                 context: context,
-                selectedIndex: controllerSetting.controllerTabIndex.index,
+                selectedIndex: controllerSetting.controllerTabIndex,
               ),
-              selectedIndex: controllerSetting.controllerTabIndex.index,
+              selectedIndex: controllerSetting.controllerTabIndex,
               onItemSelected: (index) {
                 //снять фокус с тектовых полей при переходе
                 FocusScope.of(context).unfocus();
@@ -156,7 +162,7 @@ class _CustomNavBarWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: items.map(
-              (item) {
+          (item) {
             int index = items.indexOf(item);
             return Flexible(
               child: GestureDetector(
@@ -164,7 +170,7 @@ class _CustomNavBarWidget extends StatelessWidget {
                   onItemSelected(index);
                 },
                 child:
-                _buildItem(item, selectedIndex == index, context: context),
+                    _buildItem(item, selectedIndex == index, context: context),
               ),
             );
           },
@@ -175,7 +181,7 @@ class _CustomNavBarWidget extends StatelessWidget {
 }
 
 List<PersistentBottomNavBarItem> _myTabBar(
-    {int? selectedIndex, required BuildContext context}) =>
+        {int? selectedIndex, required BuildContext context}) =>
     [
       PersistentBottomNavBarItem(
         title: ('Профиль'),

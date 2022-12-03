@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 //каждый раз при изменении запускать кодогенерацию
 //для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs

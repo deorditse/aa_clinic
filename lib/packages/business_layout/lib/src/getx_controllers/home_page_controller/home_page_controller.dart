@@ -6,8 +6,6 @@ import 'package:data_layout/data_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import 'package:table_calendar/table_calendar.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 //каждый раз при изменении запускать кодогенерацию
