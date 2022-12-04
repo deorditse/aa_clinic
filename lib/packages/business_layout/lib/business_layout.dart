@@ -1,5 +1,6 @@
 export 'src/getx_controllers/setting_controller/controller_setting.dart';
 export 'src/getx_controllers/setting_controller/binding_setting.dart';
+
 ///auth_controller
 export 'src/getx_controllers/auth_controller/auth_controller.dart';
 export 'src/getx_controllers/auth_controller/bindings.dart';

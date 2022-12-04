@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/image_view_page.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -246,7 +249,44 @@ class _AddPhotoEat extends StatelessWidget {
                         fit: BoxFit.cover,
                       )
                     : dish.lifeImage != null
-                        ? containerForPhotoFuture(
+                        ?
+                        // FutureBuilder<Uint8List?>(
+                        //   future: ImplementSettingGetXController.instance
+                        //       .getStaticFilesStorage(
+                        //           coverFileId: dish.lifeImage!),
+                        //   builder:
+                        //       (context, AsyncSnapshot<Uint8List?> snapshot) {
+                        //
+                        //     if (snapshot.data != null) {
+                        //       final stat =
+                        //           FileStat.statSync( file.writeAsBytesSync(snapshot.data.toString()));
+                        //       print('Accessed: ${stat.accessed}');
+                        //       print('Modified: ${stat.modified}');
+                        //       print('Changed:  ${stat.changed}');
+                        //     }
+                        //
+                        //     if (snapshot.hasData) {
+                        //       return GestureDetector(
+                        //         onTap: () {
+                        //           imageViewBottom(
+                        //             context: context,
+                        //             uint8ListImage: snapshot.data!,
+                        //             heroTag: 'null',
+                        //           );
+                        //         },
+                        //         child: Image.memory(
+                        //           snapshot.data!,
+                        //           fit: BoxFit.cover,
+                        //         ),
+                        //       );
+                        //     } else {
+                        //       return myShimmerEffectContainer(
+                        //           context: context);
+                        //     }
+                        //   },
+                        // )
+
+                        containerForPhotoFuture(
                             coverFileId: dish.lifeImage!,
                             openView: true,
                           )
@@ -293,16 +333,18 @@ class _AddPhotoEat extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  '${DateFormat('d MMMM y').format(DateTime.now())}, ${DateFormat('EEEE').format(DateTime.now()).capitalize}, ${DateFormat.Hm().format(DateTime.now())}',
-                  style: myTextStyleFontUbuntu(
-                    textColor: Theme.of(context).textTheme.headline3!.color,
-                    newFontWeight: FontWeight.w300,
-                    context: context,
+                child: FittedBox(
+                  child: Text(
+                    // DateFormat().format(DateTime.parse(dish.!)),
+                    '${DateFormat('d MMMM y').format(DateTime.now())}, ${DateFormat('EEEE').format(DateTime.now()).capitalize?.toLowerCase()}, ${DateFormat.Hm().format(DateTime.now())}',
+                    style: myTextStyleFontUbuntu(
+                      textColor: Theme.of(context).textTheme.headline3!.color,
+                      newFontWeight: FontWeight.w300,
+                      context: context,
+                    ),
                   ),
                 ),
               ),
-              // Expanded(child: Container()),
             ],
           ),
         ),

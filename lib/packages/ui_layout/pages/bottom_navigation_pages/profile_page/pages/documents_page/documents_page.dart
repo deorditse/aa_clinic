@@ -1,6 +1,7 @@
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,9 @@ class _BodyDocumentsProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Text(
-              document.createdAt ?? 'время не задано',
+              document.createdAt != null
+                  ? '${DateFormat.Hm().format(DateTime.parse(document.createdAt!))}  ${DateFormat('d MMM').format(DateTime.parse(document.createdAt!))}'
+                  : 'время не задано',
               style: myTextStyleFontUbuntu(
                 context: context,
                 textColor: Theme.of(context).textTheme.headline3!.color,

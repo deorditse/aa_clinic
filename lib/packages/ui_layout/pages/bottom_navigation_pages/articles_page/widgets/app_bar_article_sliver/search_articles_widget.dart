@@ -13,35 +13,38 @@ class SearchArticlesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          child: TextField(
-            controller: _searchQueryControllerProfilePage.value,
-            autofocus: true,
-            cursorColor: myColorIsActive,
-            decoration: myStyleTextField(context, hintText: 'Поиск по статьям'),
-            style: myTextStyleFontUbuntu(context: context),
-            onChanged: (query) => updateSearchQuery(query),
+    return Obx(
+      () => Row(
+        children: [
+          Flexible(
+            child: TextField(
+              controller: _searchQueryControllerProfilePage.value,
+              autofocus: true,
+              cursorColor: myColorIsActive,
+              decoration:
+                  myStyleTextField(context, hintText: 'Поиск по статьям'),
+              style: myTextStyleFontUbuntu(context: context),
+              onChanged: (query) => updateSearchQuery(query),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: GestureDetector(
-            onTap: () {
-              _stopSearching();
-            },
-            child: _searchQueryControllerProfilePage.value.text.isEmpty
-                ? Icon(
-                    Icons.clear,
-                  )
-                : Icon(
-                    Icons.delete_outline,
-                    color: Theme.of(context).textTheme.headline3!.color,
-                  ),
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: GestureDetector(
+              onTap: () {
+                _stopSearching();
+              },
+              child: _searchQueryControllerProfilePage.value.text == ''
+                  ? Icon(
+                      Icons.clear,
+                    )
+                  : Icon(
+                      Icons.delete_outline,
+                      color: Theme.of(context).textTheme.headline3!.color,
+                    ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
