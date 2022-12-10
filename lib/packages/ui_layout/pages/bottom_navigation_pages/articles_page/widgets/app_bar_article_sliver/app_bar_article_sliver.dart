@@ -59,7 +59,9 @@ class ArticleSliverAppBar extends StatelessWidget {
                   ),
                 ),
         ),
-        actions: !controllerArticle.isSearchingArticles
+        actions: !controllerArticle.isSearchingArticles &&
+                controllerArticle
+                    .mapIndexCategoryAndArticlesPageModel.isNotEmpty
             ? [
                 SizedBox(
                   width: 40,
@@ -68,6 +70,8 @@ class ArticleSliverAppBar extends StatelessWidget {
                         const EdgeInsets.only(bottom: 8.0, right: 12, top: 2),
                     child: GestureDetector(
                         onTap: () {
+                          ArticlesControllerGetxState.instance
+                              .changeSearchCategory();
                           ArticlesControllerGetxState.instance
                               .changeIsSearchingArticles(isSearching: true);
                         },

@@ -11,7 +11,7 @@ class MySliverAppBar extends StatelessWidget {
     this.isSearchWidget,
     this.widgetRight,
     this.bodyScreens,
-    required this.onlyBack,
+    this.onlyBack = true,
     this.fontSizeAppBar,
     this.backLine = false,
     this.subTitle,
@@ -32,30 +32,23 @@ class MySliverAppBar extends StatelessWidget {
     return SliverAppBar(
       backgroundColor: Theme.of(myContext).cardColor,
       leadingWidth: 40,
-      leading: bodyScreens != null
-          ? GetBuilder<ImplementSettingGetXController>(
-              builder: (controllerSetting) => GestureDetector(
-                onTap: () {
-                  //меняю индекс для таб бара
-                  controllerSetting.goToScreenBody(
+      leading: onlyBack
+          ? GestureDetector(
+              onTap: () {
+                if (bodyScreens != null) //меняю индекс для таб бара
+                  ImplementSettingGetXController.instance.goToScreenBody(
                     bodyScreens: bodyScreens!,
                   );
-                },
+                if (onlyBack) Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 40,
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: myIconBackAppBar(context: myContext)),
               ),
             )
-          : onlyBack
-              ? GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: myIconBackAppBar(context: myContext)),
-                )
-              : Container(),
+          : Container(),
 
       toolbarHeight: myToolbarHeight,
       floating: false,

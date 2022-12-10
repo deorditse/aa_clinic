@@ -10,7 +10,6 @@ import 'package:health/health.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-
 class HomePageData {
   ///Роут для завершения календарного события и изменение его на статуса done +
   Future<void> calendarActionDoneData({
@@ -18,16 +17,17 @@ class HomePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/calendarActions/done/$targetId');
+      Uri url = urlMain(urlPath: 'api/calendarActions/done/$targetId');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
       );
+      print(
+          'Response status from calendarActionDoneData: ${response.statusCode}');
+      log('calendarActionDoneData ${response.body}');
+
       if (response.statusCode == 200) {
-        print(
-            'Response status from calendarActionDoneData: ${response
-                .statusCode}');
-        // print(jsonEncode(userEdit));
       } else {
         Get.snackbar(
           'Exception',
@@ -35,7 +35,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('calendarActionDoneData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -53,16 +52,18 @@ class HomePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/appointments/cancel/$targetId');
+      Uri url = urlMain(urlPath: 'api/appointments/cancel/$targetId');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
         body: {'cancelReason': cancelReason},
       );
+      print(
+          'Response status from calendarAppointmentsCancelData: ${response.statusCode}');
+      log('calendarAppointmentsCancelData ${response.body}');
+
       if (response.statusCode == 200) {
-        print(
-            'Response status from calendarAppointmentsCancelData: ${response.statusCode}');
-        // print(jsonEncode(userEdit));
       } else {
         Get.snackbar(
           'Exception',
@@ -70,7 +71,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('calendarAppointmentsCancelData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -88,16 +88,18 @@ class HomePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url =
-      Uri.http(urlMainApiConst, 'api/calendarActions/cancel/$targetId');
+      Uri url = urlMain(urlPath: 'api/calendarActions/cancel/$targetId');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
         body: {'cancelReason': cancelReason},
       );
+      print(
+          'Response status from calendarActionCancelData: ${response.statusCode}');
+      log('calendarActionCancelData ${response.body}');
+
       if (response.statusCode == 200) {
-        print(
-            'Response status from calendarActionCancelData: ${response.statusCode}');
       } else {
         Get.snackbar(
           'Exception',
@@ -105,7 +107,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('calendarActionCancelData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -120,26 +121,25 @@ class HomePageData {
   Future<CalendarActionsWithIdModel?> getCalendarActionsWithIdData(
       {required String accessToken, required String targetId}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/calendarActions/$targetId');
+      Uri url = urlMain(urlPath: 'api/calendarActions/$targetId');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
-          'Response status from getCalendarActionsData: ${response
-              .statusCode}');
+          'Response status from getCalendarActionsData: ${response.statusCode}');
+      log('getCalendarActionsWithIdData CalendarActionsWithIdModel ${response.body}');
+
       if (response.statusCode == 200) {
-        print(CalendarActionsWithIdModel.fromJson(jsonDecode(response.body)));
         return CalendarActionsWithIdModel.fromJson(jsonDecode(response.body));
       } else {
         Get.snackbar(
           'Exception',
-          'Bad Request getCalendarActionsWithIdData: status ${response
-              .statusCode}',
+          'Bad Request getCalendarActionsWithIdData: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getCalendarActionsWithIdData CalendarActionsWithIdModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -155,26 +155,25 @@ class HomePageData {
   Future<FitnessWorkoutModel?> getFitnessWorkoutsWithIdData(
       {required String accessToken, required String targetId}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/fitnessWorkouts/$targetId');
+      Uri url = urlMain(urlPath: 'api/fitnessWorkouts/$targetId');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
-          'Response status from getFitnessWorkoutsWithIdData: ${response
-              .statusCode}');
+          'Response status from getFitnessWorkoutsWithIdData: ${response.statusCode}');
+      log('getFitnessWorkoutsWithIdData FitnessWorkoutModel ${response.body}');
+
       if (response.statusCode == 200) {
-        print(FitnessWorkoutModel.fromJson(jsonDecode(response.body)));
         return FitnessWorkoutModel.fromJson(jsonDecode(response.body));
       } else {
         Get.snackbar(
           'Exception',
-          'Bad Request getFitnessWorkoutsWithIdData: status ${response
-              .statusCode}',
+          'Bad Request getFitnessWorkoutsWithIdData: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getFitnessWorkoutsWithIdData FitnessWorkoutModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -190,16 +189,17 @@ class HomePageData {
   Future<NutriMealsModel?> getNutriMealsWithIdData(
       {required String accessToken, required String targetId}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/nutriMeals/$targetId');
+      Uri url = urlMain(urlPath: 'api/nutriMeals/$targetId');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
-          'Response status from getNutriMealsWithIdData: ${response
-              .statusCode}');
+          'Response status from getNutriMealsWithIdData: ${response.statusCode}');
+      log('getNutriMealsWithIdData NutriMealsModel ${response.body}');
+
       if (response.statusCode == 200) {
-        print(NutriMealsModel.fromJson(jsonDecode(response.body)));
         return NutriMealsModel.fromJson(jsonDecode(response.body));
       } else {
         Get.snackbar(
@@ -208,7 +208,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getNutriMealsWithIdData NutriMealsModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -224,25 +223,25 @@ class HomePageData {
   Future<AppointmentsModel?> getAppointmentsWithIdData(
       {required String accessToken, required String targetId}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/appointments/$targetId');
+      Uri url = urlMain(urlPath: 'api/appointments/$targetId');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
-          'Response status from getAppointmentsWithIdData: ${response
-              .statusCode}');
+          'Response status from getAppointmentsWithIdData: ${response.statusCode}');
+      log('getAppointmentsWithIdData AppointmentsModel ${response.body}');
+
       if (response.statusCode == 200) {
         return AppointmentsModel.fromJson(jsonDecode(response.body));
       } else {
         Get.snackbar(
           'Exception',
-          'Bad Request getAppointmentsWithIdData: status ${response
-              .statusCode}',
+          'Bad Request getAppointmentsWithIdData: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getAppointmentsWithIdData AppointmentsModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -255,13 +254,16 @@ class HomePageData {
   }
 
   ///получение марок в календаре +
-  Future<Map<String, List<int>>> getMonthlyCalendarMarksData(
-      {required String accessToken, required DateTime dateMark}) async {
+  Future<Map<String, int>> getMonthlyCalendarMarksData({
+    required String accessToken,
+    required DateTime dateMark,
+  }) async {
     try {
       final queryParameters = {'date': "${dateMark.year}-${dateMark.month}"};
+      Uri url = urlMain(
+          urlPath: 'api/monthlyCalendarMarks',
+          queryParameters: queryParameters);
 
-      Uri url = Uri.http(
-          urlMainApiConst, 'api/monthlyCalendarMarks', queryParameters);
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
@@ -270,16 +272,19 @@ class HomePageData {
           'Response status from getMonthlyCalendarMarksData: ${response.statusCode}');
       log('getMonthlyCalendarMarksData ${response.body}');
       if (response.statusCode == 200) {
-        var data = await jsonDecode(response.body) as Map<String, dynamic>;
+        Map<String, dynamic> data = await jsonDecode(response.body);
 
-        Map<String, List<int>> _res = {};
-        data.forEach((key, value) {
-          if (value != null && value != 0) {
-            final _date = DateTime.parse(key);
-            _res["${_date.year}-${_date.month}-${_date.day}"] = [value];
-          }
-        });
-        print(_res);
+        Map<String, int> _res = {};
+
+        data.forEach(
+          (key, value) {
+            if ((value != null) && (value != 0) && (value != '0')) {
+              DateTime _date = DateTime.parse(key);
+              _res["${_date.year}-${_date.month}-${_date.day}"] = value;
+            }
+          },
+        );
+        log(_res.toString());
         return _res;
       } else {
         Get.snackbar(
@@ -307,9 +312,9 @@ class HomePageData {
       final queryParameters = {
         'date': '${dateDaily.year}-${dateDaily.month}-${dateDaily.day}',
       };
+      Uri url = urlMain(
+          urlPath: 'api/dailyCalendarEvents', queryParameters: queryParameters);
 
-      Uri url =
-      Uri.http(urlMainApiConst, 'api/dailyCalendarEvents', queryParameters);
       var response = await http
           .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
 
@@ -320,8 +325,8 @@ class HomePageData {
         var data = jsonDecode(response.body);
         List<DailyCalendarEventsModel?> listMapDailyCalendarEventsModel = data
             .map<DailyCalendarEventsModel?>((dailyEvent) =>
-            DailyCalendarEventsModel.fromJson(
-                Map<String, dynamic>.from(dailyEvent)))
+                DailyCalendarEventsModel.fromJson(
+                    Map<String, dynamic>.from(dailyEvent)))
             .toList();
         print(listMapDailyCalendarEventsModel);
         return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
@@ -347,18 +352,20 @@ class HomePageData {
   ///Роут для получения оценки показателя здоровья (Значение показателя здоровья от 1 до 100) +
   Future<int?> getHealthRatesData({required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/healthRates');
+      Uri url = urlMain(urlPath: 'api/healthRates');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print('Response status from getHealthRatesData: ${response.statusCode}');
+      log('getHealthRatesData ${response.body}');
+
       if (response.statusCode == 200) {
         final List? res = jsonDecode(response.body)['docs'];
-        if(res!.isEmpty){
+        if (res!.isEmpty) {
           return null;
         }
-        final int? valHealth = res?.first['value'];
+        final int? valHealth = res.first['value'];
         return valHealth;
       } else {
         Get.snackbar(
@@ -368,7 +375,6 @@ class HomePageData {
         );
         print(response.body);
       }
-      log('getHealthRatesData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -388,7 +394,7 @@ class HomePageData {
     required List<NutriDishModel> listDishes,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/nutriMeals');
+      Uri url = urlMain(urlPath: 'api/nutriMeals');
       print(listDishes);
       Map<String, dynamic> _jsonData = {
         "title": title,
@@ -409,6 +415,7 @@ class HomePageData {
       );
       print(
           'Response status from updateNutriMealsData: ${response.statusCode}');
+      log('updateNutriMealsData ${response.body}');
 
       if (response.statusCode == 201) {
       } else {
@@ -418,7 +425,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('updateNutriMealsData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -437,7 +443,7 @@ class HomePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/nutriMeals/$targetId');
+      Uri url = urlMain(urlPath: 'api/nutriMeals/$targetId');
 
       Map<String, dynamic> _jsonData = {
         "id": dataNutriMeal.id,
@@ -457,6 +463,7 @@ class HomePageData {
       );
       print(
           'Response status from updateNutriMealsData: ${response.statusCode}');
+      log('updateNutriMealsData ${response.body}');
 
       if (response.statusCode == 200) {
       } else {
@@ -466,7 +473,6 @@ class HomePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('updateNutriMealsData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',

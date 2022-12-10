@@ -54,8 +54,12 @@ class _AboutArticlePageState extends State<AboutArticlePage>
   @override
   Widget build(BuildContext context) {
     return MySliverNewPageWithoutBorder(
-      titleAppBar: ArticlesControllerGetxState.instance.articlesDataList!
-              .docs[widget.indexArticle!]?.category ??
+      titleAppBar: ArticlesControllerGetxState
+              .instance
+              .mapIndexCategoryAndArticlesPageModel[
+                  ArticlesControllerGetxState.instance.indexCategorySelected]!
+              .docs[widget.indexArticle!]
+              ?.category ??
           "Статья",
       onlyBack: true,
       widgetBody: _BodyAboutArticlePage(
@@ -78,7 +82,10 @@ class _BodyAboutArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ArticleModel? article = ArticlesControllerGetxState
-        .instance.articlesDataList!.docs[indexArticle];
+        .instance
+        .mapIndexCategoryAndArticlesPageModel[
+            ArticlesControllerGetxState.instance.indexCategorySelected]!
+        .docs[indexArticle];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

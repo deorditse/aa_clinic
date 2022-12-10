@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarHeaderHomePage extends StatefulWidget {
+class CalendarHeaderChatPage extends StatefulWidget {
   final DateTime focusedDay;
   final VoidCallback onLeftArrowTap;
   final VoidCallback onRightArrowTap;
@@ -13,7 +13,7 @@ class CalendarHeaderHomePage extends StatefulWidget {
   final VoidCallback onClearButtonTap;
   final bool clearButtonVisible;
 
-  const CalendarHeaderHomePage({
+  const CalendarHeaderChatPage({
     Key? key,
     required this.focusedDay,
     required this.onLeftArrowTap,
@@ -24,10 +24,10 @@ class CalendarHeaderHomePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CalendarHeaderHomePage> createState() => _CalendarHeaderHomePageState();
+  State<CalendarHeaderChatPage> createState() => _CalendarHeaderChatPageState();
 }
 
-class _CalendarHeaderHomePageState extends State<CalendarHeaderHomePage> {
+class _CalendarHeaderChatPageState extends State<CalendarHeaderChatPage> {
   @override
   Widget build(BuildContext context) {
     final headerText = DateFormat('MMMM').format(widget.focusedDay);

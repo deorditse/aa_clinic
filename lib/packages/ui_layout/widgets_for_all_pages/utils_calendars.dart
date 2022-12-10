@@ -40,10 +40,11 @@ import 'package:table_calendar/table_calendar.dart';
 
 /// Returns a list of [DateTime] objects from [first] to [last], inclusive.
 
-final _kToday = DateTime.now();
+final DateTime _kToday = DateTime.now();
 
-var kFirstDay = DateTime.now().add(Duration(days: -365));
+final DateTime kFirstDay = _kToday.add(Duration(days: -365));
 //myListPageController
 // .kFirstDayList[myListPageController.indexMyArrayBody.value];
 
-final kLastDay = DateTime(_kToday.year, _kToday.month + 3, _kToday.day);
+final DateTime kLastDay =
+    DateTime(_kToday.year, _kToday.month + 3, _kToday.day);

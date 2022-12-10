@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'calendar_appointments_model.dart';
 
@@ -432,6 +432,7 @@ class _$_AppointmentsModel implements _AppointmentsModel {
   @override
   @JsonKey()
   List<String?> get recommendations {
+    if (_recommendations is EqualUnmodifiableListView) return _recommendations;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_recommendations);
   }
@@ -934,6 +935,7 @@ class _$_RateBy implements _RateBy {
   @override
   @JsonKey()
   List<String?> get positive {
+    if (_positive is EqualUnmodifiableListView) return _positive;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_positive);
   }
@@ -942,6 +944,7 @@ class _$_RateBy implements _RateBy {
   @override
   @JsonKey()
   List<String?> get negative {
+    if (_negative is EqualUnmodifiableListView) return _negative;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_negative);
   }

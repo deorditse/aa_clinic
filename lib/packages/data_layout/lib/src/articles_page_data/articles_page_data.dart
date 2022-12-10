@@ -11,19 +11,31 @@ class ArticlesPageData {
     required String accessToken,
     required int page,
     required int perPage,
+    String? searchText,
+    required String? categoryId, //null
   }) async {
     try {
       final queryParameters = {
         'page': "$page",
         'perPage': '$perPage',
       };
-      Uri url = Uri.http(urlMainApiConst, 'api/articles', queryParameters);
-      log(' runtimeType runtimeType runtimeType runtimeType runtimeType runtimeType ${queryParameters.runtimeType}');
+      if (categoryId != null) {
+        queryParameters
+            .addAll({...queryParameters, "filter[category]": "$categoryId"});
+      } else if (searchText != null) {
+        queryParameters.addAll({...queryParameters, "search": "$searchText"});
+      }
+
+      Uri url =
+          urlMain(urlPath: 'api/articles', queryParameters: queryParameters);
+
+      log(url.path);
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print('Response status from getArticlesData: ${response.statusCode}');
+      log('getArticlesData ArticlesPageModel ${response.body}');
 
       if (response.statusCode == 200) {
         return ArticlesPageModel.fromJson(jsonDecode(response.body));
@@ -34,7 +46,6 @@ class ArticlesPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getArticlesData ArticlesPageModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -50,13 +61,15 @@ class ArticlesPageData {
   Future<ArticleCategoriesModel?> getArticleCategoriesData(
       {required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/articleCategories');
+      Uri url = urlMain(urlPath: 'api/articleCategories');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
           'Response status from getArticleCategoriesData: ${response.statusCode}');
+      log('getArticleCategoriesData ArticleCategoriesModel ${response.body}');
+
       if (response.statusCode == 200) {
         return ArticleCategoriesModel.fromJson(jsonDecode(response.body));
       } else {
@@ -66,7 +79,6 @@ class ArticlesPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getArticleCategoriesData ArticleCategoriesModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -85,7 +97,7 @@ class ArticlesPageData {
     required double rating,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/articles/rate/$idArticle');
+      Uri url = urlMain(urlPath: 'api/articles/rate/$idArticle');
       var response = await http.post(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
@@ -93,6 +105,8 @@ class ArticlesPageData {
       );
       print(
           'Response status from postArticleRateWithIdData: ${response.statusCode}');
+      log('postArticleRateWithIdData ${response.body}');
+
       if (response.statusCode == 200) {
       } else {
         Get.snackbar(
@@ -101,7 +115,6 @@ class ArticlesPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('postArticleRateWithIdData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',

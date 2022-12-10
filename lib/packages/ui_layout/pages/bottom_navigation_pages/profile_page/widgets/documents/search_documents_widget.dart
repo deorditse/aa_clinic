@@ -1,72 +1,80 @@
 import 'package:business_layout/business_layout.dart';
+import 'package:get/get.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 
 class SearchDocumentsWidget extends StatefulWidget {
-  const SearchDocumentsWidget({Key? key}) : super(key: key);
+  SearchDocumentsWidget({Key? key}) : super(key: key);
 
   @override
   State<SearchDocumentsWidget> createState() => _SearchDocumentsWidgetState();
 }
 
-class _SearchDocumentsWidgetState extends State<SearchDocumentsWidget> {
-  final TextEditingController _searchQueryControllerProfilePage =
-      TextEditingController();
-  String searchQuery = "Search query";
+Rx<TextEditingController> _searchQueryController = TextEditingController(
+        text: ProfileControllerGetxState.instance.searchDocumentsListText ?? '')
+    .obs;
 
+class _SearchDocumentsWidgetState extends State<SearchDocumentsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          child: TextField(
-            controller: _searchQueryControllerProfilePage,
-            autofocus: true,
-            cursorColor: myColorIsActive,
-            decoration:
-                myStyleTextField(context, hintText: 'Поиск по документам'),
-            style: myTextStyleFontUbuntu(context: context),
-            onChanged: (query) => updateSearchQuery(query),
-          ),
-        ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          style:
-              ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
-          onPressed: () {
-            _stopSearching();
-          },
-          icon: _searchQueryControllerProfilePage.text.isEmpty
-              ? Icon(
-                  Icons.clear,
-                )
-              : Icon(
-                  Icons.delete_outline,
-                  color: Theme.of(context).textTheme.headline3!.color,
-                ),
-        ),
-      ],
-    );
-  }
-
-  void updateSearchQuery(String newQuery) {
-    setState(() {
-      searchQuery = newQuery;
-    });
-  }
-
-  void _stopSearching() {
-    if (_searchQueryControllerProfilePage.text.isEmpty) {
-      ProfileControllerGetxState.instance
-          .changeIsSearchingDocument(isSearching: false);
+    void updateSearchQuery(String newQuery) {
+      _searchQueryController.value.text = newQuery;
     }
-    _clearSearchQuery();
-  }
 
-  void _clearSearchQuery() {
-    setState(() {
-      _searchQueryControllerProfilePage.clear();
-      updateSearchQuery("");
-    });
+    return Obx(
+      () => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: TextFormField(
+              key: widget.key,
+              autofocus: true,
+              controller: _searchQueryController.value,
+              // initialValue: searchQueryController.value.text,
+              cursorColor: myColorIsActive,
+              decoration:
+                  myStyleTextField(context, hintText: 'Поиск по документам'),
+              style: myTextStyleFontUbuntu(context: context),
+              onFieldSubmitted: (searchText) {
+                FocusManager.instance.primaryFocus?.unfocus();
+
+                ProfileControllerGetxState.instance.getDocumentsList(
+                  currentDocsPage: 1,
+                  searchText: searchText,
+                  updateSearchResultDocumentList: true,
+                );
+              },
+              // onChanged: (query) => updateSearchQuery(query),
+            ),
+          ),
+          SizedBox(width: 8),
+          GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+
+              // _stopSearching();
+              if (_searchQueryController.value.text.isEmpty) {
+                ProfileControllerGetxState.instance
+                    .changeIsSearchingDocument(searchText: null);
+                updateSearchQuery("");
+              } else {
+                setState(() {
+                  updateSearchQuery("");
+                });
+              }
+            },
+            child: _searchQueryController.value.text.isNotEmpty
+                ? Icon(
+                    Icons.delete_outline,
+                    color: Theme.of(context).textTheme.headline3!.color,
+                  )
+                : Icon(
+                    Icons.clear,
+                  ),
+          ),
+        ],
+      ),
+    );
   }
 }

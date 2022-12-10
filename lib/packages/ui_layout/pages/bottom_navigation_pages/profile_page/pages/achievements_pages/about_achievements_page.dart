@@ -111,7 +111,6 @@ _rowAchievement(
                 'Описание:',
                 style: myTextStyleFontUbuntu(
                   context: context,
-                  // fontSize: 14,
                   newFontWeight: FontWeight.w500,
                 ),
               ),
@@ -120,7 +119,6 @@ _rowAchievement(
                 '$subtitle',
                 style: myTextStyleFontUbuntu(
                   context: context,
-                  fontSize: 13,
                   newFontWeight: FontWeight.w300,
                 ),
               ),
@@ -132,10 +130,13 @@ _rowAchievement(
         ),
         FittedBox(
           child: CircleAvatar(
+            radius: 30,
             backgroundColor: Theme.of(context).backgroundColor,
             child: (imageAchievement != null && imageAchievement != 'null')
-                ? containerForPhotoFuture(coverFileId: imageAchievement)
+                ? containerForPhotoFuture(
+                    isCircular: true, coverFileId: imageAchievement)
                 : CircleAvatar(
+                    radius: 30,
                     backgroundColor: Theme.of(context).backgroundColor),
           ),
         ),

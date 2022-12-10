@@ -12,12 +12,12 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../pages/change_password_page.dart';
 import '../pages/subscriptions_page/subscriptions_page.dart';
 
+final Rx<bool> _switchChangeTheme =
+    (SchedulerBinding.instance.window.platformBrightness == Brightness.dark)
+        .obs;
+
 class MenuListTileOtherPage extends StatelessWidget {
   MenuListTileOtherPage({Key? key}) : super(key: key);
-
-  final Rx<bool> switchChangeTheme =
-      (SchedulerBinding.instance.window.platformBrightness == Brightness.dark)
-          .obs;
 
   @override
   Widget build(BuildContext context) {
@@ -83,16 +83,15 @@ class MenuListTileOtherPage extends StatelessWidget {
           () {
             return _menuListTileOtherPage(
               iconPath: 'assets/icons/menu_icons_otherPage/moon.svg',
-              title: switchChangeTheme.value ? 'Темная тема' : 'Светлая тема',
+              title: _switchChangeTheme.value ? 'Темная тема' : 'Светлая тема',
               action: FittedBox(
                 child: Switch(
-                  value: switchChangeTheme.value,
+                  value: _switchChangeTheme.value,
                   onChanged: (bolVal) {
-                    switchChangeTheme.value = bolVal;
-
                     Get.changeThemeMode(
                       bolVal ? ThemeMode.dark : ThemeMode.light,
                     );
+                    _switchChangeTheme.value = bolVal;
                   },
                   activeColor: myColorIsActive,
                 ),
@@ -110,17 +109,26 @@ class MenuListTileOtherPage extends StatelessWidget {
             // await Get.delete<ImplementAuthController>(force: true);
             // await Get.delete<ImplementSettingGetXController>(force: true);
             // await Get.delete<RTCControllerGetxState>(force: true);
-            Get.offAllNamed('/loginView');
+            // Get.offAllNamed('/loginView');
+            // await Get.deleteAll(force: true);
             // Get.offNamedUntil('/loginView', (route) => false);
-            // Get.offUntil(GetPageRoute(page: () => LoginView()),
-            //     ModalRoute.withName('/loginView'));
+            // Get.offUntil(
+            //   GetPageRoute(page: () => LoginView()),
+            //   ModalRoute.withName('/loginView'),
+            // );
+            // await Get.deleteAll(force: true);
+            // await Get.offAllNamed(LoginView.id);
             //
+            // Timer(Duration(milliseconds: 300), () {
+            //   Get.delete<ImplementSettingGetXController>(force: true);
+            //   Get.delete<RTCControllerGetxState>(force: true);
+            // });
+            ///перенести на слой бизнес логики после тестирования
+            await Get.offAllNamed('/loginView');
             Timer(Duration(milliseconds: 300), () {
               Get.delete<ImplementSettingGetXController>(force: true);
               Get.delete<RTCControllerGetxState>(force: true);
             });
-            // Phoenix.rebirth(context);
-            // Get.reset();
           },
         ),
       ],

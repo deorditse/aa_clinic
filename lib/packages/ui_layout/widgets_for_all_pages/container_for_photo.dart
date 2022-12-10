@@ -22,11 +22,14 @@ Widget containerForPhoto(
   );
 }
 
-Widget containerForPhotoFuture(
-    {required String coverFileId, bool openView = false}) {
+Widget containerForPhotoFuture({
+  required String coverFileId,
+  bool openView = false,
+  bool isCircular = false,
+}) {
   return FutureBuilder<Uint8List?>(
     future: ImplementSettingGetXController.instance
-        .getStaticFilesStorage(coverFileId: coverFileId),
+        .getStaticFilesStorageAsUTF8(coverFileId: coverFileId),
     builder: (context, AsyncSnapshot<Uint8List?> snapshot) {
       if (snapshot.hasData) {
         return GestureDetector(
@@ -39,9 +42,15 @@ Widget containerForPhotoFuture(
                   );
                 }
               : null,
-          child: Image.memory(
-            snapshot.data!,
-            fit: BoxFit.cover,
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(isCircular ? 200 : 0),
+            ),
+            child: Image.memory(
+              snapshot.data!,
+              fit: BoxFit.cover,
+            ),
           ),
         );
       } else {

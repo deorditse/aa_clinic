@@ -17,11 +17,10 @@ class RowWithTask extends StatelessWidget {
     if (dailySheet != null) {
       if (dailySheet!.isCanceled) {
         colorIndicator.value = Colors.redAccent;
-      } else if (dailySheet!.isDone ||
-          DateTime.parse(dailySheet!.startedAt!).isBefore(DateTime.now())) {
-        colorIndicator.value = Get.textTheme.headline3!.color!.withOpacity(0.3);
-      } else {
+      } else if (dailySheet!.isDone) {
         colorIndicator.value = myColorIsActive;
+      } else {
+        colorIndicator.value = Get.textTheme.headline3!.color!.withOpacity(0.3);
       }
     }
   }

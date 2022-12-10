@@ -14,7 +14,7 @@ class ProfilePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, '/api/attachments');
+      Uri url = urlMain(urlPath: '/api/attachments');
 
       var request = http.MultipartRequest("POST", url)
         ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
@@ -30,6 +30,8 @@ class ProfilePageData {
 
       print(
           'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode}');
+      log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
+
       if (response.statusCode == 201) {
         var responseData = await response.stream.toBytes();
         Map<String, dynamic> responseString =
@@ -42,7 +44,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -58,7 +59,7 @@ class ProfilePageData {
   Future<String?> postSetAvatarData(
       {required File avatar, required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, '/api/users/setAvatar');
+      Uri url = urlMain(urlPath: '/api/users/setAvatar');
 
       var request = http.MultipartRequest("POST", url)
         ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
@@ -73,6 +74,8 @@ class ProfilePageData {
       http.StreamedResponse response = await request.send();
 
       print('Response status from postSetAvatarData: ${response.statusCode}');
+      log('postSetAvatarData ${response.reasonPhrase}');
+
       if (response.statusCode == 200) {
         var responseData = await response.stream.toBytes();
         Map responseString = json.decode(String.fromCharCodes(responseData));
@@ -84,7 +87,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('postSetAvatarData ${response.reasonPhrase}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -96,18 +98,34 @@ class ProfilePageData {
     }
   }
 
-  ///Роут для получения списка документов по userId
-  Future<DocumentsListModel?> getPatientDocumentsByUserIdData(
-      {required String accessToken, required String userId}) async {
+  ///роут для получения доков выбранного промежутка и поиска доков
+  Future<DocumentsListModel?> getDocumentsListData({
+    required String accessToken,
+    required int page,
+    required int perPage,
+    required String? searchText,
+  }) async {
     try {
-      Uri url =
-          Uri.http(urlMainApiConst, 'api/patientDocuments/byUserId/$userId');
+      Map<String, dynamic> queryParameters = {
+        'page': "$page",
+        'perPage': '$perPage',
+      };
+
+      if (searchText != null) {
+        queryParameters = {...queryParameters, 'search': searchText};
+      }
+
+      Uri url = urlMain(
+          urlPath: 'api/patientDocuments', queryParameters: queryParameters);
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print(
           'Response status from getPatientDocumentsByUserIdData: ${response.statusCode}');
+      log('getPatientDocumentsByUserIdData DocumentsListModel ${response.body}');
+
       if (response.statusCode == 200) {
         return DocumentsListModel.fromJson(jsonDecode(response.body));
       } else {
@@ -117,7 +135,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getPatientDocumentsByUserIdData DocumentsListModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -133,12 +150,15 @@ class ProfilePageData {
   Future<AchievementsModel?> getAchievementsData(
       {required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/achievements');
+      Uri url = urlMain(urlPath: 'api/achievements');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print('Response status from getAchievementsData: ${response.statusCode}');
+      log('getAchievementsData AchievementsModel ${response.body}');
+
       if (response.statusCode == 200) {
         return AchievementsModel.fromJson(jsonDecode(response.body));
       } else {
@@ -148,7 +168,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getAchievementsData AchievementsModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -165,12 +184,17 @@ class ProfilePageData {
       {required String accessToken, required String idAchievement}) async {
     try {
       final queryParameters = {'extends': "1"};
+      Uri url = urlMain(
+          urlPath: 'api/achievements/$idAchievement',
+          queryParameters: queryParameters);
 
-      Uri url = Uri.http(
-          urlMainApiConst, 'api/achievements/$idAchievement', queryParameters);
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
+      print(
+          'Response status from getAchievementsWithIdData: ${response.statusCode}');
+      log('getAchievementsWithIdData Achievement ${response.body}');
+
       if (response.statusCode == 200) {
         return Achievement.fromJson(jsonDecode(response.body));
       } else {
@@ -180,7 +204,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getAchievementsWithIdData Achievement ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -201,7 +224,7 @@ class ProfilePageData {
     required List<String> attachmentsIds, //Массив с id вложений
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/patientDocuments');
+      Uri url = urlMain(urlPath: 'api/patientDocuments');
 
       Map<String, dynamic> _json = {
         "category": category,
@@ -222,6 +245,8 @@ class ProfilePageData {
       );
       print(
           'Response status from postPatientDocumentsData: ${response.statusCode}');
+      log("postPatientDocumentsData DocumentForIdModel ${response.body}");
+
       if (response.statusCode == 201) {
         print(DocumentForIdModel.fromJson(jsonDecode(response.body)));
         return DocumentForIdModel.fromJson(jsonDecode(response.body));
@@ -232,7 +257,6 @@ class ProfilePageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log(response.body);
     } catch (error) {
       Get.snackbar(
         'Exception',

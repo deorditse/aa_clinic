@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'documents_model.dart';
 
@@ -249,6 +249,7 @@ class _$_DocumentForIdModel implements _DocumentForIdModel {
   @override
   @JsonKey()
   List<String?> get attachmentsIds {
+    if (_attachmentsIds is EqualUnmodifiableListView) return _attachmentsIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_attachmentsIds);
   }
@@ -257,6 +258,7 @@ class _$_DocumentForIdModel implements _DocumentForIdModel {
   @override
   @JsonKey()
   List<Attachment?> get attachments {
+    if (_attachments is EqualUnmodifiableListView) return _attachments;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_attachments);
   }

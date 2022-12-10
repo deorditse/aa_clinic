@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:data_layout/data_layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -32,16 +33,18 @@ class RealTimeCallData {
   Future<RealTimeCallModel?> getIncomingRealTimeCalls(
       {required String accessToken}) async {
     try {
-      Uri url =
-          Uri.parse('http://$urlMainApiConst/api/realTimeCalls?${makeQuery({
+      Uri url = urlMain(
+          urlPath: 'api/realTimeCalls?${makeQuery({
             'filter': {'finishedAt': 'null'}
           })}');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
       print('Response status from getTimeCall: ${response.statusCode}');
+      log('getIncomingRealTimeCalls ${jsonDecode(response.body)}');
+
       if (response.statusCode == 200) {
-        print(jsonDecode(response.body));
         return RealTimeCallModel.fromJson(jsonDecode(response.body));
       } else {
         Get.snackbar(
@@ -66,11 +69,13 @@ class RealTimeCallData {
     required String id,
   }) async {
     try {
-      Uri url = Uri.parse('http://$urlMainApiConst/api/realTimeCalls/$id');
+      Uri url = urlMain(urlPath: 'api/realTimeCalls/$id');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
       print('Response status from getTimeCallById: ${response.statusCode}');
+      log('getRealTimeCallById RealTimeCall ${response.body}');
+
       if (response.statusCode == 200) {
         print(jsonDecode(response.body));
         return RealTimeCall.fromJson(jsonDecode(response.body));
@@ -97,7 +102,8 @@ class RealTimeCallData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/realTimeCalls/accept/$id');
+      Uri url = urlMain(urlPath: 'api/realTimeCalls/accept/$id');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
@@ -106,6 +112,7 @@ class RealTimeCallData {
       if (response.statusCode == 200) {
         print(
             'Response status from acceptRealTimeCalls: ${response.statusCode}');
+        log('acceptRealTimeCalls ${response.body}');
       } else {
         print(url.toString());
         Get.snackbar(
@@ -129,15 +136,16 @@ class RealTimeCallData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/realTimeCalls/finish/$id');
+      Uri url = urlMain(urlPath: 'api/realTimeCalls/finish/$id');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
       );
       print('Response status from finishRealTimeCalls: ${response.statusCode}');
+      log('finishRealTimeCalls ${response.body}');
+
       if (response.statusCode == 200) {
-        print(
-            'Response status from finishRealTimeCalls: ${response.statusCode}');
       } else {
         Get.snackbar(
           'Exception',

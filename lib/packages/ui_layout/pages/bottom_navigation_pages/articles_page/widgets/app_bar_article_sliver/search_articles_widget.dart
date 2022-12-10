@@ -6,34 +6,42 @@ import 'package:flutter/material.dart';
 class SearchArticlesWidget extends StatelessWidget {
   SearchArticlesWidget({Key? key}) : super(key: key);
 
-  final Rx<TextEditingController> _searchQueryControllerProfilePage =
-      TextEditingController().obs;
+  final TextEditingController _searchQueryControllerProfilePage =
+      TextEditingController(
+          text: ArticlesControllerGetxState.instance.searchingArticlesText);
 
-  final RxString searchQuery = "Search query".obs;
+  final RxString _searchQuery = "".obs;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Row(
-        children: [
-          Flexible(
-            child: TextField(
-              controller: _searchQueryControllerProfilePage.value,
-              autofocus: true,
-              cursorColor: myColorIsActive,
-              decoration:
-                  myStyleTextField(context, hintText: 'Поиск по статьям'),
-              style: myTextStyleFontUbuntu(context: context),
-              onChanged: (query) => updateSearchQuery(query),
-            ),
+    return Row(
+      children: [
+        Flexible(
+          child: TextField(
+            controller: _searchQueryControllerProfilePage,
+            autofocus: true,
+            cursorColor: myColorIsActive,
+            decoration: myStyleTextField(context, hintText: 'Поиск по статьям'),
+            style: myTextStyleFontUbuntu(context: context),
+            onChanged: (query) => _searchQuery.value = query,
+            onSubmitted: (newQuery) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              ArticlesControllerGetxState.instance.getArticles(
+                searchText: newQuery,
+                articlePage: 1,
+              );
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: GestureDetector(
-              onTap: () {
-                _stopSearching();
-              },
-              child: _searchQueryControllerProfilePage.value.text == ''
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+              _stopSearching();
+            },
+            child: Obx(
+              () => _searchQuery.value == ''
                   ? Icon(
                       Icons.clear,
                     )
@@ -43,17 +51,13 @@ class SearchArticlesWidget extends StatelessWidget {
                     ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  void updateSearchQuery(String newQuery) {
-    searchQuery.value = newQuery;
-  }
-
   void _stopSearching() {
-    if (_searchQueryControllerProfilePage.value.text.isEmpty) {
+    if (_searchQueryControllerProfilePage.text.isEmpty) {
       ArticlesControllerGetxState.instance
           .changeIsSearchingArticles(isSearching: false);
     }
@@ -61,7 +65,7 @@ class SearchArticlesWidget extends StatelessWidget {
   }
 
   void _clearSearchQuery() {
-    _searchQueryControllerProfilePage.value.clear();
-    updateSearchQuery("");
+    _searchQueryControllerProfilePage.clear();
+    _searchQuery.value = '';
   }
 }

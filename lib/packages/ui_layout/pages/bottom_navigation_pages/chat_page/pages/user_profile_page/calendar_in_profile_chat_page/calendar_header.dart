@@ -1,11 +1,11 @@
-import 'package:aa_clinic/packages/style_app/lib/src/text_style.dart';
+import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarHeaderChatPage extends StatelessWidget {
+class CalendarHeaderChatPage extends StatefulWidget {
   final DateTime focusedDay;
   final VoidCallback onLeftArrowTap;
   final VoidCallback onRightArrowTap;
@@ -24,10 +24,16 @@ class CalendarHeaderChatPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CalendarHeaderChatPage> createState() => _CalendarHeaderChatPageState();
+}
+
+class _CalendarHeaderChatPageState extends State<CalendarHeaderChatPage> {
+  @override
   Widget build(BuildContext context) {
-    final headerText = DateFormat('MMMM').format(focusedDay);
-    final headerTextYear = DateFormat('yyyy').format(focusedDay);
-//header calendar
+    final headerText = DateFormat('MMMM').format(widget.focusedDay);
+    final headerTextYear = DateFormat('yyyy').format(widget.focusedDay);
+
+    //header calendar
     return Padding(
       padding:
           const EdgeInsets.symmetric(horizontal: myTopPaddingForContent - 3),
@@ -44,7 +50,7 @@ class CalendarHeaderChatPage extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: onTodayButtonTap,
+                onPressed: widget.onTodayButtonTap,
                 child: Text(
                   "сегодня",
                   style: Theme.of(context).textTheme.headline3,
@@ -59,10 +65,10 @@ class CalendarHeaderChatPage extends StatelessWidget {
                       Icons.chevron_left,
                       color: Theme.of(context).textTheme.headline2!.color,
                     ),
-                    onPressed: onLeftArrowTap,
+                    onPressed: widget.onLeftArrowTap,
                   ),
                   GestureDetector(
-                    onTap: onRightArrowTap,
+                    onTap: widget.onRightArrowTap,
                     child: Icon(
                       Icons.chevron_right,
                       color: Theme.of(context).textTheme.headline2!.color,

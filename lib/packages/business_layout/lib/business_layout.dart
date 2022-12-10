@@ -7,6 +7,8 @@ export 'src/getx_controllers/auth_controller/bindings.dart';
 
 ///chat export
 export 'src/getx_controllers/chat_controller/chat_page_calendar_controller_getx_state.dart';
+export 'src/getx_controllers/chat_controller/calendar_events_chat_page/calendar_events_chat_controller.dart';
+export 'src/getx_controllers/chat_controller/calendar_events_chat_page/calendar_binding_chat.dart';
 
 ///profile export
 export 'src/getx_controllers/profile_controllers/controller_profile_page.dart';

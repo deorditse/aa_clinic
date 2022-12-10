@@ -31,7 +31,6 @@ import 'packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/workout
 import 'packages/ui_layout/pages/bottom_navigation_pages/home_page/widgets/task_for_the_day/notifications/bottom_sheet_сategories_of_notifications.dart';
 import 'packages/ui_layout/pages/bottom_navigation_pages/other_page/pages/orders_page/about_order_page/about_order_page.dart';
 import 'packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/achievements_pages/about_achievements_page.dart';
-import 'packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/bottom_sheet_calendar_documents/bottom_sheet_calendar_documents.dart';
 import 'packages/ui_layout/pages/bottom_navigation_pages/profile_page/profile_page.dart';
 import 'packages/ui_layout/pages/other_pages/authentication_page/main_login_page.dart';
 import 'package:business_layout/business_layout.dart';
@@ -65,6 +64,7 @@ class MyGetApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      key: key,
       debugShowCheckedModeBanner: false,
       initialBinding: AuthBinding(),
       theme: themeLight,
@@ -117,10 +117,6 @@ class MyGetApp extends StatelessWidget {
           name: BodyEditProfilePage.id,
           page: () => BodyEditProfilePage(),
         ),
-        GetPage(
-          name: BottomSheetCalendarDocumentsProfilePage.id,
-          page: () => BottomSheetCalendarDocumentsProfilePage(),
-        ),
 
         ///для страницы Чат
         GetPage(
@@ -130,6 +126,7 @@ class MyGetApp extends StatelessWidget {
         GetPage(
           name: UserProfilePage.id,
           page: () => UserProfilePage(),
+          binding: CalendarBindingChat(),
         ),
         GetPage(
           name: ChatWithUserPage.id,

@@ -29,47 +29,51 @@ class WidgetBodyAchievementsProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProfileControllerGetxState>(
-      builder: (controllerProfile) {
-        List<String?> idUserAchievementsList =
-            ImplementSettingGetXController.instance.userAllData?.achievements ??
-                [];
-        return controllerProfile.achievementsModelData != null
-            ? ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                padding: EdgeInsets.zero,
-                itemCount: controllerProfile.achievementsModelData!.docs.length,
-                itemBuilder: (context, index) {
-                  final doc =
-                      controllerProfile.achievementsModelData!.docs[index];
+    return Padding(
+      padding: const EdgeInsets.only(top: myTopPaddingForContent),
+      child: GetBuilder<ProfileControllerGetxState>(
+        builder: (controllerProfile) {
+          List<String?> idUserAchievementsList = ImplementSettingGetXController
+                  .instance.userAllData?.achievements ??
+              [];
+          return controllerProfile.achievementsModelData != null
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  padding: EdgeInsets.zero,
+                  itemCount:
+                      controllerProfile.achievementsModelData!.docs.length,
+                  itemBuilder: (context, index) {
+                    final doc =
+                        controllerProfile.achievementsModelData!.docs[index];
 
-                  bool isUserAchiv = idUserAchievementsList.contains(doc.id);
+                    bool isUserAchiv = idUserAchievementsList.contains(doc.id);
 
-                  return _rowAchievement(
-                    isUserAchiv: isUserAchiv,
-                    context: context,
-                    indexAchievement: index,
-                  );
-                },
-              )
-            : ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                primary: false,
-                itemCount: 12,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: myTopPaddingForContent),
-                    child: myShimmerEffectContainer(
+                    return _rowAchievement(
+                      isUserAchiv: isUserAchiv,
                       context: context,
-                      newHeight: 40,
-                    ),
-                  );
-                },
-              );
-      },
+                      indexAchievement: index,
+                    );
+                  },
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: 12,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: myTopPaddingForContent),
+                      child: myShimmerEffectContainer(
+                        context: context,
+                        newHeight: 40,
+                      ),
+                    );
+                  },
+                );
+        },
+      ),
     );
   }
 }
@@ -98,12 +102,17 @@ _rowAchievement({
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //если картинка будет лежать в инете пменять на ImageNetwork
-          FittedBox(
+          Flexible(
             child: CircleAvatar(
+              radius: 23,
               backgroundColor: Theme.of(context).backgroundColor,
               child: (doc.image != null && doc.image != 'null')
-                  ? containerForPhotoFuture(coverFileId: doc.image!)
+                  ? containerForPhotoFuture(
+                      coverFileId: doc.image!,
+                      isCircular: true,
+                    )
                   : CircleAvatar(
+                radius: 23,
                       backgroundColor: isUserAchiv
                           ? Theme.of(context).backgroundColor
                           : Theme.of(context).cardColor.withOpacity(0.5),

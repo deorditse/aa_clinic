@@ -44,7 +44,8 @@ class SettingPageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/staticFiles/$coverId');
+      Uri url = urlMain(urlPath: 'api/staticFiles/$coverId');
+
       var response = await http.delete(
         url,
         headers: {'Authorization': 'Bearer $accessToken'},
@@ -54,6 +55,7 @@ class SettingPageData {
         print(
           'Response status from deleteStaticFilesAndGetIdImage: ${response.statusCode}',
         );
+        log("deleteStaticFilesAndGetIdImageData ${response.body}");
       } else {
         Get.snackbar(
           'Exception',
@@ -61,7 +63,6 @@ class SettingPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log(response.body);
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -78,7 +79,8 @@ class SettingPageData {
       required String accessToken,
       required String category}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, '/api/staticFiles');
+      Uri url = urlMain(urlPath: 'api/staticFiles');
+
 
       var request = http.MultipartRequest("POST", url)
         ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
@@ -95,6 +97,8 @@ class SettingPageData {
 
       print(
           'Response status from postStaticFilesAndGetIdImageData: ${response.statusCode}');
+      log('postStaticFilesImageData ${response.reasonPhrase}');
+
       if (response.statusCode == 201) {
         var responseData = await response.stream.toBytes();
         Map responseString = json.decode(String.fromCharCodes(responseData));
@@ -106,7 +110,6 @@ class SettingPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('postStaticFilesImageData ${response.reasonPhrase}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -124,7 +127,8 @@ class SettingPageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/users/updateMe');
+      Uri url = urlMain(urlPath: 'api/users/updateMe');
+
       var response = await http.put(
         url,
         headers: {
@@ -148,6 +152,7 @@ class SettingPageData {
         // jsonEncode(userEdit),
       );
       print('Response status from updateMeData: ${response.statusCode}');
+      log('updateMeData ${response.body}');
 
       if (response.statusCode == 200) {
       } else {
@@ -157,7 +162,6 @@ class SettingPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('updateMeData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -172,12 +176,15 @@ class SettingPageData {
   //возможно нужно будет перенести в контроллер home page
   Future<UserDataModel?> getFindMeData({required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/users/findMe');
+      Uri url = urlMain(urlPath: 'api/users/findMe');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer ${accessToken}",
       });
 
       print('Response status from getFindMeData: ${response.statusCode}');
+      log('getFindMeData UserDataModel ${response.body}');
+
       print('GET FIND ME 1');
       if (response.statusCode == 200) {
         return UserDataModel.fromJson(jsonDecode(response.body));
@@ -188,7 +195,6 @@ class SettingPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getFindMeData UserDataModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -204,13 +210,16 @@ class SettingPageData {
   Future<UserMinifiedDataIdModel?> getDataUserMinifiedData(
       {required String accessToken, required String idUser}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/users/minified/$idUser');
+      Uri url = urlMain(urlPath: 'api/users/minified/$idUser');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
 
       print(
           'Response status from getDataUserMinifiedData: ${response.statusCode}');
+      log('getDataUserMinifiedData UserMinifiedDataIdModel ${response.body}');
+
       if (response.statusCode == 200) {
         return UserMinifiedDataIdModel.fromJson(jsonDecode(response.body));
       } else {
@@ -220,7 +229,6 @@ class SettingPageData {
         //   snackPosition: SnackPosition.TOP,
         // );
       }
-      log('getDataUserMinifiedData UserMinifiedDataIdModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -232,18 +240,51 @@ class SettingPageData {
     return null;
   }
 
+  ///Роут для получения файла по его id
+  Future<StaticFileModel?> getStaticFileData(
+      {required String accessToken, required String coverFileId}) async {
+    try {
+           Uri url = urlMain(urlPath: 'api/staticFiles/$coverFileId');
+
+      var response = await http
+          .get(url, headers: {"Authorization": "Bearer $accessToken"});
+
+      print('Response status from getStaticFileData: ${response.statusCode}');
+      log('getStaticFileData ${response.body}');
+
+      if (response.statusCode == 200) {
+        return StaticFileModel.fromJson(jsonDecode(response.body));
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request getStaticFileData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error getStaticFileData Storage: $error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from getStaticFileData $error ');
+    }
+    return null;
+  }
+
   ///Роут для получения файла по id из статического хранилища файлов +
   Future<Uint8List?> getStaticFilesStorageData(
       {required String accessToken, required String coverFileId}) async {
     try {
-      Uri url =
-          Uri.http(urlMainApiConst, 'api/staticFilesStorage/$coverFileId');
+      Uri url = urlMain(urlPath: 'api/staticFilesStorage/$coverFileId');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
 
       print(
           'Response status from getStaticFilesStorageData: ${response.statusCode}');
+      // log('getStaticFilesStorageData ${response.body}');
       if (response.statusCode == 200) {
         List<int> list = response.body.codeUnits;
         Uint8List bytes = Uint8List.fromList(list);
@@ -255,7 +296,6 @@ class SettingPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getStaticFilesStorageData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',

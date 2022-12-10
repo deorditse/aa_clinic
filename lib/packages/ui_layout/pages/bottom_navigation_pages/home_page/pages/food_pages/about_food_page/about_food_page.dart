@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/image_view_page.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/material_sceleton_without_borders.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +10,6 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:model/model.dart';
-
 import 'widgets/add_photo_food_bottom_sheet_widget.dart';
 
 class AboutFoodPage extends StatelessWidget {
@@ -46,7 +42,7 @@ class AboutFoodPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MySliverNewPageWithoutBorder(
+    return MyMaterialNewPageWithoutBorder(
       titleAppBar: title ?? 'Прием пищи',
       primary: true,
       widgetBody:
@@ -70,65 +66,77 @@ class _BodyAboutFoodPage extends StatelessWidget {
       builder: (controllerHome) {
         NutriDishModel dish = controllerHome
             .mapTargetIdAndNutriMealsWithId[targetId]!.dishes[indexDish]!;
-        return SizedBox(
-          height: Get.size.height * 0.78,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (dish.image != null && dish.image!.isNotEmpty)
-                Container(
-                  decoration: myStyleContainer(
-                    context: context,
-                    color: Theme.of(context).backgroundColor,
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  height: Get.height / 3.6,
-                  width: double.maxFinite,
-                  child: containerForPhotoFuture(
-                    coverFileId: dish.image!,
-                    openView: true,
-                  ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    if (dish.image != null && dish.image!.isNotEmpty)
+                      Container(
+                        decoration: myStyleContainer(
+                          context: context,
+                          color: Theme.of(context).backgroundColor,
+                        ),
+                        clipBehavior: Clip.hardEdge,
+                        height: Get.height / 3.6,
+                        width: double.maxFinite,
+                        child: containerForPhotoFuture(
+                          coverFileId: dish.image!,
+                          openView: true,
+                        ),
+                      ),
+                    mySizedHeightBetweenContainer,
+                    Text(
+                      'Описание блюда:',
+                      style: myTextStyleFontUbuntu(
+                        context: context,
+                        newFontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    mySizedHeightBetweenContainer,
+                    Text(
+                      dish.description ?? 'Описание блюда не добавлено',
+                      style: myTextStyleFontUbuntu(
+                        textColor: Theme.of(context).textTheme.headline3!.color,
+                        newFontWeight: FontWeight.w300,
+                        context: context,
+                      ),
+                    ),
+                    mySizedHeightBetweenContainer,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${dish.kcal ?? '...'} Ккал',
+                          style: myTextStyleFontUbuntu(
+                            textColor: myColorIsActive,
+                            context: context,
+                            newFontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        Text(
+                          '${dish.mass ?? '...'} Грамм',
+                          style: myTextStyleFontUbuntu(
+                            textColor:
+                                Theme.of(context).textTheme.headline3!.color,
+                            newFontWeight: FontWeight.w300,
+                            context: context,
+                          ),
+                        ),
+                      ],
+                    ),
+                    mySizedHeightBetweenContainer,
+                  ],
                 ),
-              mySizedHeightBetweenContainer,
-              Text(
-                'Описание блюда:',
-                style: myTextStyleFontUbuntu(
-                    context: context, newFontWeight: FontWeight.w500),
               ),
-              mySizedHeightBetweenContainer,
-              Text(
-                dish.description ?? '',
-                style: myTextStyleFontUbuntu(
-                    textColor: Theme.of(context).textTheme.headline3!.color,
-                    newFontWeight: FontWeight.w300,
-                    context: context),
-              ),
-              mySizedHeightBetweenContainer,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${dish.kcal ?? '...'} Ккал',
-                    style: myTextStyleFontUbuntu(
-                      textColor: myColorIsActive,
-                      context: context,
-                      newFontWeight: FontWeight.w300,
-                    ),
-                  ),
-                  Text(
-                    '${dish.mass ?? '...'} Грамм',
-                    style: myTextStyleFontUbuntu(
-                      textColor: Theme.of(context).textTheme.headline3!.color,
-                      newFontWeight: FontWeight.w300,
-                      context: context,
-                    ),
-                  ),
-                ],
-              ),
-              Expanded(child: Container()),
-              _AddPhotoEat(indexDish: indexDish, targetId: targetId),
-            ],
-          ),
+            ),
+            _AddPhotoEat(indexDish: indexDish, targetId: targetId),
+            mySizedHeightBetweenContainer,
+          ],
         );
       },
     );
@@ -162,7 +170,8 @@ class _AddPhotoEat extends StatelessWidget {
         ),
         if (isPhotoAdd)
           Padding(
-            padding: const EdgeInsets.only(top: myTopPaddingForContent),
+            padding:
+                const EdgeInsets.only(top: myHorizontalPaddingForContainer),
             child: Text(
               'Карточка заполнена успешно!',
               style: myTextStyleFontUbuntu(
@@ -248,49 +257,10 @@ class _AddPhotoEat extends StatelessWidget {
                         controllerHome.photoFood!,
                         fit: BoxFit.cover,
                       )
-                    : dish.lifeImage != null
-                        ?
-                        // FutureBuilder<Uint8List?>(
-                        //   future: ImplementSettingGetXController.instance
-                        //       .getStaticFilesStorage(
-                        //           coverFileId: dish.lifeImage!),
-                        //   builder:
-                        //       (context, AsyncSnapshot<Uint8List?> snapshot) {
-                        //
-                        //     if (snapshot.data != null) {
-                        //       final stat =
-                        //           FileStat.statSync( file.writeAsBytesSync(snapshot.data.toString()));
-                        //       print('Accessed: ${stat.accessed}');
-                        //       print('Modified: ${stat.modified}');
-                        //       print('Changed:  ${stat.changed}');
-                        //     }
-                        //
-                        //     if (snapshot.hasData) {
-                        //       return GestureDetector(
-                        //         onTap: () {
-                        //           imageViewBottom(
-                        //             context: context,
-                        //             uint8ListImage: snapshot.data!,
-                        //             heroTag: 'null',
-                        //           );
-                        //         },
-                        //         child: Image.memory(
-                        //           snapshot.data!,
-                        //           fit: BoxFit.cover,
-                        //         ),
-                        //       );
-                        //     } else {
-                        //       return myShimmerEffectContainer(
-                        //           context: context);
-                        //     }
-                        //   },
-                        // )
-
-                        containerForPhotoFuture(
-                            coverFileId: dish.lifeImage!,
-                            openView: true,
-                          )
-                        : null,
+                    : containerForPhotoFuture(
+                        coverFileId: dish.lifeImage!,
+                        openView: true,
+                      ),
               ),
             ),
           ),
@@ -334,14 +304,24 @@ class _AddPhotoEat extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: FittedBox(
-                  child: Text(
-                    // DateFormat().format(DateTime.parse(dish.!)),
-                    '${DateFormat('d MMMM y').format(DateTime.now())}, ${DateFormat('EEEE').format(DateTime.now()).capitalize?.toLowerCase()}, ${DateFormat.Hm().format(DateTime.now())}',
-                    style: myTextStyleFontUbuntu(
-                      textColor: Theme.of(context).textTheme.headline3!.color,
-                      newFontWeight: FontWeight.w300,
-                      context: context,
-                    ),
+                  child: FutureBuilder<StaticFileModel?>(
+                    future: ImplementSettingGetXController.instance
+                        .getStaticFile(coverFileId: dish.lifeImage!),
+                    builder:
+                        (context, AsyncSnapshot<StaticFileModel?> snapshot) {
+                      return Text(
+                        // DateFormat().format(DateTime.parse(dish.!)),
+                        snapshot.data?.createdAt != null
+                            ? '${DateFormat('d MMMM y').format(DateTime.parse(snapshot.data!.createdAt!))}, ${DateFormat('EEEE').format(DateTime.parse(snapshot.data!.createdAt!)).capitalize?.toLowerCase()}, ${DateFormat.Hm().format(DateTime.parse(snapshot.data!.createdAt!))}'
+                            : "Загрузка даты добавления...",
+                        style: myTextStyleFontUbuntu(
+                          textColor:
+                              Theme.of(context).textTheme.headline3!.color,
+                          newFontWeight: FontWeight.w300,
+                          context: context,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

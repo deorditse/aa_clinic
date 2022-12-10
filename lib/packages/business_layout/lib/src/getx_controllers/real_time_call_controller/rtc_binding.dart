@@ -4,6 +4,6 @@ import 'package:business_layout/business_layout.dart'; //импортить то
 class RTCBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(RTCControllerGetxState(), permanent: true);
+    Get.lazyPut(() => RTCControllerGetxState(), fenix: true);
   }
 }

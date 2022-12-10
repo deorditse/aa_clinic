@@ -10,7 +10,7 @@ import 'package:model/model.dart';
 
 class ArticlesControllerGetxState extends GetxController {
   static ArticlesControllerGetxState instance =
-  Get.find<ArticlesControllerGetxState>();
+      Get.find<ArticlesControllerGetxState>();
   final ArticlesPageData _services = ArticlesPageData();
 
   @override
@@ -19,14 +19,23 @@ class ArticlesControllerGetxState extends GetxController {
     super.onInit();
   }
 
+  String? searchingArticlesText;
   bool isSearchingArticles = false;
 
-  ///получить автора статьи по id
-
-  void changeIsSearchingArticles({bool? isSearching}) {
-    isSearchingArticles = isSearching ?? !isSearchingArticles;
+  void changeIsSearchingArticles({
+    bool isSearching = false,
+  }) {
+    isSearchingArticles = isSearching;
+    if (!isSearchingArticles) {
+      searchingArticlesText = null;
+    }
     update();
   }
+
+  final int perPage = 6;
+
+  ///для поиска статей
+  Map<String, ArticlesPageModel?> mapNameSearchAndArticlesPageModel = {};
 
   Future<void> _initializedDataArticlePage() async {
     await getArticleCategories();
@@ -34,25 +43,69 @@ class ArticlesControllerGetxState extends GetxController {
   }
 
   ///Роут для получения списка статей +
-  ArticlesPageModel? articlesDataList;
+  // ArticlesPageModel? articlesDataList;
+  int indexCategorySelected = (-1);
 
-  Future<void> getArticles({int perPage = 6, required int articlePage}) async {
-    articlesDataList = await _services.getArticlesData(
-      accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      page: articlePage,
-      perPage: perPage,
-    );
-    update();
+  void changeSearchCategory({int? indexCategory}) {
+    if (indexCategory == null) {
+      indexCategorySelected = (-1);
+      update();
+    } else {
+      indexCategorySelected = indexCategory;
+      update();
+      getArticles(articlePage: 1);
+    }
+  }
+
+  ///для статей
+
+  Map<int, ArticlesPageModel?> mapIndexCategoryAndArticlesPageModel = {};
+
+  Future<void> getArticles({
+    required int articlePage,
+    String? searchText,
+    bool isUpdate = false,
+  }) async {
+    if (mapIndexCategoryAndArticlesPageModel[indexCategorySelected] == null ||
+        isUpdate) {
+      mapIndexCategoryAndArticlesPageModel[indexCategorySelected] =
+          await _services.getArticlesData(
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+        page: articlePage,
+        perPage: perPage,
+        categoryId: indexCategorySelected != (-1)
+            ? categoryHorizontalList?.docs[indexCategorySelected].id
+            : null,
+      );
+      update();
+    } else if (searchText != null) {
+      searchingArticlesText = searchText;
+
+      if (mapNameSearchAndArticlesPageModel[searchText] == null || isUpdate) {
+        mapNameSearchAndArticlesPageModel[searchText] =
+            await _services.getArticlesData(
+          accessToken:
+              ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          page: articlePage,
+          perPage: perPage,
+          searchText: searchText,
+          categoryId: indexCategorySelected != (-1)
+              ? categoryHorizontalList?.docs[indexCategorySelected].id
+              : null,
+        );
+      }
+      update();
+    }
   }
 
   ArticleCategoriesModel? categoryHorizontalList;
 
   ///Роут для получения списка категорий для статей +
-  Future<ArticleCategoriesModel?> getArticleCategories() async {
+  Future<void> getArticleCategories({bool isUpdate = false}) async {
     categoryHorizontalList = await _services.getArticleCategoriesData(
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
     );
     update();
   }
@@ -64,7 +117,7 @@ class ArticlesControllerGetxState extends GetxController {
   }) async {
     await _services.postArticleRateWithIdData(
       accessToken:
-      ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
       idArticle: idArticle,
       rating: rating,
     );

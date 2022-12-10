@@ -87,7 +87,12 @@ class MyMaterialNewPageWithoutBorder extends StatelessWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        child: _widgetBody(padding: paddingHorizontalContent),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: paddingHorizontalContent ??
+                                  myHorizontalPaddingForContainer),
+                          child: widgetBody,
+                        ),
                       ),
                       if (widgetAfterBody != null)
                         Padding(
@@ -103,14 +108,6 @@ class MyMaterialNewPageWithoutBorder extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  _widgetBody({required double? padding}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: padding ?? myHorizontalPaddingForContainer),
-      child: widgetBody,
     );
   }
 }

@@ -17,7 +17,6 @@ class ImplementAuthController extends GetxController {
   FlutterSecureStorage? _storageSecure; //локальная база данных - секьюрная
   UserAuthorizedModel? userAuthorizedData;
 
-
   Future<void> initMainDataApp() async {
     await Hive.initFlutter(); //иннициализируем Hive
     // с security

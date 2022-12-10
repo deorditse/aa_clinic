@@ -1,3 +1,5 @@
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
+import 'package:model/model.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:get/get.dart';
@@ -7,20 +9,18 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'widgets/grid_with_photo.dart';
-
 class DocumentsProfilePage extends StatelessWidget {
   static const String id = '/documentsProfilePage';
-  final int? indexDocument;
+  final DocumentForIdModel? document;
 
-  const DocumentsProfilePage({Key? key, this.indexDocument}) : super(key: key);
+  const DocumentsProfilePage({Key? key, this.document}) : super(key: key);
 
   static openDocumentProfilePage(
-          {required context, required int indexDocument}) =>
+          {required context, required DocumentForIdModel document}) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: const RouteSettings(name: DocumentsProfilePage.id),
-        screen: DocumentsProfilePage(indexDocument: indexDocument),
+        screen: DocumentsProfilePage(document: document),
         withNavBar: true,
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
       );
@@ -29,26 +29,25 @@ class DocumentsProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MySliverNewPageWithoutBorder(
       titleAppBar: 'Документы',
-      widgetBody: _BodyDocumentsProfilePage(indexDocument: indexDocument!),
+      widgetBody: _BodyDocumentsProfilePage(document: document!),
       widgetAfterBody: SliverPadding(
         padding: const EdgeInsets.symmetric(
             horizontal: myHorizontalPaddingForContainer),
-        sliver: gridWithPhoto(indexDocument: indexDocument!),
+        sliver: _gridWithPhoto(attachments: document!.attachments),
       ),
     );
   }
 }
 
 class _BodyDocumentsProfilePage extends StatelessWidget {
-  const _BodyDocumentsProfilePage({Key? key, required this.indexDocument})
+  const _BodyDocumentsProfilePage({Key? key, required this.document})
       : super(key: key);
-  final int indexDocument;
+  final DocumentForIdModel document;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProfileControllerGetxState>(
       builder: (controllerProfile) {
-        final document = controllerProfile.documentList!.docs[indexDocument];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -94,4 +93,28 @@ class _BodyDocumentsProfilePage extends StatelessWidget {
       },
     );
   }
+}
+
+_gridWithPhoto({required List<Attachment?> attachments}) {
+  return SliverGrid(
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+      mainAxisSpacing: myHorizontalPaddingForContainer,
+      crossAxisSpacing: myHorizontalPaddingForContainer,
+      childAspectRatio: 1,
+    ),
+    delegate: SliverChildBuilderDelegate(
+      childCount: attachments.length,
+      (BuildContext context, int index) {
+        return Container(
+          decoration: myStyleContainer(context: context),
+          clipBehavior: Clip.hardEdge,
+          child: containerForPhotoFuture(
+            coverFileId: attachments[index]!.thumbnailFileId!,
+            openView: true,
+          ),
+        );
+      },
+    ),
+  );
 }

@@ -14,7 +14,8 @@ class HealthSnapshotsLoaderData {
   Future<Map<String, dynamic>?> getLastValues(
       {required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/healthSnapshots/lastValues');
+      Uri url = urlMain(urlPath: 'api/healthSnapshots/lastValues');
+
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
@@ -124,7 +125,7 @@ class HealthSnapshotsLoaderData {
                         'createHealthSnapshotFromArray',
                         {"data": _healthDataList})
                   }
-              });
+              },);
     }
   }
 

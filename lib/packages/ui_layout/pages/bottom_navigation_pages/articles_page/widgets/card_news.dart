@@ -19,8 +19,18 @@ class CardNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ArticleModel? article = ArticlesControllerGetxState
-        .instance.articlesDataList!.docs[indexArticle];
-
+                .instance.isSearchingArticles &&
+            ArticlesControllerGetxState.instance.searchingArticlesText != null
+        ? ArticlesControllerGetxState
+            .instance
+            .mapNameSearchAndArticlesPageModel[
+                ArticlesControllerGetxState.instance.searchingArticlesText]
+            ?.docs[indexArticle]
+        : ArticlesControllerGetxState
+            .instance
+            .mapIndexCategoryAndArticlesPageModel[
+                ArticlesControllerGetxState.instance.indexCategorySelected]
+            ?.docs[indexArticle];
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -69,7 +79,18 @@ class CardNews extends StatelessWidget {
 
   _buttonWidget({required BuildContext context, required int indexArticle}) {
     ArticleModel? article = ArticlesControllerGetxState
-        .instance.articlesDataList!.docs[indexArticle];
+                .instance.isSearchingArticles &&
+            ArticlesControllerGetxState.instance.searchingArticlesText != null
+        ? ArticlesControllerGetxState
+            .instance
+            .mapNameSearchAndArticlesPageModel[
+                ArticlesControllerGetxState.instance.searchingArticlesText]
+            ?.docs[indexArticle]
+        : ArticlesControllerGetxState
+            .instance
+            .mapIndexCategoryAndArticlesPageModel[
+                ArticlesControllerGetxState.instance.indexCategorySelected]
+            ?.docs[indexArticle];
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(

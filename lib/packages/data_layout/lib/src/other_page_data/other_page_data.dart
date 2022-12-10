@@ -14,7 +14,8 @@ class OtherPageData {
     required String lastPassword,
     required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/users/updatePassword');
+      Uri url = urlMain(urlPath: 'api/users/updatePassword');
+
       var response = await http.put(
         url,
         headers: {'Authorization': 'Bearer ${accessToken}'},
@@ -24,6 +25,8 @@ class OtherPageData {
         },
       );
       print('Response status from updatePasswordData: ${response.statusCode}');
+      log('updatePasswordData ${response.body}');
+
       if (response.statusCode == 200) {} else {
         Get.snackbar(
           'Exception',
@@ -31,7 +34,6 @@ class OtherPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('updatePasswordData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -46,7 +48,8 @@ class OtherPageData {
   Future<SubscriptionsModel?> getMarketSubscriptionsData(
       {required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/marketSubscriptions');
+      Uri url = urlMain(urlPath: 'api/marketSubscriptions');
+
       var response = await http.get(
         url,
         headers: {
@@ -56,6 +59,8 @@ class OtherPageData {
       print(
           'Response status from getMarketSubscriptionsData: ${response
               .statusCode}');
+      log('getMarketSubscriptionsData SubscriptionsModel ${response.body}');
+
       if (response.statusCode == 200) {
         return SubscriptionsModel.fromJson(jsonDecode(response.body));
       } else {
@@ -66,7 +71,6 @@ class OtherPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getMarketSubscriptionsData SubscriptionsModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -81,7 +85,8 @@ class OtherPageData {
   ///Роут для получения списка заказов +
   Future<OrdersModel?> getOrdersData({required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/orders');
+      Uri url = urlMain(urlPath: 'api/orders');
+
       var response = await http.get(
         url,
         headers: {
@@ -89,6 +94,8 @@ class OtherPageData {
         },
       );
       print('Response status from getOrdersData: ${response.statusCode}');
+      log('getOrdersData OrdersModel ${response.body}');
+
       if (response.statusCode == 200) {
         return OrdersModel.fromJson(jsonDecode(response.body));
       } else {
@@ -98,7 +105,6 @@ class OtherPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getOrdersData OrdersModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -114,13 +120,16 @@ class OtherPageData {
   Future<MarketProductModel?> getMarketProductByOrderIdData(
       {required String accessToken, required String idOrder}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/marketProducts/$idOrder');
+      Uri url = urlMain(urlPath: 'api/marketProducts/$idOrder');
+
       var response = await http
           .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
 
       print(
           'Response status from getMarketProductByOrderId: ${response
               .statusCode}');
+      log('getMarketProductByOrderId MarketProductModel ${response.body}');
+
       if (response.statusCode == 200) {
         return MarketProductModel.fromJson(jsonDecode(response.body));
       } else {
@@ -131,7 +140,6 @@ class OtherPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('getMarketProductByOrderId MarketProductModel ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',

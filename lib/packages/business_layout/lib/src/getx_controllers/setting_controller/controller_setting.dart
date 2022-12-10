@@ -19,7 +19,7 @@ enum BodyScreens {
 class ImplementSettingGetXController extends GetxController {
   static ImplementSettingGetXController instance = Get.find();
 
-  SettingPageData _services = SettingPageData();
+  final SettingPageData _services = SettingPageData();
 
   int controllerTabIndex = 2;
 
@@ -67,24 +67,33 @@ class ImplementSettingGetXController extends GetxController {
     switch (indexPage) {
       case 0:
         print('initState BodyProfilePage');
-        Get.lazyPut(() => ProfileControllerGetxState(), fenix: true);
-        Get.lazyPut(() => ActiveValueControllerProfilePage(), fenix: true);
+        // Get.lazyPut(() => ProfileControllerGetxState(), fenix: true);
+        Get.lazyPut(() => ProfileControllerGetxState());
+        Get.lazyPut(() => ActiveValueControllerProfilePage());
+        // Get.lazyPut(() => ActiveValueControllerProfilePage(), fenix: true);
         break;
       case 1:
         print('initState BodyChatPage');
-        Get.lazyPut(() => ChatPageControllerGetx(), fenix: true);
+        // Get.lazyPut(() => ChatPageControllerGetx(), fenix: true);
+        Get.lazyPut(() => ChatPageControllerGetx());
+
         break;
       case 2:
         print('initState BodyHomePage');
-        Get.lazyPut(() => HomePageCalendarControllerGetxState(), fenix: true);
+        // Get.lazyPut(() => HomePageCalendarControllerGetxState(), fenix: true);
+        Get.lazyPut(() => HomePageCalendarControllerGetxState());
+
         break;
       case 3:
         print('initState BodyArticlesPage');
-        Get.lazyPut(() => ArticlesControllerGetxState(), fenix: true);
+        Get.lazyPut(() => ArticlesControllerGetxState());
+        // Get.lazyPut(() => ArticlesControllerGetxState(), fenix: true);
         break;
       case 4:
         print('initState BodyOtherPage');
-        Get.lazyPut(() => OtherControllerGetxState(), fenix: true);
+        Get.lazyPut(() => OtherControllerGetxState());
+
+        // Get.lazyPut(() => OtherControllerGetxState(), fenix: true);
         break;
     }
   }
@@ -122,20 +131,21 @@ class ImplementSettingGetXController extends GetxController {
 
   ///Роут для получения минимальной информации о пользователе по ID +
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, UserMinifiedDataIdModel?>? == IdUser :  UserMinifiedDataIdModel
-  Map<String, UserMinifiedDataIdModel?> mapIdUserAndUserMinifiedData = {};
+  Map<String, UserMinifiedDataIdModel?> _mapIdUserAndUserMinifiedData = {};
 
   Future<UserMinifiedDataIdModel?> getDataUserMinified(
       {required String idUser}) async {
-    if (mapIdUserAndUserMinifiedData[idUser] == null) {
+    if (_mapIdUserAndUserMinifiedData[idUser] == null) {
       final result = await _services.getDataUserMinifiedData(
         idUser: idUser,
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
-      mapIdUserAndUserMinifiedData[idUser] = result;
+      _mapIdUserAndUserMinifiedData[idUser] = result;
+      update();
       return result;
     } else {
-      return mapIdUserAndUserMinifiedData[idUser];
+      return _mapIdUserAndUserMinifiedData[idUser];
     }
   }
 
@@ -143,7 +153,7 @@ class ImplementSettingGetXController extends GetxController {
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, Uint8List> == coverFileId :  Uint8List
   Map<String, Uint8List?> mapCoverFileIdAndUint8ListStaticFilesStorage = {};
 
-  Future<Uint8List?> getStaticFilesStorage(
+  Future<Uint8List?> getStaticFilesStorageAsUTF8(
       {required String coverFileId}) async {
     if (mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] == null) {
       final result = await _services.getStaticFilesStorageData(
@@ -152,9 +162,29 @@ class ImplementSettingGetXController extends GetxController {
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
       mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] = result;
+      update();
       return result;
     } else {
       return mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId];
+    }
+  }
+
+  ///Роут для получения файла по его id
+  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, Uint8List> == coverFileId :  Uint8List
+  Map<String, StaticFileModel?> mapCoverFileIdAndStaticFileModel = {};
+
+  Future<StaticFileModel?> getStaticFile({required String coverFileId}) async {
+    if (mapCoverFileIdAndStaticFileModel[coverFileId] == null) {
+      final result = await _services.getStaticFileData(
+        coverFileId: coverFileId,
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      );
+      mapCoverFileIdAndStaticFileModel[coverFileId] = result;
+      update();
+      return result;
+    } else {
+      return mapCoverFileIdAndStaticFileModel[coverFileId];
     }
   }
 

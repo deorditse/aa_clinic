@@ -25,30 +25,30 @@ class HomePageCalendarControllerGetxState extends GetxController {
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
-    _initializeProfileData();
+    await _initializeProfileData();
     super.onInit();
   }
 
   ///  инициaлизация данных контроллера
   Future<void> _initializeProfileData() async {
-    await _initializedHiveFromLocalStorageNotifications();
-
     if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
         null) {
       //инициирую марки задач в календаре
       await getMonthlyCalendarMarksForMouth(
-        dateMarksMouth: mySelectedDay,
+        dateMarksMouth: DateTime.now(),
         isUpdate: true,
-      ).whenComplete(() async {
-        //загружаю задачи на сегодняшний день
-        await getDailyCalendarEvents(
-          dateDaily: mySelectedDay,
-          isUpdate: true,
-        );
-      });
+      ).whenComplete(
+        () async {
+          //загружаю задачи на сегодняшний день
+          await getDailyCalendarEvents(
+            dateDaily: DateTime.now(),
+            isUpdate: true,
+          );
+        },
+      );
 
       //отправка данных здоровья на сервер при инициализации приложения
       await HealthSnapshotsLoaderData().safeFetchData(
@@ -56,11 +56,12 @@ class HomePageCalendarControllerGetxState extends GetxController {
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
     }
+    await _initializedHiveFromLocalStorageNotifications();
   }
 
   ///получение марок в календаре +
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, Map<String, List<int>>> == год и месяц / map <дата события / количество событий>
-  Map<String, Map<String, List<int>>> marksCountForMonth = {};
+  Map<String, Map<String, int>> marksCountForMonth = {};
 
   Future<void> getMonthlyCalendarMarksForMouth({
     required DateTime dateMarksMouth,
@@ -69,25 +70,20 @@ class HomePageCalendarControllerGetxState extends GetxController {
     //делаю запрос к серверу если нет в списке marksCountForMonth этого события
     String _formatData = '${dateMarksMouth.year}-${dateMarksMouth.month}';
 
-    final Map<String, List<int>>? _marksForMonth =
-        marksCountForMonth[_formatData];
+    final Map<String, int>? _marksForMonth = marksCountForMonth[_formatData];
 
-    if ((_marksForMonth == null &&
-            ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-                null) ||
-        isUpdate) {
-      await _services
-          .getMonthlyCalendarMarksData(
+    if ((_marksForMonth == null || isUpdate) &&
+        ImplementAuthController.instance.userAuthorizedData?.accessToken !=
+            null) {
+      marksCountForMonth[_formatData] =
+          await _services.getMonthlyCalendarMarksData(
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
         dateMark: dateMarksMouth,
-      )
-          .then((mapWithDateTimeAndIntMarks) {
-        marksCountForMonth[_formatData] = mapWithDateTimeAndIntMarks;
-        update();
-        print(
-            "marksCountForMonth from getMonthlyCalendarMarksForMouth $marksCountForMonth");
-      });
+      );
+      print(
+          "marksCountForMonth from getMonthlyCalendarMarksForMouth $marksCountForMonth");
+      update();
     }
   }
 
@@ -102,12 +98,9 @@ class HomePageCalendarControllerGetxState extends GetxController {
 
     //проверяю есть ли марка на этот день
     bool isMarkForDay =
-        marksCountForMonth['${dateDaily.year}-${dateDaily.month}']
-                    ?[_formatData] !=
-                null &&
-            marksCountForMonth['${dateDaily.year}-${dateDaily.month}']![
-                    _formatData]!
-                .isNotEmpty;
+        (marksCountForMonth['${dateDaily.year}-${dateDaily.month}']
+                ?[_formatData] !=
+            null);
 
     if (isMarkForDay) {
       ///проверяю есть ли такой лист eventsForDay в контроллере

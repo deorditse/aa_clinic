@@ -52,7 +52,7 @@ _$_ArticleModel _$$_ArticleModelFromJson(Map<String, dynamic> json) =>
       status: json['status'] as int,
       rate: (json['rate'] as num?)?.toDouble(),
       rejectedReason: json['rejectedReason'] as String?,
-      publisherId: json['publisherId'] as String,
+      publisherId: json['publisherId'] as String?,
       publishedAt: json['publishedAt'] as String,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,

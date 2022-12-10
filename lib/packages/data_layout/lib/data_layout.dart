@@ -10,6 +10,7 @@ export 'src/home_page_data/home_page_data.dart';
 
 ///chat_page_data
 export 'src/chat_page_data/chat_page_data.dart';
+export 'src/chat_page_data/calendar_user_chat_data/calendar_user_chat_data.dart';
 
 ///articles_page_data
 export 'src/articles_page_data/articles_page_data.dart';
@@ -22,7 +23,4 @@ export 'src/setting_data/setting_data.dart';
 
 export 'src/real_time_call_data/real_time_call_data.dart';
 
-export 'src/common_methods_data.dart';
-
-const String urlMainApiConst = 'aaclinic-dev.glavstudio.pro';
-
+export 'src/configuration_file.dart';

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'market_product_model.dart';
 
@@ -346,6 +346,7 @@ class _$_MarketProductModel implements _MarketProductModel {
   @override
   @JsonKey()
   List<String?> get imagesFileIds {
+    if (_imagesFileIds is EqualUnmodifiableListView) return _imagesFileIds;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_imagesFileIds);
   }
@@ -354,6 +355,7 @@ class _$_MarketProductModel implements _MarketProductModel {
   @override
   @JsonKey()
   List<Availability?> get availability {
+    if (_availability is EqualUnmodifiableListView) return _availability;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_availability);
   }
@@ -653,6 +655,7 @@ class _$_Availability implements _Availability {
   @override
   @JsonKey()
   Map<dynamic, dynamic> get geolocation {
+    if (_geolocation is EqualUnmodifiableMapView) return _geolocation;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_geolocation);
   }

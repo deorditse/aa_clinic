@@ -37,7 +37,7 @@ class ArticleModel with _$ArticleModel {
     // //0 - draft, 1 - pending, 2 - published, -1 - rejected
     double? rate,
     String? rejectedReason, //Причина отклонения
-    required String publisherId,
+    String? publisherId,
     // //id публикатора статьи
     required String publishedAt,
     String? createdAt,

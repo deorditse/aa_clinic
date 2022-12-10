@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/user_profile_page/widgets/top_profile_container.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
@@ -38,6 +39,7 @@ class UserProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ImplementationCalendarEventsChatPage());
     return MySliverNewPageWithoutBorder(
       deleteAppBar: true,
       titleAppBar: 'User Profile',
@@ -81,7 +83,11 @@ class _MainBodyUserProfilePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CalendarChatPage(),
+              CalendarChatPage(
+                userId: 'todo',
+              ),
+
+              ///todo userId
               AfterCalendarWidget(),
             ],
           ),

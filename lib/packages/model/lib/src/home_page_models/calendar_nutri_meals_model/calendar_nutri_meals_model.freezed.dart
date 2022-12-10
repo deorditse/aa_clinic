@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'calendar_nutri_meals_model.dart';
 
@@ -305,6 +305,7 @@ class _$_NutriMealsModel implements _NutriMealsModel {
   @override
   @JsonKey()
   List<NutriDishModel?> get dishes {
+    if (_dishes is EqualUnmodifiableListView) return _dishes;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_dishes);
   }
@@ -315,6 +316,7 @@ class _$_NutriMealsModel implements _NutriMealsModel {
   @override
   @JsonKey()
   Map<dynamic, dynamic> get additionalData {
+    if (_additionalData is EqualUnmodifiableMapView) return _additionalData;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_additionalData);
   }
@@ -526,7 +528,7 @@ class _$NutriDishModelCopyWithImpl<$Res, $Val extends NutriDishModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? file = null,
+    Object? file = freezed,
     Object? title = freezed,
     Object? image = freezed,
     Object? lifeImage = freezed,
@@ -539,7 +541,7 @@ class _$NutriDishModelCopyWithImpl<$Res, $Val extends NutriDishModel>
     Object? comment = freezed,
   }) {
     return _then(_value.copyWith(
-      file: null == file
+      file: freezed == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as File?,
@@ -620,7 +622,7 @@ class __$$_NutriDishModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? file = null,
+    Object? file = freezed,
     Object? title = freezed,
     Object? image = freezed,
     Object? lifeImage = freezed,
@@ -633,7 +635,7 @@ class __$$_NutriDishModelCopyWithImpl<$Res>
     Object? comment = freezed,
   }) {
     return _then(_$_NutriDishModel(
-      file: null == file
+      file: freezed == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as File?,

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'articles_page_model.dart';
 
@@ -222,6 +222,7 @@ class _$_ArticlesPageModel implements _ArticlesPageModel {
   @override
   @JsonKey()
   List<ArticleModel?> get docs {
+    if (_docs is EqualUnmodifiableListView) return _docs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_docs);
   }
@@ -370,9 +371,9 @@ mixin _$ArticleModel {
   String? get rejectedReason => throw _privateConstructorUsedError;
   set rejectedReason(String? value) =>
       throw _privateConstructorUsedError; //Причина отклонения
-  String get publisherId =>
+  String? get publisherId =>
       throw _privateConstructorUsedError; //Причина отклонения
-  set publisherId(String value) =>
+  set publisherId(String? value) =>
       throw _privateConstructorUsedError; // //id публикатора статьи
   String get publishedAt =>
       throw _privateConstructorUsedError; // //id публикатора статьи
@@ -405,7 +406,7 @@ abstract class $ArticleModelCopyWith<$Res> {
       int status,
       double? rate,
       String? rejectedReason,
-      String publisherId,
+      String? publisherId,
       String publishedAt,
       String? createdAt,
       String? updatedAt});
@@ -434,7 +435,7 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
     Object? status = null,
     Object? rate = freezed,
     Object? rejectedReason = freezed,
-    Object? publisherId = null,
+    Object? publisherId = freezed,
     Object? publishedAt = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -480,10 +481,10 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
           ? _value.rejectedReason
           : rejectedReason // ignore: cast_nullable_to_non_nullable
               as String?,
-      publisherId: null == publisherId
+      publisherId: freezed == publisherId
           ? _value.publisherId
           : publisherId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       publishedAt: null == publishedAt
           ? _value.publishedAt
           : publishedAt // ignore: cast_nullable_to_non_nullable
@@ -519,7 +520,7 @@ abstract class _$$_ArticleModelCopyWith<$Res>
       int status,
       double? rate,
       String? rejectedReason,
-      String publisherId,
+      String? publisherId,
       String publishedAt,
       String? createdAt,
       String? updatedAt});
@@ -546,7 +547,7 @@ class __$$_ArticleModelCopyWithImpl<$Res>
     Object? status = null,
     Object? rate = freezed,
     Object? rejectedReason = freezed,
-    Object? publisherId = null,
+    Object? publisherId = freezed,
     Object? publishedAt = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -592,10 +593,10 @@ class __$$_ArticleModelCopyWithImpl<$Res>
           ? _value.rejectedReason
           : rejectedReason // ignore: cast_nullable_to_non_nullable
               as String?,
-      publisherId: null == publisherId
+      publisherId: freezed == publisherId
           ? _value.publisherId
           : publisherId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       publishedAt: null == publishedAt
           ? _value.publishedAt
           : publishedAt // ignore: cast_nullable_to_non_nullable
@@ -626,7 +627,7 @@ class _$_ArticleModel implements _ArticleModel {
       required this.status,
       this.rate,
       this.rejectedReason,
-      required this.publisherId,
+      this.publisherId,
       required this.publishedAt,
       this.createdAt,
       this.updatedAt});
@@ -659,7 +660,7 @@ class _$_ArticleModel implements _ArticleModel {
   String? rejectedReason;
 //Причина отклонения
   @override
-  String publisherId;
+  String? publisherId;
 // //id публикатора статьи
   @override
   String publishedAt;
@@ -699,7 +700,7 @@ abstract class _ArticleModel implements ArticleModel {
       required int status,
       double? rate,
       String? rejectedReason,
-      required String publisherId,
+      String? publisherId,
       required String publishedAt,
       String? createdAt,
       String? updatedAt}) = _$_ArticleModel;
@@ -738,8 +739,8 @@ abstract class _ArticleModel implements ArticleModel {
   String? get rejectedReason;
   set rejectedReason(String? value);
   @override //Причина отклонения
-  String get publisherId; //Причина отклонения
-  set publisherId(String value);
+  String? get publisherId; //Причина отклонения
+  set publisherId(String? value);
   @override // //id публикатора статьи
   String get publishedAt; // //id публикатора статьи
   set publishedAt(String value);

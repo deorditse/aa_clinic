@@ -10,7 +10,7 @@ class AuthPageData {
   Future<Map<String, UserAuthorizedModel?>> postSignInUserDataAuth(
       {required String username, required String password}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/auth/signin');
+      Uri url = urlMain(urlPath: 'api/auth/signin');
 
       var response = await http.post(url, body: {
         'username': "$username",
@@ -38,10 +38,12 @@ class AuthPageData {
   Future<bool> postSignUpUserDataAuth(
       {required RegistrationDataModel registrationData}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/auth/signup');
+      Uri url = urlMain(urlPath: 'api/auth/signup');
       var response = await http.post(url, body: registrationData.toJson());
       print(
           'Response status from postSignUpUserDataAuth: ${response.statusCode}');
+      log('postSignUpUserDataAuth ${response.body}');
+
       if (response.statusCode == 201) {
         Get.snackbar(
           '',
@@ -49,8 +51,9 @@ class AuthPageData {
           snackPosition: SnackPosition.TOP,
         );
         return true;
-      } else if(response.statusCode == 400) {
-        Get.snackbar('Ошибка валидации', jsonDecode(response.body)['message'], snackPosition: SnackPosition.TOP);
+      } else if (response.statusCode == 400) {
+        Get.snackbar('Ошибка валидации', jsonDecode(response.body)['message'],
+            snackPosition: SnackPosition.TOP);
       } else {
         Get.snackbar(
           'Exception',
@@ -58,7 +61,6 @@ class AuthPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('postSignUpUserDataAuth ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -75,13 +77,16 @@ class AuthPageData {
   Future<void> updateEmailData(
       {required String newEmail, required String accessToken}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/users/updateEmail');
+      Uri url = urlMain(urlPath: 'api/users/updateEmail');
+
       var response = await http.put(url, headers: {
         'Authorization': 'Bearer ${accessToken}',
       }, body: {
         "email": newEmail.toLowerCase(),
       });
       print('Response status from updateEmailData: ${response.statusCode}');
+      log('updateEmailData ${response.body}');
+
       if (response.statusCode == 200) {
         Get.snackbar(
           'Exception',
@@ -95,7 +100,6 @@ class AuthPageData {
           snackPosition: SnackPosition.TOP,
         );
       }
-      log('updateEmailData ${response.body}');
     } catch (error) {
       Get.snackbar(
         'Exception',

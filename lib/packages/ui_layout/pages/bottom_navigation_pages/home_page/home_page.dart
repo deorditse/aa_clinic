@@ -10,7 +10,7 @@ import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'widgets/calendar_home_page/calendar/calendar.dart';
+import 'widgets/calendar_home_page/calendar.dart';
 import 'widgets/task_for_the_day/task_for_the_day.dart';
 
 class HomePage extends StatelessWidget {

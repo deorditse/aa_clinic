@@ -7,45 +7,47 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:model/model.dart';
 import 'package:hive/hive.dart';
 
-//каждый раз при изменении запускать кодогенерацию
-//для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs
-//чтобы зарегистрировать как фабрику для GetIt и обращаться к сервис локатору через  MainSimpleStateManagement
-
 class ProfileControllerGetxState extends GetxController {
   static ProfileControllerGetxState instance =
       Get.find<ProfileControllerGetxState>();
 
   final ProfilePageData _services = ProfilePageData();
-  bool isSearchingDocument = false;
+  String? searchDocumentsListText;
 
-  void changeIsSearchingDocument({bool? isSearching}) {
-    isSearchingDocument = isSearching ?? !isSearchingDocument;
+  //для поиска документов
+  void changeIsSearchingDocument({String? searchText}) {
+    searchDocumentsListText = searchText;
     update();
+    if (searchText != null && searchText != '') {
+      getDocumentsList(
+        currentDocsPage: 1,
+        updateSearchResultDocumentList: true,
+        searchText: searchText,
+      );
+    } else {
+      searchResultDocumentList = null;
+      update();
+    }
   }
 
   @override
   void onInit() {
-    initialDataProfile();
+    initControllerProfile();
     super.onInit();
   }
 
-  Future<void> initialDataProfile() async {
-    await ImplementSettingGetXController.instance
-        .getFindMe(isUpdateData: true)
-        .then(
-      (userAllData) async {
+  void initControllerProfile() {
+    ImplementSettingGetXController.instance.getFindMe(isUpdateData: true).then(
+      (userAllData) {
         //инициализация списка документов
-
-        await getPatientDocumentsByUserId(
-          userId: userAllData!.id,
-        );
+        getDocumentsList(currentDocsPage: 1);
         //инициализация ачивок и статистики выполнения
-        await getAchievements();
+        getAchievements();
       },
     );
   }
 
-  ///Роут для получения списка достижений +                ¬
+  ///Роут для получения списка достижений +
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, DocumentsListModel> == idDocuments :  DocumentsListModel
   AchievementsModel? achievementsModelData;
 
@@ -68,22 +70,6 @@ class ProfileControllerGetxState extends GetxController {
       percentAchievementsValue = 0;
       update();
     }
-  }
-
-  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе DocumentsListModel
-  DocumentsListModel? documentList;
-
-  ///для поиска документов
-  DocumentsListModel? searchDocumentList;
-
-  ///Роут для получения списка документов по userId
-  Future<void> getPatientDocumentsByUserId({required String userId}) async {
-    documentList = await _services.getPatientDocumentsByUserIdData(
-      accessToken:
-          ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      userId: userId,
-    );
-    update();
   }
 
   ///Роут для получения достижения по его id +
@@ -179,9 +165,86 @@ class ProfileControllerGetxState extends GetxController {
       description: description,
       attachmentsIds: attachmentsIds,
     );
-    if (_res != null && documentList != null) {
-      documentList!.docs = [_res, ...documentList!.docs];
-      update();
-    }
+    getDocumentsList(currentDocsPage: 1);
+  }
+
+  /////////////////// DOCUMENTS
+
+  ///список документов по умолчанию
+  DocumentsListModel? documentList;
+
+  ///для поиска документов
+  DocumentsListModel? searchResultDocumentList;
+
+  ///для выбора промежутка выдачи документов через календарь
+  DocumentsListModel? rangeFromCalendarDocumentList;
+  DateTime rangeStartForSearch = DateTime.now().add(const Duration(days: -6));
+  DateTime? rangeEndForSearch = DateTime.now();
+
+  void changeRangeDateTimeForSortDocumentsList({
+    required DateTime newRangeStartForSearch,
+    required DateTime? newRangeEndForSearch,
+  }) {
+    rangeStartForSearch = newRangeStartForSearch;
+    rangeEndForSearch = newRangeEndForSearch;
+    update();
+  }
+
+  ///роут для получения доков / выбранного промежутка / поиска доков
+  Future<void> getDocumentsList({
+    String? searchText,
+    required int currentDocsPage,
+    bool updateRangeFromCalendarDocumentList = false,
+    bool updateSearchResultDocumentList = false,
+  }) async {
+    //везде где вызываю этот метод, обновлять _mapKeyDocumentsListAndCurrentPageAndDocumentsListModel
+    _services
+        .getDocumentsListData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      page: currentDocsPage,
+      perPage: 6,
+      searchText: searchText,
+    )
+        .then(
+      (newDocumentsList) {
+        if (newDocumentsList != null) {
+          if (updateRangeFromCalendarDocumentList) {
+            rangeFromCalendarDocumentList!.page = newDocumentsList.page;
+            rangeFromCalendarDocumentList!.docs = [
+              ...rangeFromCalendarDocumentList!.docs,
+              ...newDocumentsList.docs,
+            ];
+            update();
+
+            return;
+          } else if (searchText != null &&
+              searchText != '' &&
+              updateSearchResultDocumentList) {
+            searchResultDocumentList!.page = newDocumentsList.page;
+            searchResultDocumentList!.docs = [
+              ...searchResultDocumentList!.docs,
+              ...newDocumentsList.docs,
+            ];
+            update();
+
+            return;
+          } else {
+            if (documentList != null) {
+              documentList!.page = newDocumentsList.page;
+              documentList!.docs = [
+                ...documentList!.docs,
+                ...newDocumentsList.docs,
+              ];
+              update();
+            } else {
+              documentList = newDocumentsList;
+              update();
+            }
+            return;
+          }
+        }
+      },
+    );
   }
 }

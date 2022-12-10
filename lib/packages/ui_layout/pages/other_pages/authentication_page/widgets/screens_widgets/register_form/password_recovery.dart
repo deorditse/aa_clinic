@@ -50,12 +50,11 @@ class _SendCodeState extends State<_SendCode> {
 
   bool timeMessage = false;
 
-
   ///Роут для запроса на сброс пароля +
   Future<Map<String, String?>> postResetPasswordRequestData(
       {required String emailUser}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/resetPasswordRequest');
+      Uri url = urlMain(urlPath: 'api/resetPasswordRequest');
       var response = await http.post(
         url,
         body: {"email": emailUser.toLowerCase()},
@@ -269,14 +268,13 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool successMessage = false;
 
-
   ///Роут для сброса пароля +
   Future<Map<String, String?>> postResetPasswordData(
       {required String emailUser,
       required String code,
       required String password}) async {
     try {
-      Uri url = Uri.http(urlMainApiConst, 'api/resetPassword/');
+      Uri url = urlMain(urlPath: 'api/resetPassword');
       var response = await http.post(
         url,
         body: {

@@ -1,3 +1,7 @@
+///chat_page_models
+//chat_find_many
+export 'src/chat_page_models/chat_find_many_model/chat_find_many_model.dart';
+
 ///auth_page_models
 //sign_in_models
 export 'src/auth_page_models/sign_in_models/user_authorized_model/user_authorized_model.dart';
@@ -33,7 +37,6 @@ export 'src/home_page_models/calendar_appointments_model/calendar_appointments_m
 
 //storage_hive_models
 
-
 ///profile_page_models
 //achievements_model.dart
 export 'src/profile_page_models/achievements_model/achievements_model.dart';
@@ -49,6 +52,7 @@ export 'src/other_page_models/order_model/order_model.dart';
 
 //market_product_model
 export 'src/other_page_models/market_product_model/market_product_model.dart';
+
 ///real_time_call_model.dart
 //real_time_call_model.dart
 export 'src/real_time_call_models/real_time_call_model/real_time_call_model.dart';
@@ -58,3 +62,5 @@ export 'src/real_time_call_models/real_time_call_socket_event_model/real_time_ca
 //active_value_model.dart
 export 'src/profile_page_models/active_value_model/active_value_model.dart';
 
+///other_models
+export 'src/other_models/static_file_model/static_file_model.dart';

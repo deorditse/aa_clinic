@@ -9,22 +9,10 @@ import 'package:model/model.dart';
 class ChatPageControllerGetx extends GetxController {
   static ChatPageControllerGetx instance = Get.find<ChatPageControllerGetx>();
 
-  DateTime mySelectedDay = DateTime.now();
-
-  void changeMySelectedDay({required DateTime newDateTime}) {
-    mySelectedDay = newDateTime;
-    update();
-  }
-
   @override
   void onInit() {
     super.onInit();
   }
-
-  ///для events list / календарь
-
-  dynamic events = {};
-
 
   bool isSearchingChats = false;
 
@@ -32,6 +20,9 @@ class ChatPageControllerGetx extends GetxController {
     isSearchingChats = isSearching ?? !isSearchingChats;
     update();
   }
+
+  ///для чата на первой странице
+  List<ChatFindManyModel?> listDataUsers = [];
+
+
 }
-
-
