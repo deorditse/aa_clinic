@@ -90,7 +90,7 @@ class _BodyAboutWorkoutProgressPageState
                         clipBehavior: Clip.hardEdge,
                         height: Get.height / 3.6,
                         width: double.maxFinite,
-                        child: containerForPhotoFuture(
+                        child: ContainerForPhotoFuture(
                           coverFileId: widget.coverId!,
                           openView: true,
                         ),

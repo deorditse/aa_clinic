@@ -76,37 +76,25 @@ class _UserDataEditingForms extends StatefulWidget {
 class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool successMessage = false;
-  String statusMessage = '';
+  RxString statusMessage = ''.obs;
 
   Future<void> _submit({required UserDataModel userEdit}) async {
-    if (_formKey.currentState!.validate() && !successMessage) {
+    if (_formKey.currentState!.validate() && statusMessage.value == '') {
       _formKey.currentState!.save();
 
-      setState(() {
-        successMessage = true;
-        statusMessage = 'Обновление...';
-      });
+      statusMessage.value = 'Обновление...';
 
+      await ImplementSettingGetXController.instance
+          .updateMeUser(editUserAllData: userEdit);
+
+      statusMessage.value = 'Данные успешно обновлены';
       //для обновления аватарки
       if (ProfileControllerGetxState.instance.photoProfile != null) {
         await ProfileControllerGetxState.instance.postSetAvatarData().then(
               (value) => print(value),
             );
       }
-
-      setState(() {
-        statusMessage = 'Данные успешно обновлены';
-        successMessage = true;
-      });
-
-      await ImplementSettingGetXController.instance
-          .updateMeUser(editUserAllData: userEdit)
-          .whenComplete(
-        () {
-          Navigator.of(context).pop();
-        },
-      );
+      Navigator.of(context).pop();
     }
   }
 
@@ -116,6 +104,7 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
   @override
   void initState() {
     super.initState();
+    statusMessage.value = '';
     _userForEdit = ImplementSettingGetXController.instance.userAllData!;
   }
 
@@ -220,7 +209,8 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                         key: Key('dateOfBirth'),
                         validator: (value) {
                           //if (value == '') return 'Введите дату рождения';
-                          if (value != '' && value!.split('.').toString().length < 14)
+                          if (value != '' &&
+                              value!.split('.').toString().length < 14)
                             return 'Некорректная дата рождения';
                           return null;
                         },
@@ -232,7 +222,6 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                                 '${_res[2] ?? ''}-${_res[1] ?? ''}-${_res[0] ?? ''}';
                           }
                         },
-
                         decoration: myStyleTextField(
                           context,
                           labelText: 'Дата рождения...',
@@ -301,12 +290,18 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                 ),
               ),
             ),
-            if (successMessage)
-              Text(
-                '${statusMessage}',
-                style: myTextStyleFontUbuntu(
-                    context: context, textColor: myColorIsActive),
+            Obx(
+              () => Column(
+                children: [
+                  if (statusMessage.value != '')
+                    Text(
+                      '${statusMessage.value}',
+                      style: myTextStyleFontUbuntu(
+                          context: context, textColor: myColorIsActive),
+                    ),
+                ],
               ),
+            ),
             const SizedBox(height: myTopPaddingForContent),
             _buttonRow(context: context, userEdit: _userForEdit),
           ],

@@ -59,7 +59,7 @@ class RowWithPhotoAndDataProfile extends StatelessWidget {
                       clipBehavior: Clip.hardEdge,
                       height: double.maxFinite,
                       width: double.maxFinite,
-                      child: containerForPhotoFuture(
+                      child: ContainerForPhotoFuture(
                         coverFileId: dataFitnessWorkout.specialist!.avatar!,
                         openView: true,
                       ),

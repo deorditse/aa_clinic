@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/app_bar_chat_with_user.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/home_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/doctors_appointment_pages/video_chat_with_a_psychologist_page/video_agora_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/doctors_appointment_pages/video_chat_with_a_psychologist_page/video_chat_with_a_psychologist_page.dart';

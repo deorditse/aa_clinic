@@ -105,11 +105,11 @@ _gridWithPhoto({required List<Attachment?> attachments}) {
     ),
     delegate: SliverChildBuilderDelegate(
       childCount: attachments.length,
-      (BuildContext context, int index) {
+      (context, index) {
         return Container(
           decoration: myStyleContainer(context: context),
           clipBehavior: Clip.hardEdge,
-          child: containerForPhotoFuture(
+          child: ContainerForPhotoFuture(
             coverFileId: attachments[index]!.thumbnailFileId!,
             openView: true,
           ),

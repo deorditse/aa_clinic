@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-ShapeBorder myStyleShapeBorder() => const RoundedRectangleBorder(
+ShapeBorder myStyleShapeBorder() => RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         bottom: Radius.circular(15),
       ),

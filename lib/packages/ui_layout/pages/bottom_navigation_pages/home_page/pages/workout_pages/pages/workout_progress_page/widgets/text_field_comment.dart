@@ -32,7 +32,7 @@ class TextFieldComment extends StatelessWidget {
               onPressed: () {
                 isComment.value = !isComment.value;
               },
-              child: Text(
+        child: Text(
                 'Добавить комментарий...',
                 style: myTextStyleFontUbuntu(
                     textColor: myColorIsActive.withOpacity(0.5),

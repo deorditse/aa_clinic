@@ -1,20 +1,22 @@
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/style/style_chat.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MessageWidget extends StatefulWidget {
-  const MessageWidget(
-      {Key? key, required this.message, required this.isSendMessage})
+class ImageWidget extends StatefulWidget {
+  const ImageWidget(
+      {Key? key, required this.imagePath, required this.isSendMessage})
       : super(key: key);
-  final String message;
+  final String imagePath;
   final bool isSendMessage;
 
   @override
-  State<MessageWidget> createState() => _MessageWidgetState();
+  State<ImageWidget> createState() => _ImageWidgetState();
 }
 
-class _MessageWidgetState extends State<MessageWidget> {
+class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,9 +25,9 @@ class _MessageWidgetState extends State<MessageWidget> {
         alignment:
             widget.isSendMessage ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
-          constraints: BoxConstraints(
-            maxWidth: Get.width * 0.7,
-          ),
+          height: Get.height / 3.5,
+          width: Get.width * 0.47,
+          clipBehavior: Clip.antiAlias,
           decoration: myStyleContainer(
             context: context,
             color: Get.isDarkMode
@@ -36,17 +38,10 @@ class _MessageWidgetState extends State<MessageWidget> {
                 ? borderRadiusSendMessage()
                 : borderRadiusReceivedMessage(),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(myHorizontalPaddingForContainer),
-            child: Text(
-              widget.message,
-              style: myTextStyleFontUbuntu(
-                textColor: Colors.white,
-                newFontWeight: FontWeight.w400,
-                fontSize: 15,
-                context: context,
-              ),
-            ),
+          child: ContainerForPhotoFuture(
+            imageFromNetwork: widget.imagePath,
+            coverFileId: null,
+            openView: true,
           ),
         ),
       ),

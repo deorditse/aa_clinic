@@ -64,7 +64,7 @@ class _NewBasketForYouWidgetState extends State<NewBasketForYouWidget> {
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         primary: false,
-        itemCount: 2,
+        itemCount: 0,///todo
         itemBuilder: (context, index) {
           return Padding(
             padding:

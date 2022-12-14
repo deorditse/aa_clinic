@@ -9,7 +9,7 @@ part 'documents_list_model.g.dart';
 @unfreezed
 class DocumentsListModel with _$DocumentsListModel {
   factory DocumentsListModel({
-    @Default([]) List<DocumentForIdModel> docs,
+    @Default({}) Set<DocumentForIdModel> docs,
     required int totalDocs,
     @Default(0) int limit,
     @Default(1) int page,

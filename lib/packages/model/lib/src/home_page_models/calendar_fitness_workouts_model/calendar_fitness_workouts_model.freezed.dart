@@ -413,7 +413,10 @@ WorkoutObject _$WorkoutObjectFromJson(Map<String, dynamic> json) {
 mixin _$WorkoutObject {
 // Fitness Generic Workout Exercise object
   FitnessGenericWorkoutExerciseObject? get generic =>
-      throw _privateConstructorUsedError; //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
+      throw _privateConstructorUsedError;
+
+  ///todo добавить для динамической модели еще однно поле
+//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   List<ApproachObjectsConsisting?> get sets =>
       throw _privateConstructorUsedError; //percentage of fulfillment
   int get fulfillment => throw _privateConstructorUsedError;
@@ -549,8 +552,12 @@ class _$_WorkoutObject implements _WorkoutObject {
 // Fitness Generic Workout Exercise object
   @override
   final FitnessGenericWorkoutExerciseObject? generic;
+
+  ///todo добавить для динамической модели еще однно поле
 //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   final List<ApproachObjectsConsisting?> _sets;
+
+  ///todo добавить для динамической модели еще однно поле
 //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   @override
   @JsonKey()
@@ -611,7 +618,10 @@ abstract class _WorkoutObject implements WorkoutObject {
 
   @override // Fitness Generic Workout Exercise object
   FitnessGenericWorkoutExerciseObject? get generic;
-  @override //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
+  @override
+
+  ///todo добавить для динамической модели еще однно поле
+//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   List<ApproachObjectsConsisting?> get sets;
   @override //percentage of fulfillment
   int get fulfillment;
@@ -1305,6 +1315,7 @@ DescriptionApproachObjectsConsisting
 
 /// @nodoc
 mixin _$DescriptionApproachObjectsConsisting {
+  ///тут могут быть разные поля duration
 // Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
   TargetObjectsDescriptionApproachObjectsConsisting get duration =>
       throw _privateConstructorUsedError;
@@ -1413,6 +1424,7 @@ class _$_DescriptionApproachObjectsConsisting
           Map<String, dynamic> json) =>
       _$$_DescriptionApproachObjectsConsistingFromJson(json);
 
+  ///тут могут быть разные поля duration
 // Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
   @override
   final TargetObjectsDescriptionApproachObjectsConsisting duration;
@@ -1461,7 +1473,10 @@ abstract class _DescriptionApproachObjectsConsisting
           Map<String, dynamic> json) =
       _$_DescriptionApproachObjectsConsisting.fromJson;
 
-  @override // Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
+  @override
+
+  ///тут могут быть разные поля duration
+// Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
   TargetObjectsDescriptionApproachObjectsConsisting get duration;
   @override
   @JsonKey(ignore: true)
@@ -1478,12 +1493,9 @@ TargetObjectsDescriptionApproachObjectsConsisting
 
 /// @nodoc
 mixin _$TargetObjectsDescriptionApproachObjectsConsisting {
-  String? get title =>
-      throw _privateConstructorUsedError; //Это поле будет равно значению свойства title в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
-  String? get units =>
-      throw _privateConstructorUsedError; //Это поле будет равно значению свойства units в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
-  String? get fieldType =>
-      throw _privateConstructorUsedError; //Это поле будет равно значению свойства fieldType в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
+  String? get title => throw _privateConstructorUsedError;
+  String? get units => throw _privateConstructorUsedError;
+  String? get fieldType => throw _privateConstructorUsedError;
   int? get value => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1616,13 +1628,10 @@ class _$_TargetObjectsDescriptionApproachObjectsConsisting
 
   @override
   final String? title;
-//Это поле будет равно значению свойства title в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
   @override
   final String? units;
-//Это поле будет равно значению свойства units в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
   @override
   final String? fieldType;
-//Это поле будет равно значению свойства fieldType в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
   @override
   final int? value;
 
@@ -1679,11 +1688,11 @@ abstract class _TargetObjectsDescriptionApproachObjectsConsisting
 
   @override
   String? get title;
-  @override //Это поле будет равно значению свойства title в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
+  @override
   String? get units;
-  @override //Это поле будет равно значению свойства units в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
+  @override
   String? get fieldType;
-  @override //Это поле будет равно значению свойства fieldType в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
+  @override
   int? get value;
   @override
   @JsonKey(ignore: true)

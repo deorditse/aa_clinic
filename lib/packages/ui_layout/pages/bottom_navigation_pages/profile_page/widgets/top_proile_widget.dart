@@ -236,7 +236,7 @@ Row rowWithPhotoAndProgress(
                                 fit: BoxFit.cover,
                               )
                             : coverId != null
-                                ? containerForPhotoFuture(
+                                ? ContainerForPhotoFuture(
                                     coverFileId: coverId,
                                     openView: voidCallbackOnPhotoUser == null
                                         ? true

@@ -96,11 +96,17 @@ class HomePageCalendarControllerGetxState extends GetxController {
     String _formatData =
         "${dateDaily.year}-${dateDaily.month}-${dateDaily.day}";
 
-    //проверяю есть ли марка на этот день
+    //проверяю есть ли марка на этот день (+- интервал соседних месяцев)
     bool isMarkForDay =
         (marksCountForMonth['${dateDaily.year}-${dateDaily.month}']
-                ?[_formatData] !=
-            null);
+                    ?[_formatData] !=
+                null ||
+            marksCountForMonth['${dateDaily.year}-${dateDaily.month + 1}']
+                    ?[_formatData] !=
+                null ||
+            marksCountForMonth['${dateDaily.year}-${dateDaily.month - 1}']
+                    ?[_formatData] !=
+                null);
 
     if (isMarkForDay) {
       ///проверяю есть ли такой лист eventsForDay в контроллере
@@ -437,7 +443,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
   ///добавление фото еды в карточку на странице еда
   File? photoFood;
 
-  ///добавление фото еды в карточку
+  ///добавление фото еды в карточку / удаление
   //обновление lifeImage еды чтобы закрыть прием пищи +
 
   Future<void> changePhotoFood({
@@ -472,7 +478,8 @@ class HomePageCalendarControllerGetxState extends GetxController {
       );
     } else {
       if (isDeletePhoto) {
-        if (nutriMeal.creatorId == nutriMeal.userId) {
+        if (nutriMeal.creatorId ==
+            ImplementAuthController.instance.userAuthorizedData?.id) {
           nutriMeal.dishes[indexDish]!.lifeImage = null;
           photoFood = null;
           update();
@@ -483,6 +490,8 @@ class HomePageCalendarControllerGetxState extends GetxController {
               coverId: nutriMeal.dishes[indexDish]!.lifeImage!,
             );
           }
+        } else {
+          Get.snackbar('', 'Нет прав для удаления карточки еды');
         }
       }
     }

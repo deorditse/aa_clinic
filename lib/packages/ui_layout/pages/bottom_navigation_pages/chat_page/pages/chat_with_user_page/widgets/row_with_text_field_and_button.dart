@@ -12,46 +12,42 @@ class RowWithTextFieldAndButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      maintainBottomViewPadding: true,
-
-      child: Row(
-        children: [
-          GestureDetector(
-            onTap: () {},
-            // style: ButtonStyle(
-            //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
-            child: SvgPicture.asset(
-              'assets/icons/forChatFile.svg',
-              color: Get.isDarkMode
-                  ? null
-                  : Theme.of(context).textTheme.headline1!.color,
-              semanticsLabel: 'forChatFile',
-              fit: BoxFit.contain,
-              height: 22,
-            ),
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {},
+          // style: ButtonStyle(
+          //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
+          child: SvgPicture.asset(
+            'assets/icons/chats/forChatFile.svg',
+            color: Get.isDarkMode
+                ? null
+                : Theme.of(context).textTheme.headline1!.color,
+            semanticsLabel: 'forChatFile',
+            fit: BoxFit.contain,
+            height: 22,
           ),
-          Expanded(
-            // flex: 10,
-            child: _textFieldMessage(context: context),
+        ),
+        Expanded(
+          // flex: 10,
+          child: _textFieldMessage(context: context),
+        ),
+        GestureDetector(
+          onTap: () {},
+          // style: ButtonStyle(
+          //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
+          child: SvgPicture.asset(
+            'assets/icons/chats/messageButton.svg',
+            color: Get.isDarkMode
+                ? null
+                : Theme.of(context).textTheme.headline1!.color,
+            semanticsLabel: 'messageButton',
+            fit: BoxFit.contain,
+            height: 22,
+            width: Get.width,
           ),
-          GestureDetector(
-            onTap: () {},
-            // style: ButtonStyle(
-            //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
-            child: SvgPicture.asset(
-              'assets/icons/messageButton.svg',
-              color: Get.isDarkMode
-                  ? null
-                  : Theme.of(context).textTheme.headline1!.color,
-              semanticsLabel: 'messageButton',
-              fit: BoxFit.contain,
-              height: 22,
-              width: Get.width,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -83,3 +79,79 @@ class RowWithTextFieldAndButton extends StatelessWidget {
     );
   }
 }
+
+// class RowWithTextFieldAndButton extends StatelessWidget {
+//   const RowWithTextFieldAndButton({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       maintainBottomViewPadding: true,
+//       child: Row(
+//         children: [
+//           GestureDetector(
+//             onTap: () {},
+//             // style: ButtonStyle(
+//             //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
+//             child: SvgPicture.asset(
+//               'assets/icons/chats/forChatFile.svg',
+//               color: Get.isDarkMode
+//                   ? null
+//                   : Theme.of(context).textTheme.headline1!.color,
+//               semanticsLabel: 'forChatFile',
+//               fit: BoxFit.contain,
+//               height: 22,
+//             ),
+//           ),
+//           Expanded(
+//             // flex: 10,
+//             child: _textFieldMessage(context: context),
+//           ),
+//           GestureDetector(
+//             onTap: () {},
+//             // style: ButtonStyle(
+//             //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
+//             child: SvgPicture.asset(
+//               'assets/icons/chats/messageButton.svg',
+//               color: Get.isDarkMode
+//                   ? null
+//                   : Theme.of(context).textTheme.headline1!.color,
+//               semanticsLabel: 'messageButton',
+//               fit: BoxFit.contain,
+//               height: 22,
+//               width: Get.width,
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   _textFieldMessage({required BuildContext context}) {
+//     return TextField(
+//       keyboardType: TextInputType.text,
+//       autofocus: false,
+//       cursorColor: myColorIsActive,
+//       // controller: _nameController,
+//       key: Key('addName'),
+//       // validator: (value) {
+//       //   if (value == '') {
+//       //     return 'Введите cообщение';
+//       //   }
+//       //   return null;
+//       // },
+//       //если нет контроллера, можно делать через initialValue
+//       // initialValue: dataUser?.surname,
+//       // maxLines: 5,
+//       // minLines: 1,
+//
+//       decoration: myStyleTextField(
+//         context,
+//         // labelText: 'Сообщение...',
+//         hintText: 'Сообщение...',
+//       ).copyWith(
+//         fillColor: Colors.transparent,
+//       ),
+//     );
+//   }
+// }

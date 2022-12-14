@@ -27,7 +27,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-    <string>Play using while you are train</string>
+	<string>Play using while you are train</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Необходим доступ к камере</string>
 	<key>NSHealthShareUsageDescription</key>

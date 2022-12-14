@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:style_app/style_app.dart';
@@ -43,7 +46,7 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0, left: 5),
+                padding: const EdgeInsets.only(bottom: 5.0, left: 10),
                 child: Container(
                   decoration: myStyleContainer(
                       context: context, color: myColorIsActive),
@@ -63,7 +66,8 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
 
-      toolbarHeight: myToolbarHeight,
+      toolbarHeight:
+          Platform.isAndroid ? myToolbarHeight + 10 : myToolbarHeight + 5,
       // floating: false,
       // pinned: true,
       //что эпп бар будет зафиксен после скролла
@@ -125,20 +129,19 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
         child: Padding(
           padding: EdgeInsets.only(bottom: 6, right: 6),
           child: (imagePath != null && imagePath != '')
-              ? isSvgImage
-                  ? CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: SvgPicture.asset(
-                        "$imagePath",
-                        semanticsLabel: 'addNewEvent',
-                        fit: BoxFit.contain,
-                      ),
-                    )
-                  : CircleAvatar(
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      backgroundImage: NetworkImage(imagePath!),
-                      child: Text(''),
-                    )
+              ? CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: isSvgImage
+                      ? SvgPicture.asset(
+                          "$imagePath",
+                          semanticsLabel: 'addNewEvent',
+                          fit: BoxFit.contain,
+                        )
+                      : ContainerForPhotoFuture(
+                          coverFileId: imagePath,
+                          isCircular: true,
+                        ),
+                )
               : FittedBox(child: Icon(Icons.person)),
         ),
       ),

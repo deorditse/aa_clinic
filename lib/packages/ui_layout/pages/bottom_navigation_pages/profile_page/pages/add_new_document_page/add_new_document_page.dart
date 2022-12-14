@@ -89,17 +89,18 @@ class _BodyAddNewDocumentProfilePageState
         successMessage = true;
       });
       //достану все coverID
-      List<String> _listWithCoverId = await getListCoverId();
-      await ProfileControllerGetxState.instance.postPatientDocuments(
-        category: 'Здоровье',
-        title: title,
-        description: description,
-        attachmentsIds: _listWithCoverId,
-      );
+      await getListCoverId().then((listCoverId) async {
+        await ProfileControllerGetxState.instance.postPatientDocuments(
+          category: 'Здоровье',
+          title: title,
+          description: description,
+          attachmentsIds: listCoverId,
+        );
 
-      //обнуляю лист с фото
-      ProfileControllerGetxState.instance
-          .changeListWithPhotoImage(isRemoveAll: true);
+        //обнуляю лист с фото
+        ProfileControllerGetxState.instance
+            .changeListWithPhotoImage(isRemoveAll: true);
+      });
 
       Navigator.of(context).pop();
     }

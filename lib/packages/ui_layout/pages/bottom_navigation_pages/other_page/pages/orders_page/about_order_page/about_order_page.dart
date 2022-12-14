@@ -1,4 +1,3 @@
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/chat_widgets/new_basket_for_you_widget/bottom_sheet_about_product.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/button_alert_message.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
 import 'package:get/get.dart';

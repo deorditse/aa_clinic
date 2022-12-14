@@ -229,7 +229,7 @@ class _RowWithPhotoButton extends StatelessWidget {
                       addingADishPhotoFoodBottomSheetWidgetHomePage(
                           context: context, indexDishCard: index);
                     },
-                    child: Row(
+              child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SvgPicture.asset(

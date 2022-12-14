@@ -1,8 +1,12 @@
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/chat_with_user_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/user_profile_page/user_profile_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/achievements_pages/achievements_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/edit_profile_page/edit_profile_page.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:flutter/material.dart';
@@ -11,58 +15,83 @@ import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 class ChatPreviewOnHomepage extends StatelessWidget {
   const ChatPreviewOnHomepage({
     Key? key,
-    this.index,
-    this.isSvgImage = false,
-    required this.imagePathAvatar,
-    required this.fullName,
-    required this.countMessage,
-    required this.lastMessage,
-    this.noTransitionUserProfilePage = false,
-    required this.lastMessageTime,
+    String? imagePathAvatar,
+    required this.index,
   }) : super(key: key);
-  final int? index;
-  final String imagePathAvatar;
-  final bool noTransitionUserProfilePage;
-  final String fullName;
-  final int countMessage;
-  final String lastMessage;
-  final bool isSvgImage;
-  final String lastMessageTime;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+    //if listChats isNotEmpty == true all for this
+    ChatFindManyModel chat = ChatPageControllerGetx.instance.listChats[index]!;
     return SizedBox(
       height: 50,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: photoAndMarker(
+      child: FutureBuilder<UserMinifiedDataIdModel?>(
+        future: ImplementSettingGetXController.instance
+            .getDataUserMinified(idUser: chat.specialistId!),
+        builder: (context, AsyncSnapshot<UserMinifiedDataIdModel?> snapshot) {
+          return TextButton(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.zero),
+            ),
+            onPressed: () {
+              ChatWithUserPage.openChatWithUserPage(
                 context: context,
-                imagePathAvatar: imagePathAvatar,
-                isSvgImage: isSvgImage,
-                noTransitionUserProfilePage: noTransitionUserProfilePage),
-          ),
-          Expanded(
-            flex: 6,
-            child: _columnWithFioAndMessage(context: context),
-          ),
-          Expanded(
-            child: _columnWithTimeAndValue(context: context),
-          ),
-        ],
+                avatarId: snapshot.data?.avatar,
+                fullName:
+                    "${snapshot.data?.lastName?.capitalizeFirst ?? " "} ${snapshot.data?.middleName?.capitalizeFirst ?? " "} ${snapshot.data?.firstName?.capitalizeFirst ?? ""}",
+                chatId: chat.id,
+
+                ///todo:
+                messageId: '',
+              );
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: photoAndMarker(
+                      isHidden: chat.isHidden,
+                      context: context,
+                      avatar: snapshot.data?.avatar),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: _columnWithFioAndMessage(
+                    context: context,
+                    fullName:
+                        "${snapshot.data?.lastName?.capitalizeFirst ?? " "} ${snapshot.data?.middleName?.capitalizeFirst ?? " "} ${snapshot.data?.firstName?.capitalizeFirst ?? ""}",
+                    lastMessageDate: chat.lastMessageDate,
+                  ),
+                ),
+                Expanded(
+                  child: _columnWithTimeAndValue(
+                    context: context,
+                    lastMessageDate: chat.lastMessageDate,
+                    unreadedMessages: chat.unreadedMessages,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  _columnWithTimeAndValue({required BuildContext context}) {
+  _columnWithTimeAndValue(
+      {required BuildContext context,
+      required String? lastMessageDate,
+      required int? unreadedMessages}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          '$lastMessageTime',
+          lastMessageDate != null
+              ? '${DateFormat.Hm().format(DateTime.parse(lastMessageDate))}'
+              : "...",
           overflow: TextOverflow.ellipsis,
           style: myTextStyleFontUbuntu(
               fontSize: 14,
@@ -76,7 +105,7 @@ class ChatPreviewOnHomepage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(
-              '$countMessage...',
+              unreadedMessages != null ? ' $unreadedMessages... ' : " 0... ",
               overflow: TextOverflow.ellipsis,
               style: myTextStyleFontUbuntu(
                 newFontWeight: FontWeight.w500,
@@ -91,7 +120,11 @@ class ChatPreviewOnHomepage extends StatelessWidget {
     );
   }
 
-  _columnWithFioAndMessage({required BuildContext context}) {
+  _columnWithFioAndMessage({
+    required BuildContext context,
+    required String fullName,
+    required String? lastMessageDate,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(
           horizontal: myHorizontalPaddingForContainer),
@@ -105,7 +138,7 @@ class ChatPreviewOnHomepage extends StatelessWidget {
             style: myTextStyleFontUbuntu(context: context),
           ),
           Text(
-            '$lastMessage',
+            lastMessageDate != null ? '$lastMessageDate' : "...",
             overflow: TextOverflow.ellipsis,
             style: myTextStyleFontUbuntu(
                 fontSize: 14,
@@ -118,55 +151,45 @@ class ChatPreviewOnHomepage extends StatelessWidget {
     );
   }
 
-  photoAndMarker({
+  Widget photoAndMarker({
     required BuildContext context,
-    required String? imagePathAvatar,
-    bool noTransitionUserProfilePage = false,
-    bool isSvgImage = false,
+    required String? avatar,
+    bool? isHidden = false,
   }) {
     return GestureDetector(
       onTap: () {
-        if (!noTransitionUserProfilePage) {
-          UserProfilePage.goToUserProfilePage(
-            context: context,
-            imagePath: imagePathAvatar,
-            isSvgImage: isSvgImage,
-          );
-        }
+        UserProfilePage.goToUserProfilePage(
+          context: context,
+          avatar: avatar,
+        );
       },
       child: FittedBox(
         child: Stack(
           children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                child: (imagePathAvatar != null && imagePathAvatar != '')
-                    ? isSvgImage
-                        ? CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            child: SvgPicture.asset(
-                              "$imagePathAvatar",
-                              semanticsLabel: 'addNewEvent',
-                              fit: BoxFit.contain,
-                            ),
-                          )
-                        : CircleAvatar(
-                            backgroundColor: Theme.of(context).backgroundColor,
-                            backgroundImage: NetworkImage(
-                              "$imagePathAvatar",
-                            ),
-                            child: Text(''),
-                          )
-                    : CircleAvatar(
-                        backgroundColor: Theme.of(context).backgroundColor),
-              ),
+            CircleAvatar(
+              backgroundColor: Theme.of(context)
+                  .textTheme
+                  .headline3!
+                  .color!
+                  .withOpacity(0.1),
+              child: avatar != null
+                  ? ContainerForPhotoFuture(
+                      isCircular: true,
+                      coverFileId: avatar,
+                    )
+                  : Icon(
+                      Icons.person,
+                      color: Theme.of(context).textTheme.headline3!.color,
+                    ),
             ),
             Positioned(
               right: 0,
               child: Icon(
                 Icons.circle,
                 size: 10,
-                color: Color.fromRGBO(14, 214, 166, 1),
+                color: isHidden != null && isHidden
+                    ? Color.fromRGBO(14, 214, 166, 1)
+                    : Colors.grey,
               ),
             ),
           ],

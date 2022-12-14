@@ -153,7 +153,7 @@ class _BodyWorkoutProgressPage extends StatelessWidget {
           height: Get.height / 3.6,
           width: double.maxFinite,
           child: coverId != '' || coverId != null
-              ? containerForPhotoFuture(coverFileId: coverId!)
+              ? ContainerForPhotoFuture(coverFileId: coverId!)
               : FittedBox(child: Icon(Icons.sports_gymnastics_rounded)),
         ),
       ),

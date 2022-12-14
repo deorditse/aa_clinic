@@ -55,7 +55,7 @@ class _DocumentWidgetState extends State<DocumentWidget> {
                   width: myTopPaddingForContent,
                 ),
                 SvgPicture.asset(
-                  'assets/icons/document_icon.svg',
+                  'assets/icons/chats/document_icon.svg',
                   semanticsLabel: 'document',
                   fit: BoxFit.contain,
                 ),

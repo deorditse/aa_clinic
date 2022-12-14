@@ -36,7 +36,7 @@ class WorkoutCard extends StatelessWidget {
               width: double.maxFinite,
               child: (fitnessGenericWorkoutExerciseObject?.image != null ||
                       fitnessGenericWorkoutExerciseObject?.image != '')
-                  ? containerForPhotoFuture(
+                  ? ContainerForPhotoFuture(
                       coverFileId: fitnessGenericWorkoutExerciseObject!.image!,
                     )
                   : const Icon(

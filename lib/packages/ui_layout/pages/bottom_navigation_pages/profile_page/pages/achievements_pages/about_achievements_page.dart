@@ -1,4 +1,5 @@
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
@@ -48,6 +49,7 @@ class WidgetBodyAboutAchievementsProfilePage extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: _rowAchievement(
+                isUserAchiv: isUserAchiv,
                 context: context,
                 imageAchievement: doc?.image,
                 subtitle: "${doc?.description}",
@@ -90,10 +92,12 @@ class WidgetBodyAboutAchievementsProfilePage extends StatelessWidget {
   }
 }
 
-_rowAchievement(
-    {required String? imageAchievement,
-    required String subtitle,
-    required context}) {
+_rowAchievement({
+  required String? imageAchievement,
+  required String subtitle,
+  required bool isUserAchiv,
+  required context,
+}) {
   return Padding(
     padding: EdgeInsets.only(bottom: mySizedHeightBetweenContainer.height!),
     child: Row(
@@ -118,9 +122,14 @@ _rowAchievement(
               Text(
                 '$subtitle',
                 style: myTextStyleFontUbuntu(
+                  fontSize: 18,
                   context: context,
+                  textColor: isUserAchiv
+                      ? Theme.of(context).textTheme.headline2!.color
+                      : Theme.of(context).textTheme.headline3!.color,
                   newFontWeight: FontWeight.w300,
                 ),
+                // textAlign: TextAlign.justify,
               ),
             ],
           ),
@@ -131,13 +140,22 @@ _rowAchievement(
         FittedBox(
           child: CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Colors.transparent,
             child: (imageAchievement != null && imageAchievement != 'null')
-                ? containerForPhotoFuture(
+                ? ContainerForPhotoFuture(
                     isCircular: true, coverFileId: imageAchievement)
                 : CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Theme.of(context).backgroundColor),
+                    radius: 23,
+                    backgroundColor: Colors.transparent,
+                    child: SvgPicture.asset(
+                      'assets/achievement_delete_after_test/medal-star.svg',
+                      semanticsLabel: 'medal',
+                      fit: BoxFit.contain,
+                      color: isUserAchiv
+                          ? null
+                          : Theme.of(context).backgroundColor,
+                    ),
+                  ),
           ),
         ),
       ],

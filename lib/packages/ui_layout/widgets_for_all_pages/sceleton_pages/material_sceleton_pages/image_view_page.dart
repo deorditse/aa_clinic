@@ -3,10 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+
 void imageViewBottom({
   required BuildContext context,
-  String? imagePath,
-  Uint8List? uint8ListImage,
+  String? imagePathForNetworkImage,
+  Uint8List? uint8ListImageForMemoryImage,
   required Object heroTag,
 }) =>
     showBottomSheet(
@@ -24,15 +25,20 @@ void imageViewBottom({
             backgroundDecoration: BoxDecoration(
               color: Colors.black.withAlpha(200),
             ),
-            imageProvider: (uint8ListImage != null && imagePath == null)
+            imageProvider: (uint8ListImageForMemoryImage != null &&
+                    imagePathForNetworkImage == null)
                 ? MemoryImage(
-                    uint8ListImage,
+                    uint8ListImageForMemoryImage,
                   )
-                : CachedNetworkImage(
-                    imageUrl: imagePath!,
-                  ) as ImageProvider,
+                : CachedNetworkImageProvider(imagePathForNetworkImage!)
+                    as ImageProvider,
+
             heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
           ),
         );
       },
     );
+
+
+
+

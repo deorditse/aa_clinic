@@ -18,12 +18,11 @@ class WidgetListViewBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     Rx<int> itemCount = documentList.docs.length.obs;
 
-    DocumentsListModel _documentsList = documentList;
     return Obx(
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _documentsList.docs.length == 0
+          itemCount.value == 0
               ? _ifLDocsEmpty(context: context)
               : Padding(
                   padding:
@@ -46,12 +45,12 @@ class WidgetListViewBuilder extends StatelessWidget {
 
                           DocumentsProfilePage.openDocumentProfilePage(
                             context: context,
-                            document: _documentsList.docs[index],
+                            document: documentList.docs.elementAt(index),
                           );
                         },
                         child: _rowTileDocument(
                           context: context,
-                          document: _documentsList.docs[index],
+                          document: documentList.docs.elementAt(index),
                         ),
                       );
                     },
@@ -59,19 +58,19 @@ class WidgetListViewBuilder extends StatelessWidget {
                 ),
           // if (_documentsList.page <= _documentsList.totalPages! &&
           //     _documentsList.totalPages != 1)
-          if (_documentsList.totalPages != 1 &&
-              itemCount <= _documentsList.totalDocs)
+          if (documentList.totalPages != 1 &&
+              itemCount <= documentList.totalDocs)
             TextButton(
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all(0),
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
               ),
-              onPressed: itemCount == _documentsList.totalDocs
+              onPressed: itemCount == documentList.totalDocs
                   ? () => itemCount.value = 6
                   : onTapNext,
               child: Text(
-                itemCount == _documentsList.totalDocs
+                itemCount == documentList.totalDocs
                     ? 'Скрыть список...'
                     : 'Смотреть больше...',
                 style: myTextStyleFontUbuntu(

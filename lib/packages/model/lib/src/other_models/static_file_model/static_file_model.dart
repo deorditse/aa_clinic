@@ -21,7 +21,7 @@ class StaticFileModel with _$StaticFileModel {
     String? originalname,
     String? createdAt,
     String? updatedAt,
-    required String creatorId,
+    String? creatorId,
   }) = _StaticFileModel;
 
   factory StaticFileModel.fromJson(Map<String, Object?> json) =>

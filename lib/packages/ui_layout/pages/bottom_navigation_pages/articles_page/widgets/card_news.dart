@@ -51,7 +51,7 @@ class CardNews extends StatelessWidget {
               child: Container(
                 color: Theme.of(context).backgroundColor,
                 child: article?.coverFileId != null
-                    ? containerForPhotoFuture(
+                    ? ContainerForPhotoFuture(
                         coverFileId: article!.coverFileId!,
                       )
                     : Center(

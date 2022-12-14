@@ -12,8 +12,8 @@ _$_DocumentsListModel _$$_DocumentsListModelFromJson(
       docs: (json['docs'] as List<dynamic>?)
               ?.map(
                   (e) => DocumentForIdModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+              .toSet() ??
+          const {},
       totalDocs: json['totalDocs'] as int,
       limit: json['limit'] as int? ?? 0,
       page: json['page'] as int? ?? 1,
@@ -27,7 +27,7 @@ _$_DocumentsListModel _$$_DocumentsListModelFromJson(
 Map<String, dynamic> _$$_DocumentsListModelToJson(
         _$_DocumentsListModel instance) =>
     <String, dynamic>{
-      'docs': instance.docs,
+      'docs': instance.docs.toList(),
       'totalDocs': instance.totalDocs,
       'limit': instance.limit,
       'page': instance.page,

@@ -16,8 +16,8 @@ Widget iHaveAnAccount({required context}) {
             },
             child: Text(
               'У меня есть аккаунт',
-              style: myTextStyleFontUbuntu( context: context,
-                  fontSize: 14, textColor: myColorIsActive),
+              style: myTextStyleFontUbuntu(
+                  context: context, fontSize: 14, textColor: myColorIsActive),
             ),
           )
         : null,

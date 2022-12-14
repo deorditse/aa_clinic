@@ -105,17 +105,23 @@ _rowAchievement({
           Flexible(
             child: CircleAvatar(
               radius: 23,
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Colors.transparent,
               child: (doc.image != null && doc.image != 'null')
-                  ? containerForPhotoFuture(
+                  ? ContainerForPhotoFuture(
                       coverFileId: doc.image!,
                       isCircular: true,
                     )
                   : CircleAvatar(
-                radius: 23,
-                      backgroundColor: isUserAchiv
-                          ? Theme.of(context).backgroundColor
-                          : Theme.of(context).cardColor.withOpacity(0.5),
+                      radius: 23,
+                      backgroundColor: Colors.transparent,
+                      child: SvgPicture.asset(
+                        'assets/achievement_delete_after_test/medal-star.svg',
+                        semanticsLabel: 'medal',
+                        fit: BoxFit.contain,
+                        color: isUserAchiv
+                            ? null
+                            : Theme.of(context).backgroundColor,
+                      ),
                     ),
             ),
           ),
@@ -138,7 +144,7 @@ _rowAchievement({
                             .textTheme
                             .headline2!
                             .color!
-                            .withOpacity(0.2),
+                            .withOpacity(0.3),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

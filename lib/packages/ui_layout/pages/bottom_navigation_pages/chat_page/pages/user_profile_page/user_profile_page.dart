@@ -15,22 +15,22 @@ class UserProfilePage extends StatelessWidget {
 
   const UserProfilePage({
     Key? key,
-    this.imagePath,
+    this.avatar,
     this.isSvgImage = false,
   }) : super(key: key);
-  final String? imagePath;
+  final String? avatar;
   final bool isSvgImage;
 
   static goToUserProfilePage({
     required BuildContext context,
-    required String? imagePath,
+    required String? avatar,
     bool isSvgImage = false,
   }) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: RouteSettings(name: UserProfilePage.id),
         screen: UserProfilePage(
-          imagePath: imagePath,
+          avatar: avatar,
           isSvgImage: isSvgImage,
         ),
         withNavBar: true,
@@ -44,7 +44,7 @@ class UserProfilePage extends StatelessWidget {
       deleteAppBar: true,
       titleAppBar: 'User Profile',
       widgetBody: _MainBodyUserProfilePage(
-        imagePath: imagePath,
+        imagePath: avatar,
         isSvgImage: isSvgImage,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -86,7 +86,6 @@ class _MainBodyUserProfilePage extends StatelessWidget {
               CalendarChatPage(
                 userId: 'todo',
               ),
-
               ///todo userId
               AfterCalendarWidget(),
             ],

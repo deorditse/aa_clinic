@@ -116,17 +116,17 @@ class ImplementSettingGetXController extends GetxController {
 
   ///обновление данных пользователя
   Future<void> updateMeUser({required UserDataModel editUserAllData}) async {
-    if (userAllData != editUserAllData) {
-      userAllData = editUserAllData;
-      update();
+    // if (userAllData != editUserAllData) {
+    userAllData = editUserAllData;
+    update();
 
-      //обновление данных пользователя
-      await _services.updateMeData(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-        userEdit: editUserAllData,
-      );
-    }
+    //обновление данных пользователя
+    await _services.updateMeData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      userEdit: editUserAllData,
+    );
+    // }
   }
 
   ///Роут для получения минимальной информации о пользователе по ID +

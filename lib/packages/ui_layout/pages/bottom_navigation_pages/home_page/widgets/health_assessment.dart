@@ -18,7 +18,7 @@ class HealthAssessment extends StatelessWidget {
         children: [
           Padding(
             padding:
-            const EdgeInsets.only(bottom: myHorizontalPaddingForContainer),
+                const EdgeInsets.only(bottom: myHorizontalPaddingForContainer),
             child: Text(
               "Оценка здоровья",
               style: myTextStyleFontUbuntu(
@@ -62,14 +62,15 @@ class HealthAssessment extends StatelessWidget {
                         builder: (context, AsyncSnapshot<int?> snapshot) {
                           return Padding(
                             padding: const EdgeInsets.only(
-                                right: myTopPaddingForContent * 1.2),
+                                right: myTopPaddingForContent / 1.5),
                             child: Text(
                               snapshot.hasData
-                                  ? '${snapshot.data.toString()}/100'
-                                  : ".../100",
+                                  ? '${((snapshot.data! / 100) * 5).toStringAsFixed(1)}'
+                                  : "0.0",
                               style: myTextStyleFontUbuntu(
                                   textColor: myColorIsActive,
-                                  fontSize: 19,
+                                  newFontWeight: FontWeight.w500,
+                                  fontSize: 22,
                                   context: context),
                             ),
                           );
@@ -83,7 +84,8 @@ class HealthAssessment extends StatelessWidget {
                       child: Text(
                         "11.08.22 - 12.08.22",
                         style: myTextStyleFontUbuntu(
-                          textColor: Theme.of(context).textTheme.headline3!.color,
+                          textColor:
+                              Theme.of(context).textTheme.headline3!.color,
                           newFontWeight: FontWeight.w300,
                           fontSize: 13,
                           context: context,
@@ -100,4 +102,3 @@ class HealthAssessment extends StatelessWidget {
     );
   }
 }
-

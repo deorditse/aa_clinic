@@ -18,11 +18,10 @@ Future<void> showBottomSheetContainer({
   final bool expand = false,
 }) async {
   await showModalBottomSheet(
-    // animationCurve: animationCurve ?? Curves.fastLinearToSlowEaseIn,
     context: context,
     enableDrag: enableDrag,
     elevation: 100,
-   useSafeArea: true,
+    useSafeArea: true,
     backgroundColor: Colors.transparent,
     useRootNavigator: false,
     isScrollControlled: true,

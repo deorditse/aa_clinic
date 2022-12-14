@@ -57,11 +57,12 @@ class SearchArticlesWidget extends StatelessWidget {
   }
 
   void _stopSearching() {
-    if (_searchQueryControllerProfilePage.text.isEmpty) {
+    if (_searchQuery.value != '') {
+      _clearSearchQuery();
+    } else {
       ArticlesControllerGetxState.instance
           .changeIsSearchingArticles(isSearching: false);
     }
-    _clearSearchQuery();
   }
 
   void _clearSearchQuery() {

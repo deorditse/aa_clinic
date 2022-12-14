@@ -44,6 +44,7 @@ class _BodySubscriptionsOtherPageState
   @override
   void initState() {
     super.initState();
+
     ///инициирую список подписок
     OtherControllerGetxState.instance.getMarketSubscriptions();
   }
@@ -52,8 +53,7 @@ class _BodySubscriptionsOtherPageState
   Widget build(BuildContext context) {
     return GetBuilder<OtherControllerGetxState>(
       builder: (controllerOther) {
-        bool isListSubscriptions =
-            controllerOther.subscriptions?.docs != null;
+        bool isListSubscriptions = controllerOther.subscriptions?.docs != null;
         return SliverPadding(
           padding: const EdgeInsets.symmetric(
               horizontal: myHorizontalPaddingForContainer),

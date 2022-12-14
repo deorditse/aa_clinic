@@ -94,6 +94,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
                       margin: const EdgeInsets.only(bottom: 41),
                       width: 12,
                       decoration: date
+                              .toUtc()
                               .isAfter(DateTime.now().add(Duration(days: -1)))
                           ? const BoxDecoration(
                               shape: BoxShape.circle,

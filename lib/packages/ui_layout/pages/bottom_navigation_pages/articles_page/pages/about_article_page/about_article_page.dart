@@ -100,7 +100,7 @@ class _BodyAboutArticlePage extends StatelessWidget {
             color: Theme.of(context).backgroundColor,
           ),
           child: article?.coverFileId != null
-              ? containerForPhotoFuture(
+              ? ContainerForPhotoFuture(
                   coverFileId: article!.coverFileId!,
                   openView: true,
                 )

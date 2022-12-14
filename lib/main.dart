@@ -48,23 +48,24 @@ Future<void> main() async {
   Intl.defaultLocale = 'ru_RU';
 
   //для перевода текста календаря использую initializeDateFormatting
-  initializeDateFormatting().then((_) {
-    //ориентация экрана;
-    SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .whenComplete(
-      () => runApp(const MyGetApp()),
-    );
-  });
+  initializeDateFormatting().then(
+    (_) {
+      //ориентация экрана;
+      SystemChrome.setPreferredOrientations(
+              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+          .whenComplete(
+        () => runApp(MyGetApp()),
+      );
+    },
+  );
 }
 
 class MyGetApp extends StatelessWidget {
-  const MyGetApp({super.key});
+  MyGetApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      key: key,
       debugShowCheckedModeBanner: false,
       initialBinding: AuthBinding(),
       theme: themeLight,

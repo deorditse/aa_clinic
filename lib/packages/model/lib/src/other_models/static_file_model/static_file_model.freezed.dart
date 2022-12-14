@@ -32,7 +32,7 @@ mixin _$StaticFileModel {
   String? get originalname => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
-  String get creatorId => throw _privateConstructorUsedError;
+  String? get creatorId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -58,7 +58,7 @@ abstract class $StaticFileModelCopyWith<$Res> {
       String? originalname,
       String? createdAt,
       String? updatedAt,
-      String creatorId});
+      String? creatorId});
 }
 
 /// @nodoc
@@ -85,7 +85,7 @@ class _$StaticFileModelCopyWithImpl<$Res, $Val extends StaticFileModel>
     Object? originalname = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? creatorId = null,
+    Object? creatorId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -132,10 +132,10 @@ class _$StaticFileModelCopyWithImpl<$Res, $Val extends StaticFileModel>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      creatorId: null == creatorId
+      creatorId: freezed == creatorId
           ? _value.creatorId
           : creatorId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -160,7 +160,7 @@ abstract class _$$_StaticFileModelCopyWith<$Res>
       String? originalname,
       String? createdAt,
       String? updatedAt,
-      String creatorId});
+      String? creatorId});
 }
 
 /// @nodoc
@@ -185,7 +185,7 @@ class __$$_StaticFileModelCopyWithImpl<$Res>
     Object? originalname = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? creatorId = null,
+    Object? creatorId = freezed,
   }) {
     return _then(_$_StaticFileModel(
       id: null == id
@@ -232,10 +232,10 @@ class __$$_StaticFileModelCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      creatorId: null == creatorId
+      creatorId: freezed == creatorId
           ? _value.creatorId
           : creatorId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -255,7 +255,7 @@ class _$_StaticFileModel implements _StaticFileModel {
       this.originalname,
       this.createdAt,
       this.updatedAt,
-      required this.creatorId});
+      this.creatorId});
 
   factory _$_StaticFileModel.fromJson(Map<String, dynamic> json) =>
       _$$_StaticFileModelFromJson(json);
@@ -285,7 +285,7 @@ class _$_StaticFileModel implements _StaticFileModel {
   @override
   final String? updatedAt;
   @override
-  final String creatorId;
+  final String? creatorId;
 
   @override
   String toString() {
@@ -363,7 +363,7 @@ abstract class _StaticFileModel implements StaticFileModel {
       final String? originalname,
       final String? createdAt,
       final String? updatedAt,
-      required final String creatorId}) = _$_StaticFileModel;
+      final String? creatorId}) = _$_StaticFileModel;
 
   factory _StaticFileModel.fromJson(Map<String, dynamic> json) =
       _$_StaticFileModel.fromJson;
@@ -391,7 +391,7 @@ abstract class _StaticFileModel implements StaticFileModel {
   @override
   String? get updatedAt;
   @override
-  String get creatorId;
+  String? get creatorId;
   @override
   @JsonKey(ignore: true)
   _$$_StaticFileModelCopyWith<_$_StaticFileModel> get copyWith =>

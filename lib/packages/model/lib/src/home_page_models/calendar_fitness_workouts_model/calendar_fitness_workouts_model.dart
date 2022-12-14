@@ -32,6 +32,9 @@ class WorkoutObject with _$WorkoutObject {
   const factory WorkoutObject({
     // Fitness Generic Workout Exercise object
     FitnessGenericWorkoutExerciseObject? generic,
+
+    ///todo добавить для динамической модели еще однно поле
+
     //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
     @Default([]) List<ApproachObjectsConsisting?> sets,
     //percentage of fulfillment
@@ -85,6 +88,8 @@ class ApproachObjectsConsisting with _$ApproachObjectsConsisting {
 class DescriptionApproachObjectsConsisting
     with _$DescriptionApproachObjectsConsisting {
   const factory DescriptionApproachObjectsConsisting({
+    ///тут могут быть разные поля duration
+
     // Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
     required TargetObjectsDescriptionApproachObjectsConsisting duration,
   }) = _DescriptionApproachObjectsConsisting;
@@ -99,11 +104,8 @@ class TargetObjectsDescriptionApproachObjectsConsisting
     with _$TargetObjectsDescriptionApproachObjectsConsisting {
   const factory TargetObjectsDescriptionApproachObjectsConsisting({
     String? title,
-    //Это поле будет равно значению свойства title в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
     String? units,
-    //Это поле будет равно значению свойства units в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
     String? fieldType,
-    //Это поле будет равно значению свойства fieldType в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type
     int? value,
   }) = _TargetObjectsDescriptionApproachObjectsConsisting;
 

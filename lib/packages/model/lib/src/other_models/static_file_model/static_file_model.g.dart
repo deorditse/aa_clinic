@@ -19,7 +19,7 @@ _$_StaticFileModel _$$_StaticFileModelFromJson(Map<String, dynamic> json) =>
       originalname: json['originalname'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
-      creatorId: json['creatorId'] as String,
+      creatorId: json['creatorId'] as String?,
     );
 
 Map<String, dynamic> _$$_StaticFileModelToJson(_$_StaticFileModel instance) =>

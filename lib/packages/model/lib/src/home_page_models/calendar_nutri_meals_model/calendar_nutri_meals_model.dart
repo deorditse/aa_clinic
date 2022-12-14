@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 import 'dart:io';
 
 part 'calendar_nutri_meals_model.freezed.dart';

@@ -40,7 +40,7 @@ class ProductCardInThePurchaseHistory extends StatelessWidget {
               height: double.maxFinite,
               width: double.maxFinite,
               child: marketProductModel!.imagesFileIds.first != null
-                  ? containerForPhotoFuture(
+                  ? ContainerForPhotoFuture(
                       coverFileId: marketProductModel!.imagesFileIds.first!,
                     )
                   : Container(),

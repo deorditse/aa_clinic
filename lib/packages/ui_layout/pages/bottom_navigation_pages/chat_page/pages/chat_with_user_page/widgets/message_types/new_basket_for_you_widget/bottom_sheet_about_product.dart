@@ -36,7 +36,7 @@ class BottomSheetAboutProduct extends StatelessWidget {
             maxHeight: Get.size.height / 4,
           ),
           child: marketProductModel!.imagesFileIds.first != null
-              ? containerForPhotoFuture(
+              ? ContainerForPhotoFuture(
                   coverFileId: marketProductModel!.imagesFileIds.first!,
                 )
               : Container(),

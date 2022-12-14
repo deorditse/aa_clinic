@@ -10,7 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'calendar_header.dart';
 
 class CalendarProfilePage extends StatefulWidget {
-  const CalendarProfilePage({super.key});
+  const CalendarProfilePage({Key? key}) : super(key: key);
 
   @override
   _CalendarProfilePageState createState() => _CalendarProfilePageState();

@@ -84,7 +84,7 @@ class _BodyAboutFoodPage extends StatelessWidget {
                         clipBehavior: Clip.hardEdge,
                         height: Get.height / 3.6,
                         width: double.maxFinite,
-                        child: containerForPhotoFuture(
+                        child: ContainerForPhotoFuture(
                           coverFileId: dish.image!,
                           openView: true,
                         ),
@@ -257,7 +257,7 @@ class _AddPhotoEat extends StatelessWidget {
                         controllerHome.photoFood!,
                         fit: BoxFit.cover,
                       )
-                    : containerForPhotoFuture(
+                    : ContainerForPhotoFuture(
                         coverFileId: dish.lifeImage!,
                         openView: true,
                       ),

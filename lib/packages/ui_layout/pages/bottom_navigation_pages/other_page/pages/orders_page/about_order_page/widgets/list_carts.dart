@@ -1,15 +1,10 @@
-import 'dart:convert';
-
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/chat_widgets/new_basket_for_you_widget/bottom_sheet_about_product.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/button_alert_message.dart';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/message_types/new_basket_for_you_widget/bottom_sheet_about_product.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
-import 'package:get/get.dart';
+
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
-import 'package:http/http.dart' as http;
 import 'product_card_in_the_purchase_history.dart';
 
 class ListCarts extends StatefulWidget {

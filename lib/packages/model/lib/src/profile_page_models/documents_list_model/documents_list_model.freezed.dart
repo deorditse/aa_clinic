@@ -20,9 +20,8 @@ DocumentsListModel _$DocumentsListModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DocumentsListModel {
-  List<DocumentForIdModel> get docs => throw _privateConstructorUsedError;
-  set docs(List<DocumentForIdModel> value) =>
-      throw _privateConstructorUsedError;
+  Set<DocumentForIdModel> get docs => throw _privateConstructorUsedError;
+  set docs(Set<DocumentForIdModel> value) => throw _privateConstructorUsedError;
   int get totalDocs => throw _privateConstructorUsedError;
   set totalDocs(int value) => throw _privateConstructorUsedError;
   int get limit => throw _privateConstructorUsedError;
@@ -53,7 +52,7 @@ abstract class $DocumentsListModelCopyWith<$Res> {
       _$DocumentsListModelCopyWithImpl<$Res, DocumentsListModel>;
   @useResult
   $Res call(
-      {List<DocumentForIdModel> docs,
+      {Set<DocumentForIdModel> docs,
       int totalDocs,
       int limit,
       int page,
@@ -91,7 +90,7 @@ class _$DocumentsListModelCopyWithImpl<$Res, $Val extends DocumentsListModel>
       docs: null == docs
           ? _value.docs
           : docs // ignore: cast_nullable_to_non_nullable
-              as List<DocumentForIdModel>,
+              as Set<DocumentForIdModel>,
       totalDocs: null == totalDocs
           ? _value.totalDocs
           : totalDocs // ignore: cast_nullable_to_non_nullable
@@ -137,7 +136,7 @@ abstract class _$$_DocumentsListModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<DocumentForIdModel> docs,
+      {Set<DocumentForIdModel> docs,
       int totalDocs,
       int limit,
       int page,
@@ -173,7 +172,7 @@ class __$$_DocumentsListModelCopyWithImpl<$Res>
       docs: null == docs
           ? _value.docs
           : docs // ignore: cast_nullable_to_non_nullable
-              as List<DocumentForIdModel>,
+              as Set<DocumentForIdModel>,
       totalDocs: null == totalDocs
           ? _value.totalDocs
           : totalDocs // ignore: cast_nullable_to_non_nullable
@@ -214,7 +213,7 @@ class __$$_DocumentsListModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DocumentsListModel implements _DocumentsListModel {
   _$_DocumentsListModel(
-      {this.docs = const [],
+      {this.docs = const {},
       required this.totalDocs,
       this.limit = 0,
       this.page = 1,
@@ -229,7 +228,7 @@ class _$_DocumentsListModel implements _DocumentsListModel {
 
   @override
   @JsonKey()
-  List<DocumentForIdModel> docs;
+  Set<DocumentForIdModel> docs;
   @override
   int totalDocs;
   @override
@@ -271,7 +270,7 @@ class _$_DocumentsListModel implements _DocumentsListModel {
 
 abstract class _DocumentsListModel implements DocumentsListModel {
   factory _DocumentsListModel(
-      {List<DocumentForIdModel> docs,
+      {Set<DocumentForIdModel> docs,
       required int totalDocs,
       int limit,
       int page,
@@ -285,8 +284,8 @@ abstract class _DocumentsListModel implements DocumentsListModel {
       _$_DocumentsListModel.fromJson;
 
   @override
-  List<DocumentForIdModel> get docs;
-  set docs(List<DocumentForIdModel> value);
+  Set<DocumentForIdModel> get docs;
+  set docs(Set<DocumentForIdModel> value);
   @override
   int get totalDocs;
   set totalDocs(int value);

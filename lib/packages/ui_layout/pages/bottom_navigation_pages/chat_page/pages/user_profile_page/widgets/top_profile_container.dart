@@ -1,5 +1,6 @@
 import 'package:aa_clinic/packages/style_app/lib/src/consts_app.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -116,19 +117,17 @@ class TopProfileContainer extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.circular(6),
       ),
-      child: (imagePath != null && imagePath != '')
-          ? isSvgImage
-              ? SvgPicture.asset(
-                  "$imagePath",
-                  semanticsLabel: 'addNewEvent',
-                  fit: BoxFit.contain,
-                )
-              : CachedNetworkImage(
-                  imageUrl: "$imagePath",
-                  // "https://miro.medium.com/max/1400/0*vzeerCL0vZVofMs9.jpeg",
-                  fit: BoxFit.cover,
-                )
-          : Container(),
+      child: !isSvgImage && (imagePath != null) && imagePath != ''
+          ? ContainerForPhotoFuture(
+              isCircular: true, coverFileId: imagePath, openView: true)
+          : CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: SvgPicture.asset(
+                "$imagePath",
+                semanticsLabel: 'addNewEvent',
+                fit: BoxFit.contain,
+              ),
+            ),
     );
   }
 }

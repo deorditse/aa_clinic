@@ -157,7 +157,7 @@ class ProfileControllerGetxState extends GetxController {
     required String? description,
     required List<String> attachmentsIds, //Массив с id вложений
   }) async {
-    DocumentForIdModel? _res = await _services.postPatientDocumentsData(
+    _services.postPatientDocumentsData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       category: category,
@@ -165,7 +165,7 @@ class ProfileControllerGetxState extends GetxController {
       description: description,
       attachmentsIds: attachmentsIds,
     );
-    getDocumentsList(currentDocsPage: 1);
+    getDocumentsList(currentDocsPage: 1, isReloatForAddNewDocument: true);
   }
 
   /////////////////// DOCUMENTS
@@ -196,6 +196,7 @@ class ProfileControllerGetxState extends GetxController {
     required int currentDocsPage,
     bool updateRangeFromCalendarDocumentList = false,
     bool updateSearchResultDocumentList = false,
+    bool isReloatForAddNewDocument = false,
   }) async {
     //везде где вызываю этот метод, обновлять _mapKeyDocumentsListAndCurrentPageAndDocumentsListModel
     _services
@@ -207,35 +208,44 @@ class ProfileControllerGetxState extends GetxController {
       searchText: searchText,
     )
         .then(
-      (newDocumentsList) {
+      (DocumentsListModel? newDocumentsList) {
         if (newDocumentsList != null) {
           if (updateRangeFromCalendarDocumentList) {
-            rangeFromCalendarDocumentList!.page = newDocumentsList.page;
-            rangeFromCalendarDocumentList!.docs = [
-              ...rangeFromCalendarDocumentList!.docs,
-              ...newDocumentsList.docs,
-            ];
-            update();
+            if (rangeFromCalendarDocumentList != null) {
+              rangeFromCalendarDocumentList!.page = newDocumentsList.page;
+              rangeFromCalendarDocumentList!.docs = {
+                ...rangeFromCalendarDocumentList!.docs,
+                ...newDocumentsList.docs,
+              };
+              update();
+            } else {
+              rangeFromCalendarDocumentList = newDocumentsList;
+              update();
+            }
 
             return;
-          } else if (searchText != null &&
-              searchText != '' &&
-              updateSearchResultDocumentList) {
-            searchResultDocumentList!.page = newDocumentsList.page;
-            searchResultDocumentList!.docs = [
-              ...searchResultDocumentList!.docs,
-              ...newDocumentsList.docs,
-            ];
-            update();
+          } else if (updateSearchResultDocumentList &&
+              (searchText != null && searchText != '')) {
+            if (searchResultDocumentList != null) {
+              searchResultDocumentList!.page = newDocumentsList.page;
+              searchResultDocumentList!.docs = {
+                ...searchResultDocumentList!.docs,
+                ...newDocumentsList.docs,
+              };
+              update();
+            } else {
+              searchResultDocumentList = newDocumentsList;
+              update();
+            }
 
             return;
           } else {
-            if (documentList != null) {
+            if (documentList != null && !isReloatForAddNewDocument) {
               documentList!.page = newDocumentsList.page;
-              documentList!.docs = [
+              documentList!.docs = {
                 ...documentList!.docs,
                 ...newDocumentsList.docs,
-              ];
+              };
               update();
             } else {
               documentList = newDocumentsList;

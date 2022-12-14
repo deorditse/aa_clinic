@@ -1,4 +1,6 @@
 import 'dart:collection';
+import 'package:business_layout/business_layout.dart';
+import 'package:data_layout/data_layout.dart';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
 
@@ -8,10 +10,16 @@ import 'package:model/model.dart';
 
 class ChatPageControllerGetx extends GetxController {
   static ChatPageControllerGetx instance = Get.find<ChatPageControllerGetx>();
+  final ChatPageData _services = ChatPageData();
 
   @override
   void onInit() {
     super.onInit();
+    initialChatController();
+  }
+
+  Future<void> initialChatController() async {
+    await _getChatsFindMany();
   }
 
   bool isSearchingChats = false;
@@ -21,8 +29,29 @@ class ChatPageControllerGetx extends GetxController {
     update();
   }
 
-  ///для чата на первой странице
-  List<ChatFindManyModel?> listDataUsers = [];
+  ///для чатов на странице со списком чатов
+  List<ChatFindManyModel?> listChats = [];
 
+  Future<void> _getChatsFindMany() async {
+    listChats = await _services.getChatsData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    );
+    update();
+  }
 
+  ///Route Get messages in chat (and official)
+  Future<ChatMessagesModel?> getMessagesInChat({
+    bool isOfficialChat = false,
+    required String? chatId,
+    required String? messageId,
+    //messageId нужен для получения всех сообщений до определенного сообщения чей id указывается в параметре
+  }) async {
+    return await _services.getMessagesInChatData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      chatId: chatId,
+      messageId: messageId,
+    );
+  }
 }

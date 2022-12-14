@@ -81,7 +81,6 @@ class SettingPageData {
     try {
       Uri url = urlMain(urlPath: 'api/staticFiles');
 
-
       var request = http.MultipartRequest("POST", url)
         ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
         ..fields['category'] = category
@@ -134,23 +133,21 @@ class SettingPageData {
         headers: {
           'Authorization': 'Bearer ${accessToken}',
         },
-
         body: {
-          // 'username': '',
           'lastName': userEdit.lastName,
           'firstName': userEdit.firstName,
           'middleName': userEdit.middleName ?? '',
           'gender': userEdit.gender.toString(),
-          'email': userEdit.email,
           'bio': userEdit.bio ?? '',
           'bdate': userEdit.bdate ?? '',
           'phoneNumber': userEdit.phoneNumber ?? '',
-          // 'address': 'test ${userEdit.address}',
-          'avatar': '${userEdit.avatar}',
-          // 'avatarThumbnail': '${userEdit.avatarThumbnail} test avatarThumbnail',
         },
-        // jsonEncode(userEdit),
       );
+      //обновляю email
+      if (userEdit.email != '') {
+        await AuthPageData().updateEmailData(
+            newEmail: userEdit.email, accessToken: accessToken);
+      }
       print('Response status from updateMeData: ${response.statusCode}');
       log('updateMeData ${response.body}');
 
@@ -244,7 +241,7 @@ class SettingPageData {
   Future<StaticFileModel?> getStaticFileData(
       {required String accessToken, required String coverFileId}) async {
     try {
-           Uri url = urlMain(urlPath: 'api/staticFiles/$coverFileId');
+      Uri url = urlMain(urlPath: 'api/staticFiles/$coverFileId');
 
       var response = await http
           .get(url, headers: {"Authorization": "Bearer $accessToken"});

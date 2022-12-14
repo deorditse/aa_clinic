@@ -50,7 +50,7 @@ class HorizontalCategoriesArticlesPage extends StatelessWidget {
                                   indexCategory: index);
                             }
                           },
-                          child: Container(
+                    child: Container(
                             decoration: myStyleContainer(
                                 context: context,
                                 color:

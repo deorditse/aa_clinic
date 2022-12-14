@@ -2,6 +2,9 @@
 //chat_find_many
 export 'src/chat_page_models/chat_find_many_model/chat_find_many_model.dart';
 
+//official_chat_messages_model.dart
+export 'src/chat_page_models/chat_messages_model/chat_messages_model.dart';
+
 ///auth_page_models
 //sign_in_models
 export 'src/auth_page_models/sign_in_models/user_authorized_model/user_authorized_model.dart';
