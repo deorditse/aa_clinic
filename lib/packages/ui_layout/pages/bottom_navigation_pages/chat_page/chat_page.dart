@@ -14,7 +14,6 @@ import 'package:business_layout/business_layout.dart';
 import 'pages/chat_with_user_page/chat_with_user_page.dart';
 import 'widgets/app_bar_chat_sliver.dart';
 import 'widgets/chat_preview_on_homepage.dart';
-import 'package:http/http.dart' as http;
 
 import 'widgets/oficcial_chat_preview_on_homepage.dart';
 
@@ -25,13 +24,16 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MySliverNewPageWithoutBorder(
-      primary: true,
-      titleAppBar: 'Чаты',
-      callbackTopRefreshIndicator: _updateDataPage,
-      widgetBody: _MainBodyChatPage(),
-      myNewSliverAppBar: ChatSliverAppBar(title: 'Чаты', myContext: context),
-      widgetRightAppBar: myIconSearchForAppBar(context: context),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: MySliverNewPageWithoutBorder(
+        primary: true,
+        titleAppBar: 'Чаты',
+        callbackTopRefreshIndicator: _updateDataPage,
+        widgetBody: _MainBodyChatPage(),
+        myNewSliverAppBar: ChatSliverAppBar(title: 'Чаты', myContext: context),
+        widgetRightAppBar: myIconSearchForAppBar(context: context),
+      ),
     );
   }
 

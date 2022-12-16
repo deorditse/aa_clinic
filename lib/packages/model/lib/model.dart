@@ -26,6 +26,9 @@ export 'src/articles_page_models/article_categories_model/article_categories_mod
 //calendar_actions_model
 export 'src/home_page_models/calendar_actions_model/calendar_actions_model.dart';
 
+//model_add_new_dish_card.dart
+export 'src/home_page_models/model_add_new_dish_card/model_add_new_dish_card.dart';
+
 //daily_calendar_events_model.dart
 export 'src/home_page_models/daily_calendar_events_model/daily_calendar_events_model.dart';
 

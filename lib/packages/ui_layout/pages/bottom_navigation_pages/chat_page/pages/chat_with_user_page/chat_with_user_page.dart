@@ -1,9 +1,11 @@
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/user_profile_page/user_profile_page.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/material_sceleton_without_borders.dart';
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'widgets/app_bar_chat_with_user.dart';
-import 'widgets/main_body_chat/main_body_chat.dart';
+import 'widgets/main_body_chat.dart';
+import 'widgets/row_with_text_field_and_button.dart';
 
 class ChatWithUserPage extends StatelessWidget {
   static const String id = '/chatWithUserPage';
@@ -11,16 +13,16 @@ class ChatWithUserPage extends StatelessWidget {
   const ChatWithUserPage({
     Key? key,
     this.index,
+    this.specialistId,
     this.imagePathAvatar,
     this.fullName,
     this.isOfficialChat = false,
     this.isSvgImage = false,
-    this.messageId,
     this.chatId,
   }) : super(key: key);
 
   final String? chatId;
-  final String? messageId;
+  final String? specialistId;
   final int? index;
   final String? imagePathAvatar;
   final String? fullName;
@@ -31,18 +33,18 @@ class ChatWithUserPage extends StatelessWidget {
     bool isOfficialChat = false,
     required BuildContext context,
     int? index,
+    required String specialistId,
     required String? avatarId,
     bool isSvgImage = false,
     required String fullName,
     required String chatId,
-    required String? messageId,
   }) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: RouteSettings(name: ChatWithUserPage.id),
         screen: ChatWithUserPage(
+          specialistId: specialistId,
           chatId: chatId,
-          messageId: messageId,
           imagePathAvatar: avatarId,
           fullName: fullName,
           isSvgImage: isSvgImage,
@@ -56,11 +58,19 @@ class ChatWithUserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyMaterialNewPageWithoutBorder(
+      resizeToAvoidBottomInset: true,
+      primary: true,
       titleAppBar: 'Чат',
-      widgetBody: MainBodyChatPage(
-        messageId: messageId,
-        chatId: chatId!,
-        isOfficialChat: isOfficialChat,
+      widgetBody: Column(
+        children: [
+          Expanded(
+            child: MainBodyChatPage(
+              chatId: chatId!,
+              isOfficialChat: isOfficialChat,
+            ),
+          ),
+          RowWithTextFieldAndButton(),
+        ],
       ),
       myNewMaterialAppBar: ChatMaterialAppBar(
         rightVoidCallback: () {
@@ -68,6 +78,7 @@ class ChatWithUserPage extends StatelessWidget {
             UserProfilePage.goToUserProfilePage(
               context: context,
               avatar: imagePathAvatar,
+              specialistId: specialistId!,
             );
           }
         },

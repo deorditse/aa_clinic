@@ -29,45 +29,48 @@ Future<void> showBottomSheetContainer({
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: Platform.isAndroid
-              ? (mySizedHeightBetweenContainer.height!.toDouble())
-              : 0,
-          left: myHorizontalPaddingForContainer,
-          right: myHorizontalPaddingForContainer,
-          bottom:
-              bottomBorderRadius ? myHorizontalPaddingForContainer * 1.5 : 0,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: backgroundColor ?? Theme.of(context).cardColor,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(15),
-              bottom: Radius.circular(bottomBorderRadius ? 22 : 0),
-            ),
+      child: SafeArea(
+        maintainBottomViewPadding: true,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: Platform.isAndroid
+                ? (mySizedHeightBetweenContainer.height!.toDouble())
+                : 0,
+            left: myHorizontalPaddingForContainer,
+            right: myHorizontalPaddingForContainer,
+            bottom:
+                bottomBorderRadius ? myHorizontalPaddingForContainer * 1.5 : 0,
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(top: myTopPaddingForContent),
-            child: Column(
-              mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
-              children: [
-                if (!deleteAppBar)
-                  MyAppBar(
-                    backLine: backLine,
-                    myContext: context,
-                    title: titleAppBar,
-                    onlyBack: onlyBack,
-                    widgetRight: widgetRightAppBar,
-                  ),
-                Flexible(
-                  child: SingleChildScrollView(
-                    primary: true,
-                    child: _widgetBodyContent(
-                        context: context, widgetBody: widgetBody),
-                  ),
-                )
-              ],
+          child: Container(
+            decoration: BoxDecoration(
+              color: backgroundColor ?? Theme.of(context).cardColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(15),
+                bottom: Radius.circular(bottomBorderRadius ? 22 : 0),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: myTopPaddingForContent),
+              child: Column(
+                mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
+                children: [
+                  if (!deleteAppBar)
+                    MyAppBar(
+                      backLine: backLine,
+                      myContext: context,
+                      title: titleAppBar,
+                      onlyBack: onlyBack,
+                      widgetRight: widgetRightAppBar,
+                    ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      primary: true,
+                      child: _widgetBodyContent(
+                          context: context, widgetBody: widgetBody),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

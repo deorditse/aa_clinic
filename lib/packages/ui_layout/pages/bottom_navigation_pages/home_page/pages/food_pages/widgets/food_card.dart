@@ -35,17 +35,24 @@ class FoodCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                dish.title ?? 'Еда',
-                style: myTextStyleFontUbuntu(
-                    context: context, newFontWeight: FontWeight.w300),
+              Flexible(
+                child: Text(
+                  dish.title ?? 'Еда',
+                  style: myTextStyleFontUbuntu(
+                      context: context, newFontWeight: FontWeight.w300),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
-              Text(
-                "${dish.kcal ?? 0} Ккал",
-                style: myTextStyleFontUbuntu(
-                  textColor: Theme.of(context).textTheme.headline3!.color,
-                  context: context,
-                  newFontWeight: FontWeight.w300,
+              Padding(
+                padding: const EdgeInsets.only(right: myTopPaddingForContent),
+                child: Text(
+                  "${dish.kcal ?? 0} Ккал",
+                  style: myTextStyleFontUbuntu(
+                    textColor: Theme.of(context).textTheme.headline3!.color,
+                    context: context,
+                    newFontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
               Row(

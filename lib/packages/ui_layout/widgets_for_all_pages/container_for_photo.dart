@@ -28,7 +28,7 @@ class ContainerForPhotoFuture extends StatelessWidget {
             onTap: openView
                 ? () {
                     imageViewBottom(
-                      context: context,
+                      context: Get.context!,
                       imagePathForNetworkImage: imageFromNetwork,
                       heroTag: 'null',
                     );

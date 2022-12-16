@@ -1,4 +1,4 @@
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/add_new_dish_page/pages/adding_a_dish_page/widgets/add_dish_enable_card.dart';
+import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../list_with_dish_card.dart';
+import 'dish_enable_card/dish_enable_card.dart';
 
 addDishDisableCard({required BuildContext context, required int index}) {
   return Container(
@@ -16,8 +17,13 @@ addDishDisableCard({required BuildContext context, required int index}) {
         padding: MaterialStateProperty.all(EdgeInsets.zero),
       ),
       onPressed: () {
-        changeListAddDishEnableCard(
-          addDishEnableCard: AddDishEnableCard(index: index),
+        ImplementAddNewDishController.instance.changeListAddDishEnableCard(
+          modelDishCard: AddNewDishCardModel(
+            indexDishCard: index,
+            globalKeyFormState: GlobalKey<FormState>(),
+            nutriDish: NutriDishModel(),
+          ),
+          index: index,
         );
       },
       child: Padding(

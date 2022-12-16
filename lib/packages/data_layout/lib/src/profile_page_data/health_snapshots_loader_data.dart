@@ -115,17 +115,14 @@ class HealthSnapshotsLoaderData {
           ?.emit('createHealthSnapshotFromArray', {"data": _healthDataList});
     } else {
       // если прямо сейчас сокет не доступен, пробуем через 5 секунд
-      SettingPageData.socket?.connect();
-      Timer(
-          const Duration(seconds: 10),
-          () => {
-                if (SettingPageData.socketIOAvailable)
-                  {
-                    SettingPageData.socket?.emit(
-                        'createHealthSnapshotFromArray',
-                        {"data": _healthDataList})
-                  }
-              },);
+      await SettingPageData.socket?.connect();
+
+      if (SettingPageData.socketIOAvailable) {
+        SettingPageData.socket?.emit(
+          'createHealthSnapshotFromArray',
+          {"data": _healthDataList},
+        );
+      }
     }
   }
 

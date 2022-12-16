@@ -27,6 +27,7 @@ class MySliverNewPageWithoutBorder extends StatelessWidget {
     this.subTitle,
     this.myNewSliverAppBar,
     this.callbackTopRefreshIndicator,
+    this.resizeToAvoidBottomInset = false,
   }) : super(key: key);
   final Widget? myNewSliverAppBar;
   final double? paddingHorizontalContent;
@@ -44,10 +45,12 @@ class MySliverNewPageWithoutBorder extends StatelessWidget {
   final bool? primary;
   final String? subTitle;
   final Future Function()? callbackTopRefreshIndicator;
+  final bool resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();

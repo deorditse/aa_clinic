@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/add_new_dish_page/pages/adding_a_dish_page/adding_a_dish_page.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../list_with_dish_card.dart';
+import '../../../list_with_dish_card.dart';
 
 void addingADishPhotoFoodBottomSheetWidgetHomePage(
     {required context, required int indexDishCard}) {
@@ -77,13 +78,8 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      HomePageCalendarControllerGetxState.instance
-          .changeListPhotoAddDishEnableCard(
-        file: imageTemporary,
-        indexDishCard: indexDishCard,
-      );
-
-      newListDishes[indexDishCard].file = imageTemporary;
+      ImplementAddNewDishController.instance.changeListAddDishEnableCard(
+          index: indexDishCard, file: imageTemporary);
 
       if (listIndexWherePhotosNotAdded.contains(indexDishCard)) {
         listIndexWherePhotosNotAdded.remove(indexDishCard);
@@ -108,13 +104,9 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
+      ImplementAddNewDishController.instance.changeListAddDishEnableCard(
+          index: indexDishCard, file: imageTemporary);
 
-      HomePageCalendarControllerGetxState.instance
-          .changeListPhotoAddDishEnableCard(
-        file: imageTemporary,
-        indexDishCard: indexDishCard,
-      );
-      newListDishes[indexDishCard].file = imageTemporary;
       if (listIndexWherePhotosNotAdded.contains(indexDishCard)) {
         listIndexWherePhotosNotAdded.remove(indexDishCard);
       }

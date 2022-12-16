@@ -11,68 +11,58 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'package:data_layout/data_layout.dart';
 
-
-
-///получение марок в календаре для юзера+
-Future<Map<String, Map<String, int>>> getMonthlyCalendarMarksData({
-  required String accessToken,
-  required DateTime dateMark,
-  required String userId,
-}) async {
+///получение событий выбранной даты +
+Future<List<String?>> getDailyCalendarEventsData(
+    {required String accessToken,
+    required DateTime dateDaily,
+    required String specialistId}) async {
   try {
-    final queryParameters = {'date': "${dateMark.year}-${dateMark.month}"};
+    final queryParameters = {
+      'date': '${dateDaily.year}-${dateDaily.month}-${dateDaily.day}',
+    };
     Uri url = urlMain(
-      urlPath: 'api/specialistReceptionSchedule/monthlyCalendarMarks/$userId',
-      queryParameters: queryParameters,
-    );
+        urlPath:
+            'api/specialistReceptionSchedule/dailyReceptionScheduleEvent/$specialistId',
+        queryParameters: queryParameters);
 
-    var response = await http.get(url, headers: {
-      "Authorization": "Bearer ${accessToken}",
-    });
+    var response = await http
+        .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
 
     print(
-        'Response status from getMonthlyCalendarMarksData: ${response.statusCode}');
-    log('getMonthlyCalendarMarksData ${response.body}');
+        'Response status from getDailyCalendarEventsData: ${response.statusCode}');
+    log('getDailyCalendarEventsData ${response.body}');
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = await jsonDecode(response.body);
-
-      Map<String, Map<String, int>> _res = {};
-
-      ///{'dateTime : {total : num, free : num}}
-      ///total Количество всех окон специалиста на этот день
-      ///free Количество свободных окон специалиста на этот день
-      data.forEach(
-            (key, value) {
-          if ((value != null) && (value != 0) && (value != '0')) {
-            DateTime _date = DateTime.parse(key);
-            _res["${_date.year}-${_date.month}-${_date.day}"] = value;
-          }
-        },
-      );
-      log(_res.toString());
-      return _res;
+      var data = jsonDecode(response.body);
+      print(data);
+      // List<DailyCalendarEventsModel?> listMapDailyCalendarEventsModel = data
+      //     .map<DailyCalendarEventsModel?>((dailyEvent) =>
+      //     DailyCalendarEventsModel.fromJson(
+      //         Map<String, dynamic>.from(dailyEvent)))
+      //     .toList();
+      // print(listMapDailyCalendarEventsModel);
+      // return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
     } else {
       Get.snackbar(
         'Exception',
         'Bad Request: status ${response.statusCode}',
         snackPosition: SnackPosition.TOP,
       );
-      return {};
+      return [];
     }
   } catch (error) {
     Get.snackbar(
       'Exception',
-      'error calendar marks: $error}',
+      'error daily events:$error}',
       snackPosition: SnackPosition.TOP,
     );
-    print('я в ошибке from getMonthlyCalendarMarksData $error ');
+    print('я в ошибке from getDailyCalendarEventsData $error ');
   }
-  return {};
+  return [];
 }
 
 class CalendarChatPage extends StatefulWidget {
-  CalendarChatPage({Key? key, required this.userId}) : super(key: key);
-  final String userId;
+  CalendarChatPage({Key? key, required this.specialistId}) : super(key: key);
+  final String specialistId;
 
   @override
   State<CalendarChatPage> createState() => _CalendarChatPageState();
@@ -83,6 +73,27 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
   final Rx<DateTime> _focusedDay = DateTime.now().obs;
 
   late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    ImplementationCalendarEventsChatPage.instance
+        .getMonthlyCalendarMarksForMouth(
+      specialistId: widget.specialistId,
+      dateMarksMouth: DateTime.now(),
+      isUpdate: true,
+    );
+    // .whenComplete(
+    //   () {
+    //     getDailyCalendarEventsData(
+    //         specialistId: widget.userId,
+    //         accessToken: ImplementAuthController
+    //             .instance.userAuthorizedData!.accessToken,
+    //         dateDaily: DateTime.now());
+    //   },
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +135,7 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
             //HomePageCalendarControllerGetxState.instance.getFetchData();
             return Obx(
               () => TableCalendar(
-                key: Key('HomePageCalendar'),
+                key: Key('ChatPageCalendar'),
                 availableGestures: AvailableGestures.horizontalSwipe,
                 eventLoader: (controllerCalendarChat.marksCountForMonth[
                             "${_focusedDay.value.year}-${_focusedDay.value.month}"] !=
@@ -137,9 +148,7 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
 
                         if (_dateMark?["${day.year}-${day.month}-${day.day}"] !=
                             null) {
-                          return [
-                            _dateMark!["${day.year}-${day.month}-${day.day}"]
-                          ];
+                          return [1];
                         } else {
                           return [];
                         }
@@ -156,6 +165,7 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
                       margin: const EdgeInsets.only(bottom: 41),
                       width: 12,
                       decoration: date
+                              .toUtc()
                               .isAfter(DateTime.now().add(Duration(days: -1)))
                           ? const BoxDecoration(
                               shape: BoxShape.circle,
@@ -310,8 +320,8 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
                       controllerCalendarChat.mySelectedDay, selectedDay)) {
                     controllerCalendarChat.changeMySelectedDay(
                         newDateTime: selectedDay);
-                    controllerCalendarChat.getDailyCalendarEvents(
-                        dateDaily: selectedDay);
+                    // controllerCalendarChat.getDailyCalendarEvents(
+                    //     dateDaily: selectedDay);
                   }
                 },
                 onCalendarCreated: (controller) {
@@ -320,10 +330,10 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
                 onPageChanged: (focusedDay) {
                   _focusedDay.value = focusedDay;
                   print(
-                      'HomePageCalendarControllerGetxState  _focusedDay $focusedDay _______________ ${_focusedDay.value.toUtc()}');
+                      'ChatPageCalendarControllerGetxState  _focusedDay $focusedDay _______________ ${_focusedDay.value.toUtc()}');
                   controllerCalendarChat.getMonthlyCalendarMarksForMouth(
+                    specialistId: widget.specialistId,
                     dateMarksMouth: focusedDay,
-                    userId: widget.userId,
                   );
                 },
               ),

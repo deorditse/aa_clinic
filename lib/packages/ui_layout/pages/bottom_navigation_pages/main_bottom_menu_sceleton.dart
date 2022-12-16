@@ -19,81 +19,64 @@ List<Widget> screensBottomNavigation = [
   ArticlesPage(),
   OtherPage(),
 ];
+PersistentTabController _controllerTabIndex = PersistentTabController(
+  initialIndex: ImplementSettingGetXController.instance.controllerTabIndex,
+);
 
-class MyBottomMenuSceleton extends StatefulWidget {
+class MyBottomMenuSceleton extends StatelessWidget {
   static const String id = '/main';
 
   MyBottomMenuSceleton({Key? key}) : super(key: key);
 
   @override
-  State<MyBottomMenuSceleton> createState() => _MyBottomMenuSceletonState();
-}
-
-class _MyBottomMenuSceletonState extends State<MyBottomMenuSceleton> {
-  late PersistentTabController controllerTabIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    // остановка показа экрана заставки
-    FlutterNativeSplash.remove();
-    controllerTabIndex = PersistentTabController(
-      initialIndex: ImplementSettingGetXController.instance.controllerTabIndex,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GetBuilder<ImplementSettingGetXController>(
       builder: (controllerSetting) {
-        controllerTabIndex.index = controllerSetting.controllerTabIndex;
+        _controllerTabIndex.index = controllerSetting.controllerTabIndex;
         return Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SafeArea(
-            top: false,
-            child: PersistentTabView.custom(
-              context,
-              controller: controllerTabIndex,
-              itemCount: _myTabBar(context: context).length,
-              onWillPop: (context) async => true,
+          resizeToAvoidBottomInset:
+              controllerSetting.controllerTabIndex == 1 ? true : false,
+          body: PersistentTabView.custom(
+            context,
+            controller: _controllerTabIndex,
+            itemCount: _myTabBar(context: context).length,
+            onWillPop: (context) async => true,
+            screens: screensBottomNavigation,
+            confineInSafeArea: true,
+            backgroundColor: Theme.of(context).cardColor,
+            // Default is Colors.white.
+            handleAndroidBackButtonPress: true,
+            resizeToAvoidBottomInset:
+                controllerSetting.controllerTabIndex == 1 ? true : false,
+            // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+            stateManagement: true,
+            // Default is true.
+            hideNavigationBarWhenKeyboardShows: true,
+            // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+            screenTransitionAnimation: const ScreenTransitionAnimation(
+              // Screen transition animation on change of selected tab.
+              animateTabTransition: true,
+              curve: Curves.ease,
+              duration: Duration(milliseconds: 100),
+            ),
 
-              bottomScreenMargin:
-                  MediaQuery.of(context).viewInsets.bottom == 0 ? null : 0,
-              screens: screensBottomNavigation,
-              confineInSafeArea: true,
-              backgroundColor: Theme.of(context).cardColor,
-              // Default is Colors.white.
-              handleAndroidBackButtonPress: true,
-              resizeToAvoidBottomInset: false,
-              // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-              stateManagement: true,
-              // Default is true.
-              hideNavigationBarWhenKeyboardShows: true,
-              // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-              screenTransitionAnimation: const ScreenTransitionAnimation(
-                // Screen transition animation on change of selected tab.
-                animateTabTransition: true,
-                curve: Curves.ease,
-                duration: Duration(milliseconds: 100),
-              ),
-              customWidget: _CustomNavBarWidget(
-                // Your custom widget goes here
-                items: _myTabBar(
-                  context: context,
-                  selectedIndex: controllerSetting.controllerTabIndex,
-                ),
+            customWidget: _CustomNavBarWidget(
+              // Your custom widget goes here
+              items: _myTabBar(
+                context: context,
                 selectedIndex: controllerSetting.controllerTabIndex,
-                onItemSelected: (index) {
-                  //снять фокус с тектовых полей при переходе
-                  FocusScope.of(context).unfocus();
-                  //инициирую контроллеры
-                  controllerSetting.initializedControllersForPage(
-                      indexPage: index);
-
-                  controllerSetting.changeBodyPageForIndex(indexPage: index);
-                  print("onItemSelected $index");
-                },
               ),
+              selectedIndex: controllerSetting.controllerTabIndex,
+              onItemSelected: (index) {
+                //снять фокус с тектовых полей при переходе
+                FocusScope.of(context).unfocus();
+                //инициирую контроллеры
+                controllerSetting.initializedControllersForPage(
+                    indexPage: index);
+
+                controllerSetting.changeBodyPageForIndex(indexPage: index);
+                print("onItemSelected $index");
+              },
             ),
           ),
         );
@@ -112,41 +95,37 @@ class _CustomNavBarWidget extends StatelessWidget {
     required this.selectedIndex,
     required this.items,
     required this.onItemSelected,
-  });
+  }) : super(key: key);
 
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
       {required BuildContext context}) {
-    return Container(
-      alignment: Alignment.center,
-      height: 55.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Flexible(
-            child: item.icon,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Material(
-              type: MaterialType.transparency,
-              child: FittedBox(
-                child: Text(
-                  item.title.toString(),
-                  style: myTextStyleFontUbuntu(
-                    fontSize: 12,
-                    context: context,
-                    textColor: isSelected
-                        ? myColorIsActive
-                        : Theme.of(context).textTheme.headline1!.color,
-                  ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Flexible(
+          child: item.icon,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5.0),
+          child: Material(
+            type: MaterialType.transparency,
+            child: FittedBox(
+              child: Text(
+                item.title.toString(),
+                style: myTextStyleFontUbuntu(
+                  fontSize: 12,
+                  context: context,
+                  textColor: isSelected
+                      ? myColorIsActive
+                      : Theme.of(context).textTheme.headline1!.color,
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

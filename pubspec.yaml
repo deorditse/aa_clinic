@@ -24,6 +24,7 @@ dependencies:
     path: lib/packages/model
   style_app:
     path: lib/packages/style_app
+  socket_io_client: ^2.0.0
 
   #  dio: ^4.0.6
   http: ^0.13.5

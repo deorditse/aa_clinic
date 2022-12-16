@@ -15,12 +15,13 @@ class CalendarUserChatData {
   Future<Map<String, Map<String, int>>> getMonthlyCalendarMarksData({
     required String accessToken,
     required DateTime dateMark,
-    required String userId,
+    required String specialistId,
   }) async {
     try {
       final queryParameters = {'date': "${dateMark.year}-${dateMark.month}"};
       Uri url = urlMain(
-        urlPath: 'api/specialistReceptionSchedule/monthlyCalendarMarks/$userId',
+        urlPath:
+            'api/specialistReceptionSchedule/monthlyCalendarMarks/$specialistId',
         queryParameters: queryParameters,
       );
 
@@ -30,23 +31,27 @@ class CalendarUserChatData {
 
       print(
           'Response status from getMonthlyCalendarMarksData: ${response.statusCode}');
-      log('getMonthlyCalendarMarksData ${response.body}');
+      log('getMonthlyCalendarMarksData ${jsonDecode(response.body)}');
       if (response.statusCode == 200) {
         Map<String, dynamic> data = await jsonDecode(response.body);
-
         Map<String, Map<String, int>> _res = {};
 
         ///{'dateTime : {total : num, free : num}}
         ///total Количество всех окон специалиста на этот день
         ///free Количество свободных окон специалиста на этот день
-        data.forEach(
-          (key, value) {
-            if ((value != null) && (value != 0) && (value != '0')) {
-              DateTime _date = DateTime.parse(key);
-              _res["${_date.year}-${_date.month}-${_date.day}"] = value;
-            }
-          },
-        );
+        data.forEach((keyTime, value) {
+          final int total = data[keyTime]["total"];
+          if ((total != 0) && (total != '0')) {
+            print(total);
+            DateTime _date = DateTime.parse(keyTime);
+
+            _res["${_date.year}-${_date.month}-${_date.day}"] = {
+              "total": data[keyTime]["total"],
+              "free": data[keyTime]["free"],
+            };
+          }
+        });
+
         log(_res.toString());
         return _res;
       } else {

@@ -18,17 +18,17 @@ class SettingPageData {
     required String? accessToken,
   }) {
     socket = IO.io(
-        'http://$urlMainApiConst',
-        IO.OptionBuilder().setTransports(['websocket']).setAuth(
-            {"token": accessToken}).build());
+      urlForSocket,
+      IO.OptionBuilder()
+          .setTransports(['websocket']).setAuth({"token": accessToken}).build(),
+    );
     socket?.on(
-        'connected',
-        (data) => {
-              print("Socket for RTC connected successfully"),
-              print(data),
-              socketIOAvailable = true
-            });
-
+      'connected',
+      (data) => {print(data), socketIOAvailable = true},
+    );
+    socket?.onConnectError((data) {
+      print(data);
+    });
     socket?.onError((data) => {
           print(data),
           socketIOAvailable = false,

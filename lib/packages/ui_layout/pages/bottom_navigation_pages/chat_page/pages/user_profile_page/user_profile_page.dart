@@ -17,19 +17,23 @@ class UserProfilePage extends StatelessWidget {
     Key? key,
     this.avatar,
     this.isSvgImage = false,
+    this.specialistId,
   }) : super(key: key);
   final String? avatar;
+  final String? specialistId;
   final bool isSvgImage;
 
   static goToUserProfilePage({
     required BuildContext context,
     required String? avatar,
+    required String specialistId,
     bool isSvgImage = false,
   }) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: RouteSettings(name: UserProfilePage.id),
         screen: UserProfilePage(
+          specialistId: specialistId,
           avatar: avatar,
           isSvgImage: isSvgImage,
         ),
@@ -45,6 +49,7 @@ class UserProfilePage extends StatelessWidget {
       titleAppBar: 'User Profile',
       widgetBody: _MainBodyUserProfilePage(
         imagePath: avatar,
+        specialistId: specialistId!,
         isSvgImage: isSvgImage,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -58,9 +63,11 @@ class _MainBodyUserProfilePage extends StatelessWidget {
     Key? key,
     this.imagePath,
     this.isSvgImage = false,
+    required this.specialistId,
   }) : super(key: key);
   final String? imagePath;
   final bool isSvgImage;
+  final String specialistId;
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +91,8 @@ class _MainBodyUserProfilePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CalendarChatPage(
-                userId: 'todo',
+                specialistId: specialistId,
               ),
-              ///todo userId
               AfterCalendarWidget(),
             ],
           ),

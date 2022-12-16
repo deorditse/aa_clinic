@@ -30,12 +30,13 @@ class ImplementSettingGetXController extends GetxController {
     initializedControllersForPage();
 
     ///инициирую сокет для всего приложения
-    if (ImplementAuthController.instance.userAuthorizedData != null) {
-      _services.socketConnect(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
-    }
+    // if (ImplementAuthController.instance.userAuthorizedData != null) {
+    //   print("инициализация сокета для всего приложения");
+    //   _services.socketConnect(
+    //     accessToken:
+    //         ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    //   );
+    // }
   }
 
   void goToScreenBody({required BodyScreens bodyScreens}) {

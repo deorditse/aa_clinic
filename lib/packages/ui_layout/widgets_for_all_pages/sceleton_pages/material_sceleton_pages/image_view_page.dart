@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 
 void imageViewBottom({
   required BuildContext context,
@@ -13,13 +13,10 @@ void imageViewBottom({
     showBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      // shape: const ContinuousRectangleBorder(),
       builder: (BuildContext context) {
         return PhotoViewGestureDetectorScope(
           axis: Axis.vertical,
           child: PhotoView(
-            // disableGestures: true,
-            // enablePanAlways: true,
             minScale: PhotoViewComputedScale.contained * 1,
             maxScale: PhotoViewComputedScale.contained * 3,
             backgroundDecoration: BoxDecoration(
@@ -30,15 +27,11 @@ void imageViewBottom({
                 ? MemoryImage(
                     uint8ListImageForMemoryImage,
                   )
-                : CachedNetworkImageProvider(imagePathForNetworkImage!)
-                    as ImageProvider,
-
+                : CachedNetworkImageProvider(
+                    imagePathForNetworkImage!,
+                  ) as ImageProvider,
             heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
           ),
         );
       },
     );
-
-
-
-

@@ -24,11 +24,12 @@ class MyMaterialNewPageWithoutBorder extends StatelessWidget {
     this.deleteAppBar = false,
     this.paddingHorizontalContent,
     this.fontSizeAppBar,
-    this.primary,
+    this.primary = false,
     this.subTitle,
     this.myNewMaterialAppBar,
     this.callbackTopRefreshIndicator,
     this.isSafeArea = true,
+    this.resizeToAvoidBottomInset = false,
   }) : super(key: key);
   final bool isSafeArea;
   final Widget? myNewMaterialAppBar;
@@ -44,14 +45,15 @@ class MyMaterialNewPageWithoutBorder extends StatelessWidget {
   final String? imageBackgroundName;
   final bool deleteAppBar;
   final double? fontSizeAppBar;
-  final bool? primary;
+  final bool primary;
   final String? subTitle;
   final Future Function()? callbackTopRefreshIndicator;
+  final bool resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();

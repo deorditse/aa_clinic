@@ -75,9 +75,7 @@ class _CalendarHomePageState extends State<CalendarHomePage> {
 
                         if (_dateMark?["${day.year}-${day.month}-${day.day}"] !=
                             null) {
-                          return [
-                            _dateMark!["${day.year}-${day.month}-${day.day}"]
-                          ];
+                          return [1];
                         } else {
                           return [];
                         }

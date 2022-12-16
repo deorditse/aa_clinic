@@ -22,6 +22,7 @@ export 'src/getx_controllers/other_controller/controller_other_page.dart';
 
 ///home_page_controller
 export 'src/getx_controllers/home_page_controller/home_page_controller.dart';
+export 'src/getx_controllers/home_page_controller/add_new_dish_controller.dart';
 
 ///real_time_call_controller
 export 'src/getx_controllers/real_time_call_controller/real_time_call_controller.dart';

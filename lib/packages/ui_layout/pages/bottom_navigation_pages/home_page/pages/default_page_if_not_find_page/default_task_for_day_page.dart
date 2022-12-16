@@ -89,6 +89,7 @@ class _BodyAddNewEventHomePage extends StatelessWidget {
                                 context: context,
                                 newFontWeight: FontWeight.w500,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Align(

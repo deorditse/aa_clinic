@@ -4,64 +4,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class DocumentWidget extends StatefulWidget {
+class DocumentWidget extends StatelessWidget {
   const DocumentWidget(
       {Key? key, required this.nameDocument, required this.isSendMessage})
       : super(key: key);
-  final String nameDocument;
   final bool isSendMessage;
+  final String nameDocument;
 
-  @override
-  State<DocumentWidget> createState() => _DocumentWidgetState();
-}
-
-class _DocumentWidgetState extends State<DocumentWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: myTopPaddingForContent),
-      child: Align(
-        alignment:
-            widget.isSendMessage ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: Get.width * 0.7,
-          ),
-          decoration: myStyleContainer(
-            context: context,
-            color: Get.isDarkMode
-                ? colorContainerIsDarkMode
-                : colorContainerIsLightkMode,
-          ).copyWith(
-            borderRadius: widget.isSendMessage
-                ? borderRadiusSendMessage()
-                : borderRadiusReceivedMessage(),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(myHorizontalPaddingForContainer),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  widget.nameDocument,
-                  style: myTextStyleFontUbuntu(
-                    textColor: Colors.white,
-                    newFontWeight: FontWeight.w400,
-                    fontSize: 15,
-                    context: context,
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: isSendMessage
+            ? borderRadiusSendMessage()
+            : borderRadiusReceivedMessage(),
+        border: Border.all(width: 1, color: Colors.white.withOpacity(0.2)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(myHorizontalPaddingForContainer),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: Text(
+                nameDocument,
+                style: myTextStyleFontUbuntu(
+                  textColor: Colors.white,
+                  newFontWeight: FontWeight.w400,
+                  fontSize: 15,
+                  context: context,
                 ),
-                SizedBox(
-                  width: myTopPaddingForContent,
-                ),
-                SvgPicture.asset(
-                  'assets/icons/chats/document_icon.svg',
-                  semanticsLabel: 'document',
-                  fit: BoxFit.contain,
-                ),
-              ],
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
+            SvgPicture.asset(
+              'assets/icons/chats/document_icon.svg',
+              semanticsLabel: 'document',
+              fit: BoxFit.contain,
+            ),
+          ],
         ),
       ),
     );

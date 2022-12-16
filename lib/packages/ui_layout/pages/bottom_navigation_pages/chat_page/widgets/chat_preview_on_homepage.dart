@@ -36,14 +36,14 @@ class ChatPreviewOnHomepage extends StatelessWidget {
             ),
             onPressed: () {
               ChatWithUserPage.openChatWithUserPage(
+                specialistId: snapshot.data!.id,
                 context: context,
-                avatarId: snapshot.data?.avatar,
+                avatarId: chat.specialistId,
                 fullName:
                     "${snapshot.data?.lastName?.capitalizeFirst ?? " "} ${snapshot.data?.middleName?.capitalizeFirst ?? " "} ${snapshot.data?.firstName?.capitalizeFirst ?? ""}",
                 chatId: chat.id,
 
                 ///todo:
-                messageId: '',
               );
             },
             child: Row(
@@ -54,6 +54,7 @@ class ChatPreviewOnHomepage extends StatelessWidget {
                   child: photoAndMarker(
                       isHidden: chat.isHidden,
                       context: context,
+                      specialistId: chat.specialistId!,
                       avatar: snapshot.data?.avatar),
                 ),
                 Expanded(
@@ -154,6 +155,7 @@ class ChatPreviewOnHomepage extends StatelessWidget {
   Widget photoAndMarker({
     required BuildContext context,
     required String? avatar,
+    required String specialistId,
     bool? isHidden = false,
   }) {
     return GestureDetector(
@@ -161,6 +163,7 @@ class ChatPreviewOnHomepage extends StatelessWidget {
         UserProfilePage.goToUserProfilePage(
           context: context,
           avatar: avatar,
+          specialistId: specialistId,
         );
       },
       child: FittedBox(

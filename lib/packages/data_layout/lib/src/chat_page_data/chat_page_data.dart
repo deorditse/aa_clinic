@@ -7,6 +7,16 @@ import 'package:http/http.dart' as http;
 import 'package:model/model.dart';
 
 class ChatPageData {
+  void initSocketChat() {
+    SettingPageData.socket?.on(
+      'createChatMessage',
+      (data) {
+        print(data);
+        print('ChatPageData initSocketChat data socket?');
+      },
+    );
+  }
+
   ///для чатов на странице со списком чатов
   Future<List<ChatFindManyModel?>> getChatsData(
       {required String accessToken}) async {
@@ -47,20 +57,14 @@ class ChatPageData {
   ///Route Get messages in chat (and official)
   Future<ChatMessagesModel?> getMessagesInChatData({
     required String accessToken,
-    bool isOfficialChat = false,
+    required bool isOfficialChat,
     required String? chatId,
-    required String? messageId,
     //messageId нужен для получения всех сообщений до определенного сообщения чей id указывается в параметре
   }) async {
     try {
       Uri url = isOfficialChat
           ? urlMain(urlPath: '/api/officialChatMessages')
-          : urlMain(
-              urlPath: 'api/chatMessages/inChat/$chatId',
-              queryParameters: {
-                "messageId": messageId,
-              },
-            );
+          : urlMain(urlPath: 'api/chatMessages/inChat/$chatId');
 
       var response = await http
           .get(url, headers: {"Authorization": "Bearer ${accessToken}"});

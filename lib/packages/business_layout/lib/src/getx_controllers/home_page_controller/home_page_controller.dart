@@ -28,12 +28,12 @@ class HomePageCalendarControllerGetxState extends GetxController {
   Future<void> onInit() async {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
-    await _initializeProfileData();
+    await _initializeHomePageData();
     super.onInit();
   }
 
   ///  инициaлизация данных контроллера
-  Future<void> _initializeProfileData() async {
+  Future<void> _initializeHomePageData() async {
     if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
         null) {
       //инициирую марки задач в календаре
@@ -251,7 +251,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
     });
   }
 
-  ///Роут для отмены календарного события и изменение его на статуса cancel+
+  ///Роут для отмены календарного события и изменение его на статуса cancel +
   Future<void> calendarActionCancel({
     required String targetId,
     required String? cancelReason,
@@ -283,10 +283,27 @@ class HomePageCalendarControllerGetxState extends GetxController {
 
   ///Роут для завершения календарного события и изменение его на статуса done +
   Future<void> calendarActionDone({required String targetId}) async {
-    await _services.calendarActionDoneData(
+    await _services
+        .calendarActionDoneData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       targetId: targetId,
+    )
+        .whenComplete(
+      () async {
+        //обновляю данные на этот день
+        if (mapTargetIdAndCalendarActionsWithId[targetId]?.startedAt != null) {
+          await getDailyCalendarEvents(
+            isUpdate: true,
+            dateDaily: DateTime.parse(
+              mapTargetIdAndCalendarActionsWithId[targetId]!.startedAt!,
+            ),
+          ).whenComplete(() async {
+            //обновляю это событие
+            await getCalendarActionsWithId(targetId: targetId, isUpdate: true);
+          });
+        }
+      },
     );
   }
 
@@ -412,33 +429,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
     }
   }
 
-  ///добавление фото в блюдо для нового календарного события
-  //Map<indexDishCard, File >
-  Map<int, File?> mapIndexDishCardAndPhotoAddDishEnableCard = {};
-
-  void changeListPhotoAddDishEnableCard({
-    required int indexDishCard,
-    File? file,
-    bool isRemoveForIndex = false,
-    bool isRemoveAll = false,
-  }) {
-    if (isRemoveForIndex) {
-      mapIndexDishCardAndPhotoAddDishEnableCard.remove(indexDishCard);
-      update();
-      return;
-    }
-    if (isRemoveAll) {
-      mapIndexDishCardAndPhotoAddDishEnableCard = {};
-      update();
-      return;
-    }
-
-    if (file != null) {
-      mapIndexDishCardAndPhotoAddDishEnableCard[indexDishCard] = file;
-      update();
-      return;
-    }
-  }
 
   ///добавление фото еды в карточку на странице еда
   File? photoFood;

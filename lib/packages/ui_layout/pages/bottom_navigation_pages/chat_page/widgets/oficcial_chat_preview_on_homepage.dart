@@ -36,7 +36,7 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
 
             ///ToDo:
             chatId: 'chatInfo.specialistId!',
-            messageId: null,
+            specialistId: 'non',
           );
         },
         child: Row(

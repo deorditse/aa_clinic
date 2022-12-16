@@ -14,7 +14,7 @@ class ProfilePageData {
     required String accessToken,
   }) async {
     try {
-      Uri url = urlMain(urlPath: '/api/attachments');
+      Uri url = urlMain(urlPath: 'api/attachments');
 
       var request = http.MultipartRequest("POST", url)
         ..headers.addAll({"Authorization": "Bearer ${accessToken}"})

@@ -5,23 +5,51 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 buttonsRowEvents({required BuildContext context, required String targetId}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Color.fromRGBO(224, 121, 114, 1),
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+              Color.fromRGBO(224, 121, 114, 1),
+            ),
           ),
+          onPressed: () {
+            TextEditingController textEditingController =
+                TextEditingController();
+
+            myDefaultDialogYesOrNo(
+              textEditingController: textEditingController,
+              message: 'хотите отменить задачу?',
+              voidCallbackToAccept: () async {
+                await HomePageCalendarControllerGetxState.instance
+                    .calendarActionCancel(
+                  targetId: targetId,
+                  cancelReason: textEditingController.text,
+                );
+              },
+              context: context,
+            );
+          },
+          child: Text('ОТМЕНИТЬ'),
         ),
-        onPressed: () => _submitCancel(context: context, targetId: targetId),
-        child: Text('ОТМЕНИТЬ'),
-      ),
-      ElevatedButton(
-        onPressed: () => _submitSave(targetId: targetId),
-        child: Text('ГОТОВО'),
-      ),
-    ],
+        ElevatedButton(
+          onPressed: () async {
+            myDefaultDialogYesOrNo(
+              message: 'хотите завершить задачу?',
+              voidCallbackToAccept: () async {
+                await HomePageCalendarControllerGetxState.instance
+                    .calendarActionDone(targetId: targetId);
+              },
+              context: context,
+            );
+          },
+          child: Text('ГОТОВО'),
+        ),
+      ],
+    ),
   );
 }
 //
@@ -60,25 +88,3 @@ buttonsRowEvents({required BuildContext context, required String targetId}) {
 //     print('я в ошибке from calendarActionDoneData $error ');
 //   }
 // }
-
-Future<void> _submitSave({required String targetId}) async {
-  await HomePageCalendarControllerGetxState.instance.calendarActionDone(
-    targetId: targetId,
-  );
-}
-
-Future<void> _submitCancel(
-    {required BuildContext context, required String targetId}) async {
-  TextEditingController textEditingController = TextEditingController();
-  myDefaultDialogYesOrNo(
-    textEditingController: textEditingController,
-    message: 'хотите отменить действие?',
-    voidCallbackToAccept: () async {
-      await HomePageCalendarControllerGetxState.instance.calendarActionCancel(
-        targetId: targetId,
-        cancelReason: textEditingController.text,
-      );
-    },
-    context: context,
-  );
-}

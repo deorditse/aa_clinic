@@ -10,11 +10,11 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
-import 'widgets/add_dish_disable_card.dart';
+import 'widgets/button_add_dish_card.dart';
 import 'list_with_dish_card.dart';
 import 'package:http/http.dart' as http;
 
-import 'widgets/add_dish_enable_card.dart';
+import 'widgets/dish_enable_card/dish_enable_card.dart';
 
 class AddNewEventHomePage extends StatelessWidget {
   static const String id = '/addNewEventHomePage';
@@ -49,7 +49,9 @@ class AddNewEventHomePage extends StatelessWidget {
   }
 }
 
-class _BodyAddNewEventHomePage extends StatelessWidget {
+RxSet<int> listIndexWherePhotosNotAdded = <int>{}.obs;
+
+class _BodyAddNewEventHomePage extends StatefulWidget {
   const _BodyAddNewEventHomePage(
       {Key? key, required this.title, required this.description})
       : super(key: key);
@@ -57,56 +59,70 @@ class _BodyAddNewEventHomePage extends StatelessWidget {
   final String title;
   final String? description;
 
+  @override
+  State<_BodyAddNewEventHomePage> createState() =>
+      _BodyAddNewEventHomePageState();
+}
+
+class _BodyAddNewEventHomePageState extends State<_BodyAddNewEventHomePage> {
+  RxString messageInfo = "".obs;
+
   Future<void> _submit({
-    required List<NutriDishModel> listDishes,
+    required List<AddNewDishCardModel> modelDishCardList,
     required String title,
     required String? description,
     required BuildContext context,
   }) async {
     FocusManager.instance.primaryFocus?.unfocus();
-
-    for (var dish in listDishes) {
-      if (dish.file == null) {
-        listIndexWherePhotosNotAdded.add(listDishes.indexOf(dish));
-      }
-    }
+    messageInfo.value = "Проверка данных...";
     Rx<bool> _isAllValidate = false.obs;
 
-    for (var keyForm in listFormKey) {
-      if (keyForm.currentState!.validate()) {
-        keyForm.currentState!.save();
+    for (var modelDish in modelDishCardList) {
+      if (modelDish.globalKeyFormState.currentState!.validate()) {
+        modelDish.globalKeyFormState.currentState!.save();
         _isAllValidate.value = true;
       } else {
         _isAllValidate.value = false;
+        messageInfo.value = "";
+      }
+      if (modelDish.nutriDish.file == null) {
+        listIndexWherePhotosNotAdded.add(modelDishCardList.indexOf(modelDish));
+        messageInfo.value = "";
       }
     }
 
+    List<NutriDishModel> _listDishes = [];
+
     if (listIndexWherePhotosNotAdded.isEmpty && _isAllValidate.value) {
-      for (var dish in listDishes) {
+      messageInfo.value = "Отправка фото на сервер...";
+      for (var dish in modelDishCardList) {
         await ImplementSettingGetXController.instance
             .postStaticFilesAndGetIdImage(
-                fileImage: dish.file!, category: "publicForUsers")
-            .then((coverId) {
-          dish.lifeImage = coverId;
-          dish.image = coverId;
-        });
-      }
-      List<NutriDishModel> _listDishes = [];
+                fileImage: dish.nutriDish.file!, category: "publicForUsers")
+            .then(
+          (coverId) {
+            dish.nutriDish.lifeImage = coverId;
+            dish.nutriDish.image = coverId;
+          },
+        );
 
-      for (var dish in listDishes) {
-        dish.file = null;
-        _listDishes.add(dish);
+        //обнуляю файл
+        dish.nutriDish.file = null;
+        _listDishes.add(dish.nutriDish);
       }
-
+      messageInfo.value = "Завершение загрузки...";
       await HomePageCalendarControllerGetxState.instance.postNutriMeals(
         title: title,
         description: description,
         listDishes: _listDishes,
       );
+
       Navigator.of(context).pop();
       Navigator.of(context).pop();
       //cleat all list
-      changeListAddDishEnableCard();
+      ImplementAddNewDishController.instance
+          .changeListAddDishEnableCard(index: 0);
+      messageInfo.value = "";
     } else {
       Get.snackbar(
         '',
@@ -117,16 +133,22 @@ class _BodyAddNewEventHomePage extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Get.put(ImplementAddNewDishController());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Obx(
-      () {
+    return GetBuilder<ImplementAddNewDishController>(
+      builder: (controllerAddDish) {
         return Stack(
           children: [
             ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               primary: false,
-              itemCount: listAddDishEnableCard.length,
+              itemCount: controllerAddDish.modelDishCardList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,9 +156,9 @@ class _BodyAddNewEventHomePage extends StatelessWidget {
                     Padding(
                       padding:
                           const EdgeInsets.only(bottom: myTopPaddingForContent),
-                      child: listAddDishEnableCard[index],
+                      child: AddDishEnableCard(index: index),
                     ),
-                    if (index == listAddDishEnableCard.length - 1)
+                    if (index == controllerAddDish.modelDishCardList.length - 1)
                       Padding(
                         padding: EdgeInsets.only(bottom: Get.height / 15),
                         child: addDishDisableCard(
@@ -150,17 +172,37 @@ class _BodyAddNewEventHomePage extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 6.0),
-                child: ElevatedButton(
-                  onPressed: () => _submit(
-                    title: title,
-                    description: description,
-                    listDishes: newListDishes,
-                    context: context,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(
+                    () => Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: myTopPaddingForContent,
+                      ),
+                      child: Text(
+                        messageInfo.value,
+                        style: myTextStyleFontUbuntu(
+                            context: context, textColor: myColorIsActive),
+                      ),
+                    ),
                   ),
-                  child: Text('СОХРАНИТЬ'),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _submit(
+                          title: widget.title,
+                          description: widget.description,
+                          context: context,
+                          modelDishCardList:
+                              controllerAddDish.modelDishCardList,
+                        );
+                      },
+                      child: Text('СОХРАНИТЬ'),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
