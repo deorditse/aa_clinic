@@ -41,9 +41,9 @@ Map<String, dynamic> _$$_ArticlesPageModelToJson(
 _$_ArticleModel _$$_ArticleModelFromJson(Map<String, dynamic> json) =>
     _$_ArticleModel(
       id: json['id'] as String,
-      userId: json['userId'] as String,
-      title: json['title'] as String,
-      body: json['body'] as String,
+      userId: json['userId'] as String?,
+      title: json['title'] as String?,
+      body: json['body'] as String?,
       coverFileId: json['coverFileId'] as String?,
       category: json['category'] as String?,
       tags:
@@ -53,7 +53,7 @@ _$_ArticleModel _$$_ArticleModelFromJson(Map<String, dynamic> json) =>
       rate: (json['rate'] as num?)?.toDouble(),
       rejectedReason: json['rejectedReason'] as String?,
       publisherId: json['publisherId'] as String?,
-      publishedAt: json['publishedAt'] as String,
+      publishedAt: json['publishedAt'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
     );

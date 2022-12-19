@@ -1,18 +1,17 @@
-import 'package:aa_clinic/packages/style_app/lib/src/consts_app.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:model/model.dart';
 
 class TopProfileContainer extends StatelessWidget {
   const TopProfileContainer({
     Key? key,
-    this.imagePath,
+    required this.userMinified,
     this.isSvgImage = false,
   }) : super(key: key);
-  final String? imagePath;
+  final UserMinifiedDataIdModel? userMinified;
   final bool isSvgImage;
 
   @override
@@ -32,7 +31,7 @@ class TopProfileContainer extends StatelessWidget {
                 ),
                 _photoUser(
                   context: context,
-                  imagePath: imagePath,
+                  imagePath: userMinified?.avatar,
                   isSvgImage: isSvgImage,
                 ),
               ],
@@ -66,7 +65,7 @@ class TopProfileContainer extends StatelessWidget {
           ),
         ),
         Text(
-          "Kemerova Tatjana Andreevna",
+          "${userMinified?.lastName?.capitalizeFirst ?? " "} ${userMinified?.middleName?.capitalizeFirst ?? " "} ${userMinified?.firstName?.capitalizeFirst ?? ""}",
           style: myTextStyleFontUbuntu(context: context),
         ),
       ],
@@ -79,7 +78,7 @@ class TopProfileContainer extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Психолог",
+          "${userMinified?.specialist ?? "Специалист"}",
           style: myTextStyleFontUbuntu(context: context),
         ),
         Text(
@@ -112,14 +111,9 @@ class TopProfileContainer extends StatelessWidget {
     return Container(
       width: Get.width / 4.5,
       height: Get.width / 4.5,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.circular(6),
-      ),
       child: !isSvgImage && (imagePath != null) && imagePath != ''
           ? ContainerForPhotoFuture(
-              isCircular: true, coverFileId: imagePath, openView: true)
+              borderRadius: 15, coverFileId: imagePath, openView: true)
           : CircleAvatar(
               backgroundColor: Colors.transparent,
               child: SvgPicture.asset(

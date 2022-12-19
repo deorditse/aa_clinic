@@ -14,7 +14,7 @@ class UserMinifiedDataIdModel with _$UserMinifiedDataIdModel {
     String? firstName,
     String? middleName,
     String? avatar,
-    @Default({}) Map<String, String> specialist,
+    String? specialist,
   }) = _UserMinifiedDataIdModel;
 
   factory UserMinifiedDataIdModel.fromJson(Map<String, Object?> json) =>

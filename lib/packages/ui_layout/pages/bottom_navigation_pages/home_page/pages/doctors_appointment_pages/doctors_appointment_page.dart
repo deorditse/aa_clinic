@@ -43,20 +43,22 @@ class DoctorsAppointmentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleDate = abbreviatedTitleDateAppBar(
+    final String titleDate = abbreviatedTitleDateAppBar(
         mySelectedDay:
-            HomePageCalendarControllerGetxState.instance.mySelectedDay);
-
+            HomePageCalendarControllerGetxState.instance.mySelectedDay,
+        isShort: true);
     return MyMaterialNewPageWithoutBorder(
-      titleAppBar: '$titleDate, $title',
+      titleAppBar: '${titleDate}, $title',
       widgetBody: _BodyDoctorsAppointmentPage(targetId: targetId!),
     );
   }
 }
 
 class _BodyDoctorsAppointmentPage extends StatelessWidget {
-  const _BodyDoctorsAppointmentPage({Key? key, required this.targetId})
-      : super(key: key);
+  const _BodyDoctorsAppointmentPage({
+    Key? key,
+    required this.targetId,
+  }) : super(key: key);
   final String targetId;
 
   @override
@@ -69,9 +71,7 @@ class _BodyDoctorsAppointmentPage extends StatelessWidget {
 
           return Column(
             children: [
-              RowWithPhotoAndDataProfile(
-                dataFitnessWorkout: dataAppointment,
-              ),
+              RowWithPhotoAndDataProfile(dataFitnessWorkout: dataAppointment),
               SizedBox(height: myHorizontalPaddingForContainer),
               Divider(
                 indent: 1,
@@ -99,14 +99,19 @@ class _BodyDoctorsAppointmentPage extends StatelessWidget {
 }
 
 class _BodyContentInfo extends StatelessWidget {
-  const _BodyContentInfo(
-      {Key? key, required this.dataFitnessWorkout, required this.targetId})
-      : super(key: key);
+  const _BodyContentInfo({
+    Key? key,
+    required this.dataFitnessWorkout,
+    required this.targetId,
+  }) : super(key: key);
   final String targetId;
   final AppointmentsModel? dataFitnessWorkout;
 
   @override
   Widget build(BuildContext context) {
+    final String titleDate = abbreviatedTitleDateAppBar(
+        mySelectedDay:
+            HomePageCalendarControllerGetxState.instance.mySelectedDay);
     final bool isDataForPage = dataFitnessWorkout != null;
     return Column(
       children: [
@@ -119,44 +124,55 @@ class _BodyContentInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ContainerWithTitleAndInfoMessage(
-                  message: dataFitnessWorkout?.healthComplaint,
+                  message: dataFitnessWorkout?.healthComplaint?.capitalizeFirst,
                   title: "Ваши жалобы на здоровье",
                 ),
                 mySizedHeightBetweenContainer,
                 mySizedHeightBetweenContainer,
-                ContainerWithTitleAndInfoMessage(
-                  message: dataFitnessWorkout?.conclusion,
-                  title: "Заключение",
-                ),
-                mySizedHeightBetweenContainer,
-                mySizedHeightBetweenContainer,
-                Text(
-                  'Рекомендации',
-                  style: myTextStyleFontUbuntu(
-                      context: context, newFontWeight: FontWeight.w500),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: isDataForPage
-                      ? dataFitnessWorkout!.recommendations.length
-                      : 2,
-                  itemBuilder: (context, index) {
-                    return ContainerWithTitleAndInfoMessage(
-                      message: dataFitnessWorkout?.recommendations[index],
-                    );
-                  },
-                ),
+                if (dataFitnessWorkout?.status == 1 ||
+                    dataFitnessWorkout?.status == 0)
+                  ContainerWithTitleAndInfoMessage(
+                    message:
+                        'Время приема с ${dataFitnessWorkout?.startedAt != null ? DateFormat.Hm().format(DateTime.parse(dataFitnessWorkout!.startedAt!)) : ""} ${dataFitnessWorkout?.finishedAt != null ? "по ${DateFormat.Hm().format(DateTime.parse(dataFitnessWorkout!.finishedAt!))}" : ""}, ${titleDate.toLowerCase()}',
+                    title: "Вы записаны на прием",
+                  ),
+                if (dataFitnessWorkout?.status == 2)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ContainerWithTitleAndInfoMessage(
+                        message: dataFitnessWorkout?.conclusion,
+                        title: "Заключение",
+                      ),
+                      mySizedHeightBetweenContainer,
+                      mySizedHeightBetweenContainer,
+                      Text(
+                        'Рекомендации',
+                        style: myTextStyleFontUbuntu(
+                            context: context, newFontWeight: FontWeight.w500),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: isDataForPage
+                            ? dataFitnessWorkout!.recommendations.length
+                            : 2,
+                        itemBuilder: (context, index) {
+                          return ContainerWithTitleAndInfoMessage(
+                            message: dataFitnessWorkout?.recommendations[index],
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                else if (dataFitnessWorkout?.status == (-1))
+                  ContainerWithTitleAndInfoMessage(
+                    message: dataFitnessWorkout?.cancelReason,
+                    title: "Причина отмены",
+                  ),
               ],
             ),
           ),
-        ),
-        TextButton(
-          onPressed: () {
-            VideoChatWithPsychologistPage.openVideoChatWithPsychologistPage(
-                context: context);
-          },
-          child: Text('тест звонка'),
         ),
         if (isDataForPage)
           //0 - requested, 1 - planning, 2 - done, -1 - canceled
@@ -174,7 +190,6 @@ class _BodyContentInfo extends StatelessWidget {
                           ? buttonAlertMessage(
                               context: context,
                               message: 'Прием отменен',
-                              isDone: true,
                             )
                           : Container(),
       ],
@@ -207,7 +222,7 @@ class _BodyContentInfo extends StatelessWidget {
               },
             );
           },
-          child: Text('ОТМЕНИТЬ'),
+          child: Text('ОТМЕНИТЬ ПРИЕМ'),
         ),
         mySizedHeightBetweenContainer,
       ],

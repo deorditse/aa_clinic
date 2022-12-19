@@ -113,10 +113,18 @@ Map<String, dynamic> _$$_FitnessGenericWorkoutExerciseObjectToJson(
 _$_ApproachObjectsConsisting _$$_ApproachObjectsConsistingFromJson(
         Map<String, dynamic> json) =>
     _$_ApproachObjectsConsisting(
-      target: DescriptionApproachObjectsConsisting.fromJson(
-          json['target'] as Map<String, dynamic>),
-      real: DescriptionApproachObjectsConsisting.fromJson(
-          json['real'] as Map<String, dynamic>),
+      target: (json['target'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            TargetObjectsDescriptionApproachObjectsConsisting.fromJson(
+                e as Map<String, dynamic>)),
+      ),
+      real: (json['real'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            TargetObjectsDescriptionApproachObjectsConsisting.fromJson(
+                e as Map<String, dynamic>)),
+      ),
       startedAt: json['startedAt'] as String?,
       finishedAt: json['finishedAt'] as String?,
       comment: json['comment'] as String?,
@@ -132,20 +140,6 @@ Map<String, dynamic> _$$_ApproachObjectsConsistingToJson(
       'finishedAt': instance.finishedAt,
       'comment': instance.comment,
       'restTime': instance.restTime,
-    };
-
-_$_DescriptionApproachObjectsConsisting
-    _$$_DescriptionApproachObjectsConsistingFromJson(
-            Map<String, dynamic> json) =>
-        _$_DescriptionApproachObjectsConsisting(
-          duration: TargetObjectsDescriptionApproachObjectsConsisting.fromJson(
-              json['duration'] as Map<String, dynamic>),
-        );
-
-Map<String, dynamic> _$$_DescriptionApproachObjectsConsistingToJson(
-        _$_DescriptionApproachObjectsConsisting instance) =>
-    <String, dynamic>{
-      'duration': instance.duration,
     };
 
 _$_TargetObjectsDescriptionApproachObjectsConsisting

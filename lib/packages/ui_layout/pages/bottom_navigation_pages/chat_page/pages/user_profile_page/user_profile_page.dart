@@ -6,35 +6,31 @@ import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_page
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-
+import 'package:model/model.dart';
 import 'calendar_in_profile_chat_page/calendar.dart';
-import 'widgets/after_calendar_widget.dart';
+import 'widgets/after_calendar_widget/after_calendar_widget.dart';
 
 class UserProfilePage extends StatelessWidget {
   static const String id = '/userProfilePage';
 
   const UserProfilePage({
     Key? key,
-    this.avatar,
     this.isSvgImage = false,
-    this.specialistId,
+    this.userMinified,
   }) : super(key: key);
-  final String? avatar;
-  final String? specialistId;
   final bool isSvgImage;
+  final UserMinifiedDataIdModel? userMinified;
 
   static goToUserProfilePage({
+    required UserMinifiedDataIdModel? userMinified,
     required BuildContext context,
-    required String? avatar,
-    required String specialistId,
     bool isSvgImage = false,
   }) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: RouteSettings(name: UserProfilePage.id),
         screen: UserProfilePage(
-          specialistId: specialistId,
-          avatar: avatar,
+          userMinified: userMinified,
           isSvgImage: isSvgImage,
         ),
         withNavBar: true,
@@ -46,11 +42,11 @@ class UserProfilePage extends StatelessWidget {
     Get.put(ImplementationCalendarEventsChatPage());
     return MySliverNewPageWithoutBorder(
       deleteAppBar: true,
+      primary: true,
       titleAppBar: 'User Profile',
       widgetBody: _MainBodyUserProfilePage(
-        imagePath: avatar,
-        specialistId: specialistId!,
         isSvgImage: isSvgImage,
+        userMinified: userMinified,
       ),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       imageBackgroundName: '',
@@ -61,13 +57,11 @@ class UserProfilePage extends StatelessWidget {
 class _MainBodyUserProfilePage extends StatelessWidget {
   const _MainBodyUserProfilePage({
     Key? key,
-    this.imagePath,
+    required this.userMinified,
     this.isSvgImage = false,
-    required this.specialistId,
   }) : super(key: key);
-  final String? imagePath;
+  final UserMinifiedDataIdModel? userMinified;
   final bool isSvgImage;
-  final String specialistId;
 
   @override
   Widget build(BuildContext context) {
@@ -80,22 +74,28 @@ class _MainBodyUserProfilePage extends StatelessWidget {
           height: Get.height / 5,
           width: double.infinity,
           child: TopProfileContainer(
-            imagePath: imagePath,
             isSvgImage: isSvgImage,
+            userMinified: userMinified,
           ),
         ),
         mySizedHeightBetweenContainer,
         Container(
           decoration: myStyleContainer(context: context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CalendarChatPage(
-                specialistId: specialistId,
-              ),
-              AfterCalendarWidget(),
-            ],
-          ),
+          child: userMinified != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CalendarChatPage(
+                      specialistId: userMinified!.id,
+                    ),
+                    AfterCalendarWidget(
+                      specialistId: userMinified!.id,
+                    ),
+                  ],
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                ),
         ),
         mySizedHeightBetweenContainer,
       ],

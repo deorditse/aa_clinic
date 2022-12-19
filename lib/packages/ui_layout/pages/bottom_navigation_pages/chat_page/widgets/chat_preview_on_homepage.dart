@@ -7,10 +7,10 @@ import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_ef
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
+import 'package:model/model.dart';
 
 class ChatPreviewOnHomepage extends StatelessWidget {
   const ChatPreviewOnHomepage({
@@ -36,14 +36,9 @@ class ChatPreviewOnHomepage extends StatelessWidget {
             ),
             onPressed: () {
               ChatWithUserPage.openChatWithUserPage(
-                specialistId: snapshot.data!.id,
                 context: context,
-                avatarId: chat.specialistId,
-                fullName:
-                    "${snapshot.data?.lastName?.capitalizeFirst ?? " "} ${snapshot.data?.middleName?.capitalizeFirst ?? " "} ${snapshot.data?.firstName?.capitalizeFirst ?? ""}",
                 chatId: chat.id,
-
-                ///todo:
+                userMinified: snapshot.data,
               );
             },
             child: Row(
@@ -52,10 +47,10 @@ class ChatPreviewOnHomepage extends StatelessWidget {
               children: [
                 Expanded(
                   child: photoAndMarker(
-                      isHidden: chat.isHidden,
-                      context: context,
-                      specialistId: chat.specialistId!,
-                      avatar: snapshot.data?.avatar),
+                    isHidden: chat.isHidden,
+                    context: context,
+                    userMinified: snapshot.data,
+                  ),
                 ),
                 Expanded(
                   flex: 6,
@@ -154,17 +149,17 @@ class ChatPreviewOnHomepage extends StatelessWidget {
 
   Widget photoAndMarker({
     required BuildContext context,
-    required String? avatar,
-    required String specialistId,
+    required UserMinifiedDataIdModel? userMinified,
     bool? isHidden = false,
   }) {
     return GestureDetector(
       onTap: () {
-        UserProfilePage.goToUserProfilePage(
-          context: context,
-          avatar: avatar,
-          specialistId: specialistId,
-        );
+        if (userMinified != null) {
+          UserProfilePage.goToUserProfilePage(
+            context: context,
+            userMinified: userMinified,
+          );
+        }
       },
       child: FittedBox(
         child: Stack(
@@ -175,10 +170,10 @@ class ChatPreviewOnHomepage extends StatelessWidget {
                   .headline3!
                   .color!
                   .withOpacity(0.1),
-              child: avatar != null
+              child: userMinified?.avatar != null
                   ? ContainerForPhotoFuture(
                       isCircular: true,
-                      coverFileId: avatar,
+                      coverFileId: userMinified!.avatar,
                     )
                   : Icon(
                       Icons.person,

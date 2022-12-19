@@ -35,9 +35,8 @@ class MessageWidget extends StatelessWidget {
                 vertical: myHorizontalPaddingForContainer,
               ),
               child: Text(
-                "padding: const EdgeInsets.symmetric  padding: const EdgeInsets.symmetric  padding: const EdgeInsets.symmetric",
 
-                // chatMessage.text!.capitalizeFirst!,
+                chatMessage.text!.capitalizeFirst!,
                 style: myTextStyleFontUbuntu(
                   textColor: Colors.white,
                   newFontWeight: FontWeight.w400,

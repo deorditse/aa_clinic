@@ -411,14 +411,10 @@ WorkoutObject _$WorkoutObjectFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$WorkoutObject {
-// Fitness Generic Workout Exercise object
   FitnessGenericWorkoutExerciseObject? get generic =>
       throw _privateConstructorUsedError;
-
-  ///todo добавить для динамической модели еще однно поле
-//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   List<ApproachObjectsConsisting?> get sets =>
-      throw _privateConstructorUsedError; //percentage of fulfillment
+      throw _privateConstructorUsedError;
   int get fulfillment => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -549,16 +545,9 @@ class _$_WorkoutObject implements _WorkoutObject {
   factory _$_WorkoutObject.fromJson(Map<String, dynamic> json) =>
       _$$_WorkoutObjectFromJson(json);
 
-// Fitness Generic Workout Exercise object
   @override
   final FitnessGenericWorkoutExerciseObject? generic;
-
-  ///todo добавить для динамической модели еще однно поле
-//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   final List<ApproachObjectsConsisting?> _sets;
-
-  ///todo добавить для динамической модели еще однно поле
-//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   @override
   @JsonKey()
   List<ApproachObjectsConsisting?> get sets {
@@ -567,7 +556,6 @@ class _$_WorkoutObject implements _WorkoutObject {
     return EqualUnmodifiableListView(_sets);
   }
 
-//percentage of fulfillment
   @override
   @JsonKey()
   final int fulfillment;
@@ -616,14 +604,11 @@ abstract class _WorkoutObject implements WorkoutObject {
   factory _WorkoutObject.fromJson(Map<String, dynamic> json) =
       _$_WorkoutObject.fromJson;
 
-  @override // Fitness Generic Workout Exercise object
+  @override
   FitnessGenericWorkoutExerciseObject? get generic;
   @override
-
-  ///todo добавить для динамической модели еще однно поле
-//an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
   List<ApproachObjectsConsisting?> get sets;
-  @override //percentage of fulfillment
+  @override
   int get fulfillment;
   @override
   @JsonKey(ignore: true)
@@ -1035,14 +1020,14 @@ ApproachObjectsConsisting _$ApproachObjectsConsistingFromJson(
 
 /// @nodoc
 mixin _$ApproachObjectsConsisting {
-  DescriptionApproachObjectsConsisting get target =>
-      throw _privateConstructorUsedError;
-  DescriptionApproachObjectsConsisting get real =>
+//DescriptionApproachObjectsConsisting
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target =>
+      throw _privateConstructorUsedError; //DescriptionApproachObjectsConsisting
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real =>
       throw _privateConstructorUsedError;
   String? get startedAt => throw _privateConstructorUsedError;
   String? get finishedAt => throw _privateConstructorUsedError;
-  String? get comment =>
-      throw _privateConstructorUsedError; //rest time in seconds
+  String? get comment => throw _privateConstructorUsedError;
   int? get restTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1058,15 +1043,12 @@ abstract class $ApproachObjectsConsistingCopyWith<$Res> {
       _$ApproachObjectsConsistingCopyWithImpl<$Res, ApproachObjectsConsisting>;
   @useResult
   $Res call(
-      {DescriptionApproachObjectsConsisting target,
-      DescriptionApproachObjectsConsisting real,
+      {Map<String, TargetObjectsDescriptionApproachObjectsConsisting> target,
+      Map<String, TargetObjectsDescriptionApproachObjectsConsisting> real,
       String? startedAt,
       String? finishedAt,
       String? comment,
       int? restTime});
-
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get target;
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get real;
 }
 
 /// @nodoc
@@ -1094,11 +1076,11 @@ class _$ApproachObjectsConsistingCopyWithImpl<$Res,
       target: null == target
           ? _value.target
           : target // ignore: cast_nullable_to_non_nullable
-              as DescriptionApproachObjectsConsisting,
+              as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       real: null == real
           ? _value.real
           : real // ignore: cast_nullable_to_non_nullable
-              as DescriptionApproachObjectsConsisting,
+              as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -1117,24 +1099,6 @@ class _$ApproachObjectsConsistingCopyWithImpl<$Res,
               as int?,
     ) as $Val);
   }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get target {
-    return $DescriptionApproachObjectsConsistingCopyWith<$Res>(_value.target,
-        (value) {
-      return _then(_value.copyWith(target: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get real {
-    return $DescriptionApproachObjectsConsistingCopyWith<$Res>(_value.real,
-        (value) {
-      return _then(_value.copyWith(real: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -1147,17 +1111,12 @@ abstract class _$$_ApproachObjectsConsistingCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {DescriptionApproachObjectsConsisting target,
-      DescriptionApproachObjectsConsisting real,
+      {Map<String, TargetObjectsDescriptionApproachObjectsConsisting> target,
+      Map<String, TargetObjectsDescriptionApproachObjectsConsisting> real,
       String? startedAt,
       String? finishedAt,
       String? comment,
       int? restTime});
-
-  @override
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get target;
-  @override
-  $DescriptionApproachObjectsConsistingCopyWith<$Res> get real;
 }
 
 /// @nodoc
@@ -1182,13 +1141,13 @@ class __$$_ApproachObjectsConsistingCopyWithImpl<$Res>
   }) {
     return _then(_$_ApproachObjectsConsisting(
       target: null == target
-          ? _value.target
+          ? _value._target
           : target // ignore: cast_nullable_to_non_nullable
-              as DescriptionApproachObjectsConsisting,
+              as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       real: null == real
-          ? _value.real
+          ? _value._real
           : real // ignore: cast_nullable_to_non_nullable
-              as DescriptionApproachObjectsConsisting,
+              as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -1213,27 +1172,48 @@ class __$$_ApproachObjectsConsistingCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
   const _$_ApproachObjectsConsisting(
-      {required this.target,
-      required this.real,
+      {required final Map<String,
+              TargetObjectsDescriptionApproachObjectsConsisting>
+          target,
+      required final Map<String,
+              TargetObjectsDescriptionApproachObjectsConsisting>
+          real,
       this.startedAt,
       this.finishedAt,
       this.comment,
-      this.restTime});
+      this.restTime})
+      : _target = target,
+        _real = real;
 
   factory _$_ApproachObjectsConsisting.fromJson(Map<String, dynamic> json) =>
       _$$_ApproachObjectsConsistingFromJson(json);
 
+//DescriptionApproachObjectsConsisting
+  final Map<String, TargetObjectsDescriptionApproachObjectsConsisting> _target;
+//DescriptionApproachObjectsConsisting
   @override
-  final DescriptionApproachObjectsConsisting target;
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target {
+    if (_target is EqualUnmodifiableMapView) return _target;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_target);
+  }
+
+//DescriptionApproachObjectsConsisting
+  final Map<String, TargetObjectsDescriptionApproachObjectsConsisting> _real;
+//DescriptionApproachObjectsConsisting
   @override
-  final DescriptionApproachObjectsConsisting real;
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real {
+    if (_real is EqualUnmodifiableMapView) return _real;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_real);
+  }
+
   @override
   final String? startedAt;
   @override
   final String? finishedAt;
   @override
   final String? comment;
-//rest time in seconds
   @override
   final int? restTime;
 
@@ -1247,8 +1227,8 @@ class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ApproachObjectsConsisting &&
-            (identical(other.target, target) || other.target == target) &&
-            (identical(other.real, real) || other.real == real) &&
+            const DeepCollectionEquality().equals(other._target, _target) &&
+            const DeepCollectionEquality().equals(other._real, _real) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
             (identical(other.finishedAt, finishedAt) ||
@@ -1261,7 +1241,13 @@ class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, target, real, startedAt, finishedAt, comment, restTime);
+      runtimeType,
+      const DeepCollectionEquality().hash(_target),
+      const DeepCollectionEquality().hash(_real),
+      startedAt,
+      finishedAt,
+      comment,
+      restTime);
 
   @JsonKey(ignore: true)
   @override
@@ -1280,8 +1266,12 @@ class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
 
 abstract class _ApproachObjectsConsisting implements ApproachObjectsConsisting {
   const factory _ApproachObjectsConsisting(
-      {required final DescriptionApproachObjectsConsisting target,
-      required final DescriptionApproachObjectsConsisting real,
+      {required final Map<String,
+              TargetObjectsDescriptionApproachObjectsConsisting>
+          target,
+      required final Map<String,
+              TargetObjectsDescriptionApproachObjectsConsisting>
+          real,
       final String? startedAt,
       final String? finishedAt,
       final String? comment,
@@ -1290,198 +1280,21 @@ abstract class _ApproachObjectsConsisting implements ApproachObjectsConsisting {
   factory _ApproachObjectsConsisting.fromJson(Map<String, dynamic> json) =
       _$_ApproachObjectsConsisting.fromJson;
 
-  @override
-  DescriptionApproachObjectsConsisting get target;
-  @override
-  DescriptionApproachObjectsConsisting get real;
+  @override //DescriptionApproachObjectsConsisting
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target;
+  @override //DescriptionApproachObjectsConsisting
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real;
   @override
   String? get startedAt;
   @override
   String? get finishedAt;
   @override
   String? get comment;
-  @override //rest time in seconds
+  @override
   int? get restTime;
   @override
   @JsonKey(ignore: true)
   _$$_ApproachObjectsConsistingCopyWith<_$_ApproachObjectsConsisting>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-DescriptionApproachObjectsConsisting
-    _$DescriptionApproachObjectsConsistingFromJson(Map<String, dynamic> json) {
-  return _DescriptionApproachObjectsConsisting.fromJson(json);
-}
-
-/// @nodoc
-mixin _$DescriptionApproachObjectsConsisting {
-  ///тут могут быть разные поля duration
-// Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
-  TargetObjectsDescriptionApproachObjectsConsisting get duration =>
-      throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $DescriptionApproachObjectsConsistingCopyWith<
-          DescriptionApproachObjectsConsisting>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DescriptionApproachObjectsConsistingCopyWith<$Res> {
-  factory $DescriptionApproachObjectsConsistingCopyWith(
-          DescriptionApproachObjectsConsisting value,
-          $Res Function(DescriptionApproachObjectsConsisting) then) =
-      _$DescriptionApproachObjectsConsistingCopyWithImpl<$Res,
-          DescriptionApproachObjectsConsisting>;
-  @useResult
-  $Res call({TargetObjectsDescriptionApproachObjectsConsisting duration});
-
-  $TargetObjectsDescriptionApproachObjectsConsistingCopyWith<$Res> get duration;
-}
-
-/// @nodoc
-class _$DescriptionApproachObjectsConsistingCopyWithImpl<$Res,
-        $Val extends DescriptionApproachObjectsConsisting>
-    implements $DescriptionApproachObjectsConsistingCopyWith<$Res> {
-  _$DescriptionApproachObjectsConsistingCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? duration = null,
-  }) {
-    return _then(_value.copyWith(
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as TargetObjectsDescriptionApproachObjectsConsisting,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $TargetObjectsDescriptionApproachObjectsConsistingCopyWith<$Res>
-      get duration {
-    return $TargetObjectsDescriptionApproachObjectsConsistingCopyWith<$Res>(
-        _value.duration, (value) {
-      return _then(_value.copyWith(duration: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$_DescriptionApproachObjectsConsistingCopyWith<$Res>
-    implements $DescriptionApproachObjectsConsistingCopyWith<$Res> {
-  factory _$$_DescriptionApproachObjectsConsistingCopyWith(
-          _$_DescriptionApproachObjectsConsisting value,
-          $Res Function(_$_DescriptionApproachObjectsConsisting) then) =
-      __$$_DescriptionApproachObjectsConsistingCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({TargetObjectsDescriptionApproachObjectsConsisting duration});
-
-  @override
-  $TargetObjectsDescriptionApproachObjectsConsistingCopyWith<$Res> get duration;
-}
-
-/// @nodoc
-class __$$_DescriptionApproachObjectsConsistingCopyWithImpl<$Res>
-    extends _$DescriptionApproachObjectsConsistingCopyWithImpl<$Res,
-        _$_DescriptionApproachObjectsConsisting>
-    implements _$$_DescriptionApproachObjectsConsistingCopyWith<$Res> {
-  __$$_DescriptionApproachObjectsConsistingCopyWithImpl(
-      _$_DescriptionApproachObjectsConsisting _value,
-      $Res Function(_$_DescriptionApproachObjectsConsisting) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? duration = null,
-  }) {
-    return _then(_$_DescriptionApproachObjectsConsisting(
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as TargetObjectsDescriptionApproachObjectsConsisting,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_DescriptionApproachObjectsConsisting
-    implements _DescriptionApproachObjectsConsisting {
-  const _$_DescriptionApproachObjectsConsisting({required this.duration});
-
-  factory _$_DescriptionApproachObjectsConsisting.fromJson(
-          Map<String, dynamic> json) =>
-      _$$_DescriptionApproachObjectsConsistingFromJson(json);
-
-  ///тут могут быть разные поля duration
-// Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
-  @override
-  final TargetObjectsDescriptionApproachObjectsConsisting duration;
-
-  @override
-  String toString() {
-    return 'DescriptionApproachObjectsConsisting(duration: $duration)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_DescriptionApproachObjectsConsisting &&
-            (identical(other.duration, duration) ||
-                other.duration == duration));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, duration);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_DescriptionApproachObjectsConsistingCopyWith<
-          _$_DescriptionApproachObjectsConsisting>
-      get copyWith => __$$_DescriptionApproachObjectsConsistingCopyWithImpl<
-          _$_DescriptionApproachObjectsConsisting>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_DescriptionApproachObjectsConsistingToJson(
-      this,
-    );
-  }
-}
-
-abstract class _DescriptionApproachObjectsConsisting
-    implements DescriptionApproachObjectsConsisting {
-  const factory _DescriptionApproachObjectsConsisting(
-      {required final TargetObjectsDescriptionApproachObjectsConsisting
-          duration}) = _$_DescriptionApproachObjectsConsisting;
-
-  factory _DescriptionApproachObjectsConsisting.fromJson(
-          Map<String, dynamic> json) =
-      _$_DescriptionApproachObjectsConsisting.fromJson;
-
-  @override
-
-  ///тут могут быть разные поля duration
-// Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
-  TargetObjectsDescriptionApproachObjectsConsisting get duration;
-  @override
-  @JsonKey(ignore: true)
-  _$$_DescriptionApproachObjectsConsistingCopyWith<
-          _$_DescriptionApproachObjectsConsisting>
       get copyWith => throw _privateConstructorUsedError;
 }
 

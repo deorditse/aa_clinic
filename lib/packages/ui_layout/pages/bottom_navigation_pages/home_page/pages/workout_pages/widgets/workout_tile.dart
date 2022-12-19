@@ -18,7 +18,9 @@ class WorkoutCard extends StatelessWidget {
     return TextButton(
       onPressed: () {
         WorkoutProgressPage.openWorkoutProgressPage(
-            context: context, workoutObject: workoutObject);
+          context: context,
+          workoutObject: workoutObject,
+        );
       },
       style: ButtonStyle(
         padding: MaterialStateProperty.all(
@@ -29,20 +31,12 @@ class WorkoutCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Container(
-              decoration: myStyleContainer(context: context),
-              clipBehavior: Clip.hardEdge,
+            child: SizedBox(
               height: Get.height / 10,
-              width: double.maxFinite,
-              child: (fitnessGenericWorkoutExerciseObject?.image != null ||
-                      fitnessGenericWorkoutExerciseObject?.image != '')
-                  ? ContainerForPhotoFuture(
-                      coverFileId: fitnessGenericWorkoutExerciseObject!.image!,
-                    )
-                  : const Icon(
-                      Icons.no_photography_outlined,
-                      color: myColorIsActive,
-                    ),
+              child: ContainerForPhotoFuture(
+                coverFileId: fitnessGenericWorkoutExerciseObject?.image,
+                borderRadius: 15,
+              ),
             ),
           ),
           SizedBox(
@@ -59,7 +53,7 @@ class WorkoutCard extends StatelessWidget {
                 ),
                 mySizedHeightBetweenContainer,
                 Text(
-                  '${workoutObject.sets.length} подходов',
+                  'Подходов: ${workoutObject.sets.length} ',
                   style: myTextStyleFontUbuntu(
                       textColor: Theme.of(context).textTheme.headline3!.color,
                       context: context),

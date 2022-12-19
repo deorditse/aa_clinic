@@ -14,10 +14,7 @@ _$_UserMinifiedDataIdModel _$$_UserMinifiedDataIdModelFromJson(
       firstName: json['firstName'] as String?,
       middleName: json['middleName'] as String?,
       avatar: json['avatar'] as String?,
-      specialist: (json['specialist'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, e as String),
-          ) ??
-          const {},
+      specialist: json['specialist'] as String?,
     );
 
 Map<String, dynamic> _$$_UserMinifiedDataIdModelToJson(

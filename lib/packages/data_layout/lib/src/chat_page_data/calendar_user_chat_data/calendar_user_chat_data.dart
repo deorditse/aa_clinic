@@ -72,4 +72,96 @@ class CalendarUserChatData {
     }
     return {};
   }
+
+
+  ///получение событий выбранной даты +
+  Future<List<DailyReceptionScheduleEventModel?>> getDailyCalendarEventsData(
+      {required String accessToken,
+        required DateTime dateDaily,
+        required String specialistId}) async {
+    try {
+      final queryParameters = {
+        'date': '${dateDaily.year}-${dateDaily.month}-${dateDaily.day}',
+      };
+      Uri url = urlMain(
+          urlPath:
+          'api/specialistReceptionSchedule/dailyReceptionScheduleEvent/$specialistId',
+          queryParameters: queryParameters);
+
+      var response = await http
+          .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
+
+      print(
+          'Response status from getDailyCalendarEventsData: ${response.statusCode}');
+      log('getDailyCalendarEventsData ${response.body}');
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        List<DailyReceptionScheduleEventModel?> listMapDailyCalendarEventsModel =
+        data
+            .map<DailyReceptionScheduleEventModel?>((dailyEvent) =>
+            DailyReceptionScheduleEventModel.fromJson(
+                Map<String, dynamic>.from(dailyEvent)))
+            .toList();
+        print(listMapDailyCalendarEventsModel);
+        return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+        return [];
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error daily events:$error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from getDailyCalendarEventsData $error ');
+    }
+    return [];
+  }
+
+  ///Роут для записи на приём по расписанию +
+  Future<void> putMakeAnAppointmentData({
+    required String scheduleId,
+    required String specialistId,
+    required String healthComplaint,
+    required String accessToken,
+  }) async {
+    try {
+      Uri url = urlMain(
+          urlPath:
+          'api/specialistReceptionSchedule/makeAnAppointment/$scheduleId');
+
+      var response = await http.put(
+        url,
+        headers: {'Authorization': 'Bearer ${accessToken}'},
+        body: {
+          "specialistId": specialistId,
+          "healthComplaint": healthComplaint,
+        },
+      );
+      print(
+          'Response status from putMakeAnAppointmentData: ${response.statusCode}');
+      log('putMakeAnAppointmentData ${response.body}');
+
+      if (response.statusCode == 200) {
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request putMakeAnAppointmentData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error putMakeAnAppointmentData:$error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from putMakeAnAppointmentData $error ');
+    }
+  }
 }

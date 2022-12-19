@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 Widget buttonAlertMessage({
   required BuildContext context,
   required String message,
+  Color? colorText,
   bool isDone = false,
 }) {
   return Padding(

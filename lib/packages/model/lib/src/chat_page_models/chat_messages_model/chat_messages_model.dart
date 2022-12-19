@@ -6,9 +6,9 @@ part 'chat_messages_model.g.dart';
 
 // flutter pub run build_runner build --delete-conflicting-outputs
 
-@freezed
+@unfreezed
 class ChatMessagesModel with _$ChatMessagesModel{
-  const factory ChatMessagesModel({
+   factory ChatMessagesModel({
     @Default([]) List<MessageModel> docs,
     int? totalDocs,
     int? limit,

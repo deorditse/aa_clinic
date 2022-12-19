@@ -39,8 +39,8 @@ Map<String, dynamic> _$$_AchievementsModelToJson(
 _$_Achievement _$$_AchievementFromJson(Map<String, dynamic> json) =>
     _$_Achievement(
       id: json['id'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      title: json['title'] as String?,
+      description: json['description'] as String?,
       image: json['image'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,

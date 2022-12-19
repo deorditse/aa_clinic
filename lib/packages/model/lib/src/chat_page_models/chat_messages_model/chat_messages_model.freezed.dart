@@ -21,15 +21,25 @@ ChatMessagesModel _$ChatMessagesModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChatMessagesModel {
   List<MessageModel> get docs => throw _privateConstructorUsedError;
+  set docs(List<MessageModel> value) => throw _privateConstructorUsedError;
   int? get totalDocs => throw _privateConstructorUsedError;
+  set totalDocs(int? value) => throw _privateConstructorUsedError;
   int? get limit => throw _privateConstructorUsedError;
+  set limit(int? value) => throw _privateConstructorUsedError;
   int get page => throw _privateConstructorUsedError;
+  set page(int value) => throw _privateConstructorUsedError;
   int? get totalPages => throw _privateConstructorUsedError;
+  set totalPages(int? value) => throw _privateConstructorUsedError;
   int? get offset => throw _privateConstructorUsedError;
+  set offset(int? value) => throw _privateConstructorUsedError;
   bool? get hasPrevPage => throw _privateConstructorUsedError;
+  set hasPrevPage(bool? value) => throw _privateConstructorUsedError;
   bool? get hasNextPage => throw _privateConstructorUsedError;
+  set hasNextPage(bool? value) => throw _privateConstructorUsedError;
   String? get prevPage => throw _privateConstructorUsedError;
+  set prevPage(String? value) => throw _privateConstructorUsedError;
   String? get nextPage => throw _privateConstructorUsedError;
+  set nextPage(String? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -172,7 +182,7 @@ class __$$_OfficialChatMessagesModelCopyWithImpl<$Res>
   }) {
     return _then(_$_OfficialChatMessagesModel(
       docs: null == docs
-          ? _value._docs
+          ? _value.docs
           : docs // ignore: cast_nullable_to_non_nullable
               as List<MessageModel>,
       totalDocs: freezed == totalDocs
@@ -218,8 +228,8 @@ class __$$_OfficialChatMessagesModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_OfficialChatMessagesModel implements _OfficialChatMessagesModel {
-  const _$_OfficialChatMessagesModel(
-      {final List<MessageModel> docs = const [],
+  _$_OfficialChatMessagesModel(
+      {this.docs = const [],
       this.totalDocs,
       this.limit,
       this.page = 1,
@@ -228,83 +238,38 @@ class _$_OfficialChatMessagesModel implements _OfficialChatMessagesModel {
       this.hasPrevPage,
       this.hasNextPage,
       this.prevPage,
-      this.nextPage})
-      : _docs = docs;
+      this.nextPage});
 
   factory _$_OfficialChatMessagesModel.fromJson(Map<String, dynamic> json) =>
       _$$_OfficialChatMessagesModelFromJson(json);
 
-  final List<MessageModel> _docs;
   @override
   @JsonKey()
-  List<MessageModel> get docs {
-    if (_docs is EqualUnmodifiableListView) return _docs;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_docs);
-  }
-
+  List<MessageModel> docs;
   @override
-  final int? totalDocs;
+  int? totalDocs;
   @override
-  final int? limit;
+  int? limit;
   @override
   @JsonKey()
-  final int page;
+  int page;
   @override
-  final int? totalPages;
+  int? totalPages;
   @override
-  final int? offset;
+  int? offset;
   @override
-  final bool? hasPrevPage;
+  bool? hasPrevPage;
   @override
-  final bool? hasNextPage;
+  bool? hasNextPage;
   @override
-  final String? prevPage;
+  String? prevPage;
   @override
-  final String? nextPage;
+  String? nextPage;
 
   @override
   String toString() {
     return 'ChatMessagesModel(docs: $docs, totalDocs: $totalDocs, limit: $limit, page: $page, totalPages: $totalPages, offset: $offset, hasPrevPage: $hasPrevPage, hasNextPage: $hasNextPage, prevPage: $prevPage, nextPage: $nextPage)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_OfficialChatMessagesModel &&
-            const DeepCollectionEquality().equals(other._docs, _docs) &&
-            (identical(other.totalDocs, totalDocs) ||
-                other.totalDocs == totalDocs) &&
-            (identical(other.limit, limit) || other.limit == limit) &&
-            (identical(other.page, page) || other.page == page) &&
-            (identical(other.totalPages, totalPages) ||
-                other.totalPages == totalPages) &&
-            (identical(other.offset, offset) || other.offset == offset) &&
-            (identical(other.hasPrevPage, hasPrevPage) ||
-                other.hasPrevPage == hasPrevPage) &&
-            (identical(other.hasNextPage, hasNextPage) ||
-                other.hasNextPage == hasNextPage) &&
-            (identical(other.prevPage, prevPage) ||
-                other.prevPage == prevPage) &&
-            (identical(other.nextPage, nextPage) ||
-                other.nextPage == nextPage));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_docs),
-      totalDocs,
-      limit,
-      page,
-      totalPages,
-      offset,
-      hasPrevPage,
-      hasNextPage,
-      prevPage,
-      nextPage);
 
   @JsonKey(ignore: true)
   @override
@@ -322,41 +287,51 @@ class _$_OfficialChatMessagesModel implements _OfficialChatMessagesModel {
 }
 
 abstract class _OfficialChatMessagesModel implements ChatMessagesModel {
-  const factory _OfficialChatMessagesModel(
-      {final List<MessageModel> docs,
-      final int? totalDocs,
-      final int? limit,
-      final int page,
-      final int? totalPages,
-      final int? offset,
-      final bool? hasPrevPage,
-      final bool? hasNextPage,
-      final String? prevPage,
-      final String? nextPage}) = _$_OfficialChatMessagesModel;
+  factory _OfficialChatMessagesModel(
+      {List<MessageModel> docs,
+      int? totalDocs,
+      int? limit,
+      int page,
+      int? totalPages,
+      int? offset,
+      bool? hasPrevPage,
+      bool? hasNextPage,
+      String? prevPage,
+      String? nextPage}) = _$_OfficialChatMessagesModel;
 
   factory _OfficialChatMessagesModel.fromJson(Map<String, dynamic> json) =
       _$_OfficialChatMessagesModel.fromJson;
 
   @override
   List<MessageModel> get docs;
+  set docs(List<MessageModel> value);
   @override
   int? get totalDocs;
+  set totalDocs(int? value);
   @override
   int? get limit;
+  set limit(int? value);
   @override
   int get page;
+  set page(int value);
   @override
   int? get totalPages;
+  set totalPages(int? value);
   @override
   int? get offset;
+  set offset(int? value);
   @override
   bool? get hasPrevPage;
+  set hasPrevPage(bool? value);
   @override
   bool? get hasNextPage;
+  set hasNextPage(bool? value);
   @override
   String? get prevPage;
+  set prevPage(String? value);
   @override
   String? get nextPage;
+  set nextPage(String? value);
   @override
   @JsonKey(ignore: true)
   _$$_OfficialChatMessagesModelCopyWith<_$_OfficialChatMessagesModel>

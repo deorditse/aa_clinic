@@ -5,6 +5,9 @@ export 'src/chat_page_models/chat_find_many_model/chat_find_many_model.dart';
 //official_chat_messages_model.dart
 export 'src/chat_page_models/chat_messages_model/chat_messages_model.dart';
 
+//daily_reception_schedule_event_model.dart
+export 'src/chat_page_models/daily_reception_schedule_event_model/daily_reception_schedule_event_model.dart';
+
 ///auth_page_models
 //sign_in_models
 export 'src/auth_page_models/sign_in_models/user_authorized_model/user_authorized_model.dart';

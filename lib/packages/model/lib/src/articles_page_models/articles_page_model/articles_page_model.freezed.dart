@@ -349,12 +349,12 @@ ArticleModel _$ArticleModelFromJson(Map<String, dynamic> json) {
 mixin _$ArticleModel {
   String get id => throw _privateConstructorUsedError;
   set id(String value) => throw _privateConstructorUsedError;
-  String get userId => throw _privateConstructorUsedError;
-  set userId(String value) => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  set title(String value) => throw _privateConstructorUsedError;
-  String get body => throw _privateConstructorUsedError;
-  set body(String value) => throw _privateConstructorUsedError;
+  String? get userId => throw _privateConstructorUsedError;
+  set userId(String? value) => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  set title(String? value) => throw _privateConstructorUsedError;
+  String? get body => throw _privateConstructorUsedError;
+  set body(String? value) => throw _privateConstructorUsedError;
   String? get coverFileId => throw _privateConstructorUsedError;
   set coverFileId(String? value) => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
@@ -375,9 +375,9 @@ mixin _$ArticleModel {
       throw _privateConstructorUsedError; //Причина отклонения
   set publisherId(String? value) =>
       throw _privateConstructorUsedError; // //id публикатора статьи
-  String get publishedAt =>
+  String? get publishedAt =>
       throw _privateConstructorUsedError; // //id публикатора статьи
-  set publishedAt(String value) => throw _privateConstructorUsedError;
+  set publishedAt(String? value) => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   set createdAt(String? value) => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
@@ -397,9 +397,9 @@ abstract class $ArticleModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String userId,
-      String title,
-      String body,
+      String? userId,
+      String? title,
+      String? body,
       String? coverFileId,
       String? category,
       List<String?> tags,
@@ -407,7 +407,7 @@ abstract class $ArticleModelCopyWith<$Res> {
       double? rate,
       String? rejectedReason,
       String? publisherId,
-      String publishedAt,
+      String? publishedAt,
       String? createdAt,
       String? updatedAt});
 }
@@ -426,9 +426,9 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
-    Object? title = null,
-    Object? body = null,
+    Object? userId = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
     Object? coverFileId = freezed,
     Object? category = freezed,
     Object? tags = null,
@@ -436,7 +436,7 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
     Object? rate = freezed,
     Object? rejectedReason = freezed,
     Object? publisherId = freezed,
-    Object? publishedAt = null,
+    Object? publishedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -445,18 +445,18 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      body: null == body
+              as String?,
+      body: freezed == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverFileId: freezed == coverFileId
           ? _value.coverFileId
           : coverFileId // ignore: cast_nullable_to_non_nullable
@@ -485,10 +485,10 @@ class _$ArticleModelCopyWithImpl<$Res, $Val extends ArticleModel>
           ? _value.publisherId
           : publisherId // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishedAt: null == publishedAt
+      publishedAt: freezed == publishedAt
           ? _value.publishedAt
           : publishedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -511,9 +511,9 @@ abstract class _$$_ArticleModelCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String userId,
-      String title,
-      String body,
+      String? userId,
+      String? title,
+      String? body,
       String? coverFileId,
       String? category,
       List<String?> tags,
@@ -521,7 +521,7 @@ abstract class _$$_ArticleModelCopyWith<$Res>
       double? rate,
       String? rejectedReason,
       String? publisherId,
-      String publishedAt,
+      String? publishedAt,
       String? createdAt,
       String? updatedAt});
 }
@@ -538,9 +538,9 @@ class __$$_ArticleModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? userId = null,
-    Object? title = null,
-    Object? body = null,
+    Object? userId = freezed,
+    Object? title = freezed,
+    Object? body = freezed,
     Object? coverFileId = freezed,
     Object? category = freezed,
     Object? tags = null,
@@ -548,7 +548,7 @@ class __$$_ArticleModelCopyWithImpl<$Res>
     Object? rate = freezed,
     Object? rejectedReason = freezed,
     Object? publisherId = freezed,
-    Object? publishedAt = null,
+    Object? publishedAt = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -557,18 +557,18 @@ class __$$_ArticleModelCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: null == userId
+      userId: freezed == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      body: null == body
+              as String?,
+      body: freezed == body
           ? _value.body
           : body // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       coverFileId: freezed == coverFileId
           ? _value.coverFileId
           : coverFileId // ignore: cast_nullable_to_non_nullable
@@ -597,10 +597,10 @@ class __$$_ArticleModelCopyWithImpl<$Res>
           ? _value.publisherId
           : publisherId // ignore: cast_nullable_to_non_nullable
               as String?,
-      publishedAt: null == publishedAt
+      publishedAt: freezed == publishedAt
           ? _value.publishedAt
           : publishedAt // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -618,9 +618,9 @@ class __$$_ArticleModelCopyWithImpl<$Res>
 class _$_ArticleModel implements _ArticleModel {
   _$_ArticleModel(
       {required this.id,
-      required this.userId,
-      required this.title,
-      required this.body,
+      this.userId,
+      this.title,
+      this.body,
       this.coverFileId,
       this.category,
       this.tags = const [],
@@ -628,7 +628,7 @@ class _$_ArticleModel implements _ArticleModel {
       this.rate,
       this.rejectedReason,
       this.publisherId,
-      required this.publishedAt,
+      this.publishedAt,
       this.createdAt,
       this.updatedAt});
 
@@ -638,11 +638,11 @@ class _$_ArticleModel implements _ArticleModel {
   @override
   String id;
   @override
-  String userId;
+  String? userId;
   @override
-  String title;
+  String? title;
   @override
-  String body;
+  String? body;
   @override
   String? coverFileId;
   @override
@@ -663,7 +663,7 @@ class _$_ArticleModel implements _ArticleModel {
   String? publisherId;
 // //id публикатора статьи
   @override
-  String publishedAt;
+  String? publishedAt;
   @override
   String? createdAt;
   @override
@@ -691,9 +691,9 @@ class _$_ArticleModel implements _ArticleModel {
 abstract class _ArticleModel implements ArticleModel {
   factory _ArticleModel(
       {required String id,
-      required String userId,
-      required String title,
-      required String body,
+      String? userId,
+      String? title,
+      String? body,
       String? coverFileId,
       String? category,
       List<String?> tags,
@@ -701,7 +701,7 @@ abstract class _ArticleModel implements ArticleModel {
       double? rate,
       String? rejectedReason,
       String? publisherId,
-      required String publishedAt,
+      String? publishedAt,
       String? createdAt,
       String? updatedAt}) = _$_ArticleModel;
 
@@ -712,14 +712,14 @@ abstract class _ArticleModel implements ArticleModel {
   String get id;
   set id(String value);
   @override
-  String get userId;
-  set userId(String value);
+  String? get userId;
+  set userId(String? value);
   @override
-  String get title;
-  set title(String value);
+  String? get title;
+  set title(String? value);
   @override
-  String get body;
-  set body(String value);
+  String? get body;
+  set body(String? value);
   @override
   String? get coverFileId;
   set coverFileId(String? value);
@@ -742,8 +742,8 @@ abstract class _ArticleModel implements ArticleModel {
   String? get publisherId; //Причина отклонения
   set publisherId(String? value);
   @override // //id публикатора статьи
-  String get publishedAt; // //id публикатора статьи
-  set publishedAt(String value);
+  String? get publishedAt; // //id публикатора статьи
+  set publishedAt(String? value);
   @override
   String? get createdAt;
   set createdAt(String? value);

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:aa_clinic/packages/data_layout/lib/data_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/row_with_text_field_and_button.dart';
 import 'package:business_layout/business_layout.dart';
+import 'package:get/get.dart';
 import 'package:model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -25,31 +26,20 @@ class MainBodyChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ChatMessagesModel?>(
-      future: ChatPageControllerGetx.instance.getMessagesInChat(
-        chatId: chatId,
-        isOfficialChat: isOfficialChat,
-      ),
-      builder:
-          (BuildContext context, AsyncSnapshot<ChatMessagesModel?> chatData) {
-        return chatData.hasData
-            ? ListViewMessagesForChat(
-                chatMessages: chatData.data!,
-              )
-            : Center(
-                child: CircularProgressIndicator(
-                  color: myColorIsActive,
-                ),
-              );
-      },
-    );
+    return GetBuilder<ChatPageControllerGetx>(builder: (controllerChat) {
+      return controllerChat.chatMessages != null
+          ? ListViewMessagesForChat()
+          : Center(
+              child: CircularProgressIndicator(
+                color: myColorIsActive,
+              ),
+            );
+    });
   }
 }
 
 class ListViewMessagesForChat extends StatefulWidget {
-  const ListViewMessagesForChat({Key? key, required this.chatMessages})
-      : super(key: key);
-  final ChatMessagesModel chatMessages;
+  const ListViewMessagesForChat({Key? key}) : super(key: key);
 
   @override
   State<ListViewMessagesForChat> createState() =>
@@ -90,15 +80,50 @@ class _ListViewMessagesForChatState extends State<ListViewMessagesForChat> {
 
   @override
   Widget build(BuildContext context) {
-    List<MessageModel> listChatMessages = widget.chatMessages.docs;
-    return widget.chatMessages.docs.isNotEmpty
-        ? Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              primary: true,
-              physics: BouncingScrollPhysics(),
-              reverse: true,
-              child: Column(
+    return GetBuilder<ChatPageControllerGetx>(
+      builder: (controllerChat) {
+        List<MessageModel> listChatMessages = controllerChat.chatMessages!.docs;
+
+        return listChatMessages.isNotEmpty
+            ? Align(
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  primary: true,
+                  physics: BouncingScrollPhysics(),
+                  reverse: true,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: myTopPaddingForContent),
+                        child: AlertMessageWidget(
+                          message:
+                              'В этом чате вы можете общаться с нашими специалистами и получать квалифицированную помощь',
+                        ),
+                      ),
+                      ListView.builder(
+                        itemCount: listChatMessages.length,
+                        padding: EdgeInsets.zero,
+                        primary: false,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          MessageModel chatMessage = listChatMessages[index];
+                          return MessageWidget(
+                            chatMessage: chatMessage,
+                          );
+                        },
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          _main();
+                        },
+                        child: Text('test'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Stack(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: myTopPaddingForContent),
@@ -107,36 +132,20 @@ class _ListViewMessagesForChatState extends State<ListViewMessagesForChat> {
                           'В этом чате вы можете общаться с нашими специалистами и получать квалифицированную помощь',
                     ),
                   ),
-                  ListView.builder(
-                    itemCount: listChatMessages.length,
-                    padding: EdgeInsets.zero,
-                    primary: false,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      MessageModel chatMessage = listChatMessages[index];
-                      return MessageWidget(
-                        chatMessage: chatMessage,
-                      );
-                    },
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Нет сообщений",
+                      style: myTextStyleFontUbuntu(
+                        context: context,
+                        newFontWeight: FontWeight.w100,
+                      ),
+                    ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        _main();
-                      },
-                      child: Text('test'))
                 ],
-              ),
-            ),
-          )
-        : Center(
-            child: Text(
-              "Нет сообщений",
-              style: myTextStyleFontUbuntu(
-                context: context,
-                newFontWeight: FontWeight.w100,
-              ),
-            ),
-          );
+              );
+      },
+    );
   }
 
   _main() {

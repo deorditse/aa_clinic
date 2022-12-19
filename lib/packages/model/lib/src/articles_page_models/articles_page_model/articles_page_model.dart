@@ -27,9 +27,9 @@ class ArticlesPageModel with _$ArticlesPageModel {
 class ArticleModel with _$ArticleModel {
   factory ArticleModel({
     required String id,
-    required String userId,
-    required String title,
-    required String body,
+    String? userId,
+    String? title,
+    String? body,
     String? coverFileId,
     String? category,
     @Default([]) List<String?> tags, //Массив с тэгs
@@ -39,7 +39,7 @@ class ArticleModel with _$ArticleModel {
     String? rejectedReason, //Причина отклонения
     String? publisherId,
     // //id публикатора статьи
-    required String publishedAt,
+    String? publishedAt,
     String? createdAt,
     String? updatedAt,
   }) = _ArticleModel;

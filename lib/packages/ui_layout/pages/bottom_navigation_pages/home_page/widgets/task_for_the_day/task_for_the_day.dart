@@ -107,7 +107,7 @@ class TaskForTheDay extends StatelessWidget {
                   constraints: BoxConstraints(
                     minHeight: Get.height / 14,
                   ),
-                  child: _itemCountAll.value == 0
+                  child: !isDailyTask
                       ? Center(
                           child: Text(
                             'Нет задач на день',

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:style_app/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/app_bars/widgetsRightAppBar.dart';
 import 'package:flutter/material.dart';
-
 import 'search_chats_widget.dart';
 
 class ChatSliverAppBar extends StatefulWidget {

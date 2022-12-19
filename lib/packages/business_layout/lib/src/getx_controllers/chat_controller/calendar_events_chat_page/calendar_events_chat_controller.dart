@@ -56,39 +56,92 @@ class ImplementationCalendarEventsChatPage extends GetxController {
 
   ///получение событий выбранной даты +
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, DailyCalendarEventsModel> == год и месяц / DailyCalendarEventsModel
-  Map<String, List<DailyCalendarEventsModel?>> eventsForDay = {};
+  Map<String, List<DailyReceptionScheduleEventModel?>> eventsForDay = {};
 
-// Future<List<DailyCalendarEventsModel?>> getDailyCalendarEvents(
-//     {required DateTime dateDaily, bool isUpdate = false}) async {
-//   String _formatData =
-//       "${dateDaily.year}-${dateDaily.month}-${dateDaily.day}";
-//
-//   //проверяю есть ли марка на этот день
-//   bool isMarkForDay =
-//       (marksCountForMonth['${dateDaily.year}-${dateDaily.month}']
-//               ?[_formatData] !=
-//           null);
-//
-//   if (isMarkForDay) {
-//     ///проверяю есть ли такой лист eventsForDay в контроллере
-//
-//     if ((eventsForDay[_formatData] == null &&
-//             ImplementAuthController.instance.userAuthorizedData != null) ||
-//         isUpdate) {
-//       List<DailyCalendarEventsModel?> _res =
-//           await HomePageData().getDailyCalendarEventsData(
-//         accessToken:
-//             ImplementAuthController.instance.userAuthorizedData!.accessToken,
-//         dateDaily: dateDaily,
-//       );
-//       eventsForDay[_formatData] = _res;
-//       update();
-//       return _res;
-//     } else {
-//       return eventsForDay[_formatData]!;
-//     }
-//   } else {
-//     return [];
-//   }
-// }
+  Future<List<DailyReceptionScheduleEventModel?>> getDailyCalendarEvents(
+      {required DateTime dateDaily,
+      bool isUpdate = false,
+      required String specialistId}) async {
+    String _formatData =
+        "${dateDaily.year}-${dateDaily.month}-${dateDaily.day}";
+
+    //проверяю есть ли марка на этот день
+    bool isMarkForDay =
+        (marksCountForMonth['${dateDaily.year}-${dateDaily.month}']
+                ?[_formatData] !=
+            null);
+
+    if (isMarkForDay) {
+      ///проверяю есть марки на этот  день, чтобы не тратить ресурс на запрос
+
+      if ((eventsForDay[_formatData] == null &&
+              ImplementAuthController.instance.userAuthorizedData != null) ||
+          isUpdate) {
+        List<DailyReceptionScheduleEventModel?> _res =
+            await _services.getDailyCalendarEventsData(
+          accessToken:
+              ImplementAuthController.instance.userAuthorizedData!.accessToken,
+          dateDaily: dateDaily,
+          specialistId: specialistId,
+        );
+        eventsForDay[_formatData] = _res;
+        update();
+        return _res;
+      } else {
+        return eventsForDay[_formatData]!;
+      }
+    } else {
+      return [];
+    }
+  }
+
+  //для записи к специалисту
+  DateTime? appointmentStartTime;
+  DateTime? appointmentEndTime;
+  String? scheduleId;
+
+  void changeAppointmentTimeForSpecialist(
+      {required DateTime? startTime,
+      required DateTime? endTime,
+      required String? newScheduleId}) {
+    appointmentStartTime = startTime;
+    appointmentEndTime = endTime;
+    scheduleId = newScheduleId;
+    update();
+  }
+
+  ///Роут для записи на приём по расписанию +
+  Future<void> putMakeAnAppointment({
+    required String newScheduleId,
+    required String specialistId,
+    required String healthComplaint,
+  }) async {
+    await _services
+        .putMakeAnAppointmentData(
+      scheduleId: newScheduleId,
+      specialistId: specialistId,
+      healthComplaint: healthComplaint,
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    )
+        .whenComplete(() async {
+      Get.snackbar("", "Вы успешно записаны на прием");
+      getDailyCalendarEvents(
+              dateDaily: appointmentStartTime!,
+              specialistId: specialistId,
+              isUpdate: true)
+          .whenComplete(() {
+        appointmentStartTime = null;
+        appointmentEndTime = null;
+        scheduleId = null;
+
+        update();
+        changeMySelectedDay(newDateTime: DateTime.now());
+      });
+      HomePageCalendarControllerGetxState.instance.getDailyCalendarEvents(
+        dateDaily: appointmentStartTime!,
+        isUpdate: true,
+      );
+    });
+  }
 }

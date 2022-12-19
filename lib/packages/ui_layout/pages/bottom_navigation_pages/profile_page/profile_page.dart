@@ -3,7 +3,7 @@ import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/style_app/lib/src/consts_app.dart';
 import 'package:aa_clinic/packages/style_app/lib/src/card_style.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/widgets/active_values.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/widgets/top_proile_widget.dart';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/top_proile_widget/top_proile_widget.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

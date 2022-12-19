@@ -46,14 +46,14 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 5.0, left: 10),
+                padding: const EdgeInsets.only(bottom: 8.0, left: 10),
                 child: Container(
                   decoration: myStyleContainer(
                       context: context, color: myColorIsActive),
                   child: Text(
                     countUnreadChats != null ? ' $countUnreadChats ' : ' 0 ',
                     style: myTextStyleFontUbuntu(
-                      fontSize: 12,
+                      fontSize: 14,
                       newFontWeight: FontWeight.w500,
                       context: context,
                       textColor: Colors.white,
@@ -122,28 +122,25 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
   _widgetRightAppBar({
     required BuildContext context,
   }) {
-    return Container(
-      width: 50,
-      child: GestureDetector(
-        onTap: rightVoidCallback,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 6, right: 6),
-          child: (imagePath != null && imagePath != '')
-              ? CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: isSvgImage
-                      ? SvgPicture.asset(
-                          "$imagePath",
-                          semanticsLabel: 'addNewEvent',
-                          fit: BoxFit.contain,
-                        )
-                      : ContainerForPhotoFuture(
-                          coverFileId: imagePath,
-                          isCircular: true,
-                        ),
-                )
-              : FittedBox(child: Icon(Icons.person)),
-        ),
+    return GestureDetector(
+      onTap: rightVoidCallback,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 6, right: 6),
+        child: (imagePath != null && imagePath != '')
+            ? CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: isSvgImage
+                    ? SvgPicture.asset(
+                        "$imagePath",
+                        semanticsLabel: 'addNewEvent',
+                        fit: BoxFit.contain,
+                      )
+                    : ContainerForPhotoFuture(
+                        coverFileId: imagePath,
+                        isCircular: true,
+                      ),
+              )
+            : FittedBox(child: Icon(Icons.person)),
       ),
     );
   }

@@ -30,13 +30,14 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
           ChatWithUserPage.openChatWithUserPage(
             isOfficialChat: true,
             context: context,
-            avatarId: avatar,
             isSvgImage: true,
-            fullName: "AA Clinic",
-
-            ///ToDo:
             chatId: 'chatInfo.specialistId!',
-            specialistId: 'non',
+            userMinified: UserMinifiedDataIdModel(
+              id: "id",
+              lastName: "AA",
+              middleName: "Clinic",
+              avatar: avatar,
+            ),
           );
         },
         child: Row(

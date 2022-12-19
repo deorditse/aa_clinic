@@ -42,16 +42,24 @@ class ChatPageControllerGetx extends GetxController {
   }
 
   ///Route Get messages in chat (and official)
-  Future<ChatMessagesModel?> getMessagesInChat({
+  ChatMessagesModel? chatMessages;
+
+  Future<void> getMessagesInChat({
     required bool isOfficialChat,
     required String? chatId,
     //messageId нужен для получения всех сообщений до определенного сообщения чей id указывается в параметре
   }) async {
-    return await _services.getMessagesInChatData(
+    chatMessages = await _services.getMessagesInChatData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       chatId: chatId,
       isOfficialChat: isOfficialChat,
     );
+    update();
+  }
+
+  Future<void> addNewMessage({required MessageModel newMessage}) async {
+    chatMessages!.docs.add(newMessage);
+    update();
   }
 }

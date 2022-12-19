@@ -45,8 +45,9 @@ Widget myIconBackAppBar({required BuildContext context, double? sizeIcon}) =>
 Icon myIconForward({Color? color, required BuildContext context}) => Icon(
       Icons.arrow_forward_ios,
       color: color ?? Theme.of(context).textTheme.headline1!.color,
-   // weight: 1,
+      // weight: 1,
     );
 
-String abbreviatedTitleDateAppBar({required DateTime mySelectedDay}) =>
-    '${DateFormat('EEEE').format(mySelectedDay).capitalize}, ${DateFormat('d MMM').format(mySelectedDay)}';
+String abbreviatedTitleDateAppBar(
+        {required DateTime mySelectedDay, bool isShort = false}) =>
+    '${isShort ? DateFormat('EE').format(mySelectedDay).capitalizeFirst : DateFormat('EEEE').format(mySelectedDay).capitalizeFirst}, ${DateFormat('d MMM').format(mySelectedDay)}';

@@ -151,22 +151,27 @@ class ImplementSettingGetXController extends GetxController {
   }
 
   ///Роут для получения файла по id из статического хранилища файлов +
-  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, Uint8List> == coverFileId :  Uint8List
-  Map<String, Uint8List?> mapCoverFileIdAndUint8ListStaticFilesStorage = {};
+  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, Map<int, Uint8List?>> = coverFileId :  <responseStatus : Uint8List>
+  Map<String, Map<int, Uint8List?>>
+      _mapCoverFileIdAndUint8ListStaticFilesStorage = {};
 
-  Future<Uint8List?> getStaticFilesStorageAsUTF8(
+  Future<Map<int, Uint8List?>?> getStaticFilesStorageAsUTF8(
       {required String coverFileId}) async {
-    if (mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] == null) {
-      final result = await _services.getStaticFilesStorageData(
+    if (_mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] == null) {
+      final Map<int, Uint8List?>? result =
+          await _services.getStaticFilesStorageData(
         coverFileId: coverFileId,
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
-      mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] = result;
-      update();
+      if (result != null) {
+        _mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId] = result;
+        update();
+      }
+
       return result;
     } else {
-      return mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId];
+      return _mapCoverFileIdAndUint8ListStaticFilesStorage[coverFileId];
     }
   }
 

@@ -270,7 +270,7 @@ class SettingPageData {
   }
 
   ///Роут для получения файла по id из статического хранилища файлов +
-  Future<Uint8List?> getStaticFilesStorageData(
+  Future<Map<int, Uint8List?>?> getStaticFilesStorageData(
       {required String accessToken, required String coverFileId}) async {
     try {
       Uri url = urlMain(urlPath: 'api/staticFilesStorage/$coverFileId');
@@ -285,14 +285,15 @@ class SettingPageData {
       if (response.statusCode == 200) {
         List<int> list = response.body.codeUnits;
         Uint8List bytes = Uint8List.fromList(list);
-        return bytes;
+        return {200: bytes};
       } else {
         Get.snackbar(
           'Exception',
-          'Bad Request getStaticFilesStorageData: status ${response.statusCode}',
+          'Bad Request getStaticFilesS¬torageData: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
       }
+      return {response.statusCode: null};
     } catch (error) {
       Get.snackbar(
         'Exception',

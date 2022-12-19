@@ -12,6 +12,10 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:model/model.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer';
+import 'package:data_layout/data_layout.dart';
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'widgets/row_with_progress.dart';
 import 'widgets/workout_tile.dart';
@@ -67,25 +71,24 @@ class _BodyWorkoutPageFromHomePage extends StatelessWidget {
         return Column(
           children: [
             mySizedHeightBetweenContainer,
-            rowWithProgress(
+            RowWithProgress(
               title: 'Прогресс',
-              progress: isDataForPage ? dataFitnessWorkout!.fulfillment : 0,
-              context: context,
+              progress: isDataForPage ? dataFitnessWorkout.fulfillment : 0,
             ),
-            SizedBox(height: myHorizontalPaddingForContainer),
+            mySizedHeightBetweenContainer,
             ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.zero,
               primary: false,
               itemCount:
-                  isDataForPage ? dataFitnessWorkout!.exercises.length : 4,
+                  isDataForPage ? dataFitnessWorkout.exercises.length : 3,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(
                       top: myHorizontalPaddingForContainer),
                   child: isDataForPage
                       ? WorkoutCard(
-                          workoutObject: dataFitnessWorkout!.exercises[index]!,
+                          workoutObject: dataFitnessWorkout.exercises[index]!,
                         )
                       : myShimmerEffectContainer(
                           context: context,
@@ -101,22 +104,22 @@ class _BodyWorkoutPageFromHomePage extends StatelessWidget {
     );
   }
 
-  _buttonRow({required BuildContext context}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              Color.fromRGBO(224, 121, 114, 1),
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('ЗАВЕРШИТЬ'),
-        ),
-      ],
-    );
-  }
+// _buttonRow({required BuildContext context}) {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       ElevatedButton(
+//         style: ButtonStyle(
+//           backgroundColor: MaterialStateProperty.all(
+//             Color.fromRGBO(224, 121, 114, 1),
+//           ),
+//         ),
+//         onPressed: () {
+//           Navigator.of(context).pop();
+//         },
+//         child: Text('ЗАВЕРШИТЬ'),
+//       ),
+//     ],
+//   );
+// }
 }

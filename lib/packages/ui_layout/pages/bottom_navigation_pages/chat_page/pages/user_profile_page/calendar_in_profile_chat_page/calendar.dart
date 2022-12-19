@@ -5,60 +5,13 @@ import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:model/model.dart';
+
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 import 'package:data_layout/data_layout.dart';
-
-///получение событий выбранной даты +
-Future<List<String?>> getDailyCalendarEventsData(
-    {required String accessToken,
-    required DateTime dateDaily,
-    required String specialistId}) async {
-  try {
-    final queryParameters = {
-      'date': '${dateDaily.year}-${dateDaily.month}-${dateDaily.day}',
-    };
-    Uri url = urlMain(
-        urlPath:
-            'api/specialistReceptionSchedule/dailyReceptionScheduleEvent/$specialistId',
-        queryParameters: queryParameters);
-
-    var response = await http
-        .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
-
-    print(
-        'Response status from getDailyCalendarEventsData: ${response.statusCode}');
-    log('getDailyCalendarEventsData ${response.body}');
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      print(data);
-      // List<DailyCalendarEventsModel?> listMapDailyCalendarEventsModel = data
-      //     .map<DailyCalendarEventsModel?>((dailyEvent) =>
-      //     DailyCalendarEventsModel.fromJson(
-      //         Map<String, dynamic>.from(dailyEvent)))
-      //     .toList();
-      // print(listMapDailyCalendarEventsModel);
-      // return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
-    } else {
-      Get.snackbar(
-        'Exception',
-        'Bad Request: status ${response.statusCode}',
-        snackPosition: SnackPosition.TOP,
-      );
-      return [];
-    }
-  } catch (error) {
-    Get.snackbar(
-      'Exception',
-      'error daily events:$error}',
-      snackPosition: SnackPosition.TOP,
-    );
-    print('я в ошибке from getDailyCalendarEventsData $error ');
-  }
-  return [];
-}
 
 class CalendarChatPage extends StatefulWidget {
   CalendarChatPage({Key? key, required this.specialistId}) : super(key: key);
@@ -80,19 +33,17 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
 
     ImplementationCalendarEventsChatPage.instance
         .getMonthlyCalendarMarksForMouth(
-      specialistId: widget.specialistId,
+      specialistId: widget.specialistId!,
       dateMarksMouth: DateTime.now(),
-      isUpdate: true,
+    )
+        .whenComplete(
+      () {
+        ImplementationCalendarEventsChatPage.instance.getDailyCalendarEvents(
+          specialistId: widget.specialistId!,
+          dateDaily: DateTime.now(),
+        );
+      },
     );
-    // .whenComplete(
-    //   () {
-    //     getDailyCalendarEventsData(
-    //         specialistId: widget.userId,
-    //         accessToken: ImplementAuthController
-    //             .instance.userAuthorizedData!.accessToken,
-    //         dateDaily: DateTime.now());
-    //   },
-    // );
   }
 
   @override
@@ -320,8 +271,17 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
                       controllerCalendarChat.mySelectedDay, selectedDay)) {
                     controllerCalendarChat.changeMySelectedDay(
                         newDateTime: selectedDay);
-                    // controllerCalendarChat.getDailyCalendarEvents(
-                    //     dateDaily: selectedDay);
+
+                    controllerCalendarChat.getDailyCalendarEvents(
+                      specialistId: widget.specialistId,
+                      dateDaily: selectedDay,
+                    );
+                    ImplementationCalendarEventsChatPage.instance
+                        .changeAppointmentTimeForSpecialist(
+                      startTime: null,
+                      endTime: null,
+                      newScheduleId: null,
+                    );
                   }
                 },
                 onCalendarCreated: (controller) {

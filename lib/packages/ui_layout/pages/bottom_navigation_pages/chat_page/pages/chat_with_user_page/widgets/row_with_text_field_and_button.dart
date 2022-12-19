@@ -1,3 +1,4 @@
+import 'package:model/model.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/app_bars/sliver_app_bar.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/app_bars/widgetsRightAppBar.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:style_app/style_app.dart';
 import 'package:business_layout/business_layout.dart';
 
 class RowWithTextFieldAndButton extends StatelessWidget {
-  const RowWithTextFieldAndButton({Key? key}) : super(key: key);
+  RowWithTextFieldAndButton({Key? key}) : super(key: key);
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,19 @@ class RowWithTextFieldAndButton extends StatelessWidget {
           child: _textFieldMessage(context: context),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            if (_messageController.text.isNotEmpty) {
+              ChatPageControllerGetx.instance.addNewMessage(
+                newMessage: MessageModel(
+                  id: 'test',
+                  text: _messageController.text,
+                  senderId:
+                      ImplementAuthController.instance.userAuthorizedData!.id,
+                ),
+              );
+              _messageController.text = "";
+            }
+          },
           // style: ButtonStyle(
           //     padding: MaterialStateProperty.all(EdgeInsets.zero)),
           child: SvgPicture.asset(
@@ -56,7 +70,7 @@ class RowWithTextFieldAndButton extends StatelessWidget {
       keyboardType: TextInputType.text,
       autofocus: false,
       cursorColor: myColorIsActive,
-      // controller: _nameController,
+      controller: _messageController,
       key: Key('addName'),
       // validator: (value) {
       //   if (value == '') {
@@ -68,6 +82,19 @@ class RowWithTextFieldAndButton extends StatelessWidget {
       // initialValue: dataUser?.surname,
       // maxLines: 5,
       // minLines: 1,
+
+      onSubmitted: (message) {
+        if (message.isNotEmpty) {
+          ChatPageControllerGetx.instance.addNewMessage(
+            newMessage: MessageModel(
+              id: 'test',
+              text: message,
+              senderId: ImplementAuthController.instance.userAuthorizedData!.id,
+            ),
+          );
+          _messageController.text = "";
+        }
+      },
 
       decoration: myStyleTextField(
         context,

@@ -20,6 +20,7 @@ class WidgetListViewBuilder extends StatelessWidget {
 
     return Obx(
       () => Column(
+        key: key,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           itemCount.value == 0
@@ -66,7 +67,7 @@ class WidgetListViewBuilder extends StatelessWidget {
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 padding: MaterialStateProperty.all(EdgeInsets.zero),
               ),
-              onPressed: itemCount == documentList.totalDocs
+              onPressed: itemCount >= documentList.totalDocs
                   ? () => itemCount.value = 6
                   : onTapNext,
               child: Text(

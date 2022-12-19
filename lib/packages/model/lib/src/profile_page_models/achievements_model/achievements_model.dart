@@ -27,8 +27,8 @@ class AchievementsModel with _$AchievementsModel {
 class Achievement with _$Achievement {
   const factory Achievement({
     required String id,
-    required String title,
-    required String description,
+    String? title,
+    String? description,
     String? image,
     String? createdAt,
     String? updatedAt,

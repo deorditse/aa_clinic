@@ -36,6 +36,7 @@ class CardNews extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
         AboutArticlePage.goToAboutArticlePage(
           context: context,
+          title: article?.title,
           indexArticle: indexArticle,
           articleAuthor: myArticleAuthor,
         );
@@ -50,20 +51,9 @@ class CardNews extends StatelessWidget {
               flex: 9,
               child: Container(
                 color: Theme.of(context).backgroundColor,
-                child: article?.coverFileId != null
-                    ? ContainerForPhotoFuture(
-                        coverFileId: article!.coverFileId!,
-                      )
-                    : Center(
-                        child: Text(
-                          'no photo',
-                          style: myTextStyleFontUbuntu(
-                            context: context,
-                            textColor:
-                                Theme.of(context).textTheme.headline3!.color,
-                          ),
-                        ),
-                      ),
+                child: ContainerForPhotoFuture(
+                  coverFileId: article?.coverFileId,
+                ),
               ),
             ),
             Expanded(
@@ -103,7 +93,7 @@ class CardNews extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  article?.category ?? "Статья",
+                  article?.title ?? "Статья",
                   style: myTextStyleFontUbuntu(
                     context: context,
                     fontSize: 14,
@@ -147,7 +137,7 @@ class CardNews extends StatelessWidget {
               ),
               FutureBuilder<UserMinifiedDataIdModel?>(
                 future: ImplementSettingGetXController.instance
-                    .getDataUserMinified(idUser: article!.userId),
+                    .getDataUserMinified(idUser: article!.userId!),
                 builder: (BuildContext context,
                     AsyncSnapshot<UserMinifiedDataIdModel?> snapshot) {
                   TextStyle _textStyle = myTextStyleFontUbuntu(

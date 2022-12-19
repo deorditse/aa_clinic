@@ -157,15 +157,18 @@ class ProfileControllerGetxState extends GetxController {
     required String? description,
     required List<String> attachmentsIds, //Массив с id вложений
   }) async {
-    _services.postPatientDocumentsData(
+    _services
+        .postPatientDocumentsData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       category: category,
       title: title,
       description: description,
       attachmentsIds: attachmentsIds,
-    );
-    getDocumentsList(currentDocsPage: 1, isReloatForAddNewDocument: true);
+    )
+        .whenComplete(() {
+      getDocumentsList(currentDocsPage: 1, isReloatForAddNewDocument: true);
+    });
   }
 
   /////////////////// DOCUMENTS

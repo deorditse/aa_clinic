@@ -51,11 +51,7 @@ class _DefaultDialogBodyYesOrNo extends StatelessWidget {
         decoration: myStyleContainer(
             color: Theme.of(context).cardColor, context: context),
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: myHorizontalPaddingForContainer,
-            left: myHorizontalPaddingForContainer,
-            right: myHorizontalPaddingForContainer,
-          ),
+          padding: const EdgeInsets.all(myHorizontalPaddingForContainer),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -128,7 +124,7 @@ _buttonRow({
       ElevatedButton(
         onPressed: () {
           voidCallbackToAccept();
-          Get.offAllNamed('/');
+          Get.offAndToNamed('/main');
         },
         child: Text('СОГЛАСИТЬСЯ'),
       ),

@@ -26,7 +26,7 @@ mixin _$UserMinifiedDataIdModel {
   String? get firstName => throw _privateConstructorUsedError;
   String? get middleName => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
-  Map<String, String> get specialist => throw _privateConstructorUsedError;
+  String? get specialist => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,7 +46,7 @@ abstract class $UserMinifiedDataIdModelCopyWith<$Res> {
       String? firstName,
       String? middleName,
       String? avatar,
-      Map<String, String> specialist});
+      String? specialist});
 }
 
 /// @nodoc
@@ -68,7 +68,7 @@ class _$UserMinifiedDataIdModelCopyWithImpl<$Res,
     Object? firstName = freezed,
     Object? middleName = freezed,
     Object? avatar = freezed,
-    Object? specialist = null,
+    Object? specialist = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -91,10 +91,10 @@ class _$UserMinifiedDataIdModelCopyWithImpl<$Res,
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
-      specialist: null == specialist
+      specialist: freezed == specialist
           ? _value.specialist
           : specialist // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as String?,
     ) as $Val);
   }
 }
@@ -113,7 +113,7 @@ abstract class _$$_UserMinifiedDataIdModelCopyWith<$Res>
       String? firstName,
       String? middleName,
       String? avatar,
-      Map<String, String> specialist});
+      String? specialist});
 }
 
 /// @nodoc
@@ -133,7 +133,7 @@ class __$$_UserMinifiedDataIdModelCopyWithImpl<$Res>
     Object? firstName = freezed,
     Object? middleName = freezed,
     Object? avatar = freezed,
-    Object? specialist = null,
+    Object? specialist = freezed,
   }) {
     return _then(_$_UserMinifiedDataIdModel(
       id: null == id
@@ -156,10 +156,10 @@ class __$$_UserMinifiedDataIdModelCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
-      specialist: null == specialist
-          ? _value._specialist
+      specialist: freezed == specialist
+          ? _value.specialist
           : specialist // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as String?,
     ));
   }
 }
@@ -173,8 +173,7 @@ class _$_UserMinifiedDataIdModel implements _UserMinifiedDataIdModel {
       this.firstName,
       this.middleName,
       this.avatar,
-      final Map<String, String> specialist = const {}})
-      : _specialist = specialist;
+      this.specialist});
 
   factory _$_UserMinifiedDataIdModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserMinifiedDataIdModelFromJson(json);
@@ -189,14 +188,8 @@ class _$_UserMinifiedDataIdModel implements _UserMinifiedDataIdModel {
   final String? middleName;
   @override
   final String? avatar;
-  final Map<String, String> _specialist;
   @override
-  @JsonKey()
-  Map<String, String> get specialist {
-    if (_specialist is EqualUnmodifiableMapView) return _specialist;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_specialist);
-  }
+  final String? specialist;
 
   @override
   String toString() {
@@ -216,14 +209,14 @@ class _$_UserMinifiedDataIdModel implements _UserMinifiedDataIdModel {
             (identical(other.middleName, middleName) ||
                 other.middleName == middleName) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            const DeepCollectionEquality()
-                .equals(other._specialist, _specialist));
+            (identical(other.specialist, specialist) ||
+                other.specialist == specialist));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, lastName, firstName,
-      middleName, avatar, const DeepCollectionEquality().hash(_specialist));
+  int get hashCode => Object.hash(
+      runtimeType, id, lastName, firstName, middleName, avatar, specialist);
 
   @JsonKey(ignore: true)
   @override
@@ -248,7 +241,7 @@ abstract class _UserMinifiedDataIdModel implements UserMinifiedDataIdModel {
       final String? firstName,
       final String? middleName,
       final String? avatar,
-      final Map<String, String> specialist}) = _$_UserMinifiedDataIdModel;
+      final String? specialist}) = _$_UserMinifiedDataIdModel;
 
   factory _UserMinifiedDataIdModel.fromJson(Map<String, dynamic> json) =
       _$_UserMinifiedDataIdModel.fromJson;
@@ -264,7 +257,7 @@ abstract class _UserMinifiedDataIdModel implements UserMinifiedDataIdModel {
   @override
   String? get avatar;
   @override
-  Map<String, String> get specialist;
+  String? get specialist;
   @override
   @JsonKey(ignore: true)
   _$$_UserMinifiedDataIdModelCopyWith<_$_UserMinifiedDataIdModel>

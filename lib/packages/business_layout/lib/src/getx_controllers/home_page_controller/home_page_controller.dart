@@ -174,8 +174,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
       update();
       return result;
     } else {
-      return mapTargetIdAndCalendarActionsWithId[targetId]
-          as FitnessWorkoutModel;
+      return mapTargetIdAndWorkoutsWithId[targetId];
     }
   }
 
@@ -233,7 +232,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       targetId: targetId,
-      cancelReason: cancelReason ?? '',
+      cancelReason: cancelReason ?? 'Причина отмены не указана',
     )
         .whenComplete(() async {
       //обновляю данные на этот день чтобы поменять статусы
@@ -428,7 +427,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
       update();
     }
   }
-
 
   ///добавление фото еды в карточку на странице еда
   File? photoFood;

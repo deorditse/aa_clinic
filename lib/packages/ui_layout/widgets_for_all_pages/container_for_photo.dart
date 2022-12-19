@@ -14,8 +14,10 @@ class ContainerForPhotoFuture extends StatelessWidget {
       required this.coverFileId,
       this.openView = false,
       this.isCircular = false,
+      this.borderRadius,
       this.imageFromNetwork})
       : super(key: key);
+  final double? borderRadius;
   final String? coverFileId;
   final bool openView;
   final bool isCircular;
@@ -23,65 +25,131 @@ class ContainerForPhotoFuture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return imageFromNetwork != null && coverFileId == null
-        ? GestureDetector(
-            onTap: openView
-                ? () {
-                    imageViewBottom(
-                      context: Get.context!,
-                      imagePathForNetworkImage: imageFromNetwork,
-                      heroTag: 'null',
-                    );
-                  }
-                : null,
-            child: Container(
-              clipBehavior: Clip.hardEdge,
+    if (imageFromNetwork != null && coverFileId == null) {
+      return GestureDetector(
+        onTap: openView
+            ? () {
+                imageViewBottom(
+                  context: Get.context!,
+                  imagePathForNetworkImage: imageFromNetwork,
+                  heroTag: 'null',
+                );
+              }
+            : null,
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          width: double.infinity,
+          decoration: myStyleContainer(context: context).copyWith(
+            color: isCircular
+                ? Colors.transparent
+                : Theme.of(context).backgroundColor,
+          ),
+          child: CachedNetworkImage(
+            imageUrl: imageFromNetwork!,
+            imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-              child: CachedNetworkImage(
-                imageUrl: imageFromNetwork!,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-          )
-        : FutureBuilder<Uint8List?>(
-            future: ImplementSettingGetXController.instance
-                .getStaticFilesStorageAsUTF8(coverFileId: coverFileId!),
-            builder: (context, AsyncSnapshot<Uint8List?> snapshot) {
-              if (snapshot.hasData) {
-                return GestureDetector(
-                  onTap: openView
-                      ? () {
-                          imageViewBottom(
-                            context: context,
-                            uint8ListImageForMemoryImage: snapshot.data!,
-                            heroTag: 'null',
-                          );
-                        }
-                      : null,
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(isCircular ? 200 : 0),
+          ),
+        ),
+      );
+    } else if (coverFileId != null) {
+      return FutureBuilder<Map<int, Uint8List?>?>(
+        future: ImplementSettingGetXController.instance
+            .getStaticFilesStorageAsUTF8(coverFileId: coverFileId!),
+        builder: (context, AsyncSnapshot<Map<int, Uint8List?>?> snapshot) {
+          if (snapshot.hasData && snapshot.data!.keys.first == 200) {
+            return GestureDetector(
+              onTap: openView
+                  ? () {
+                      imageViewBottom(
+                        context: context,
+                        uint8ListImageForMemoryImage:
+                            snapshot.data!.values.first,
+                        heroTag: 'null',
+                      );
+                    }
+                  : null,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                height: MediaQuery.of(context).size.height / 3.3,
+                width: double.infinity,
+                decoration: myStyleContainer(context: context)
+                    .copyWith(
+                      color: isCircular
+                          ? Colors.transparent
+                          : Theme.of(context).backgroundColor,
+                    )
+                    .copyWith(
+                      borderRadius: BorderRadius.circular(
+                        isCircular ? 200 : borderRadius ?? 0,
+                      ),
                     ),
-                    child: Image.memory(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              } else {
-                return myShimmerEffectContainer(context: context);
-              }
-            },
-          );
+                child: Image.memory(
+                  snapshot.data!.values.first!,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          } else if (snapshot.hasData &&
+              (snapshot.data!.keys.first == 404 ||
+                  snapshot.data!.keys.first == 500)) {
+            return Container(
+              clipBehavior: Clip.antiAlias,
+              height: 40,
+              width: double.infinity,
+              decoration: myStyleContainer(context: context).copyWith(
+                color: Theme.of(context).backgroundColor,
+              ),
+              child: Center(
+                child: snapshot.data!.keys.first == 500
+                    ? Center(
+                        child: Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .color!
+                              .withOpacity(0.2),
+                          size: 40,
+                        ),
+                      )
+                    : Text(
+                        'Фото не найдено',
+                        style: myTextStyleFontUbuntu(
+                          context: context,
+                          textColor:
+                              Theme.of(context).textTheme.headline3!.color,
+                        ),
+                      ),
+              ),
+            );
+          } else {
+            return myShimmerEffectContainer(context: context);
+          }
+        },
+      );
+    } else {
+      return Container(
+        clipBehavior: Clip.antiAlias,
+        height: 40,
+        width: double.infinity,
+        decoration: myStyleContainer(context: context).copyWith(
+          color: Theme.of(context).backgroundColor,
+        ),
+        child: Center(
+          child: Icon(
+            Icons.image_not_supported_outlined,
+            color:
+                Theme.of(context).textTheme.headline3!.color!.withOpacity(0.2),
+            size: 40,
+          ),
+        ),
+      );
+    }
   }
 }

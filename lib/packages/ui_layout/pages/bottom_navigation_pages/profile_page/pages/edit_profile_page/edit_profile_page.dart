@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/widgets/top_proile_widget.dart';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/top_proile_widget/row_with_photo_and_progress.dart';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/top_proile_widget/top_proile_widget.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,8 +46,7 @@ class BodyEditProfilePage extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: rowWithPhotoAndProgress(
-                context: context,
+              child: RowWithPhotoAndProgress(
                 deleteOnTap: true,
                 voidCallbackOnPhotoUser: () {
                   showAddPhotoBottomSheetWidgetEditPhotoUserPage(

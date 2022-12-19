@@ -60,7 +60,7 @@ class WidgetBodyAchievementsProfilePage extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: 12,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding:
@@ -108,7 +108,7 @@ _rowAchievement({
               backgroundColor: Colors.transparent,
               child: (doc.image != null && doc.image != 'null')
                   ? ContainerForPhotoFuture(
-                      coverFileId: doc.image!,
+                      coverFileId: doc.image,
                       isCircular: true,
                     )
                   : CircleAvatar(
@@ -134,7 +134,7 @@ _rowAchievement({
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  doc.title,
+                  doc.title ?? "Ачивка",
                   style: myTextStyleFontUbuntu(
                     context: context,
                     newFontWeight: FontWeight.w400,
@@ -153,7 +153,7 @@ _rowAchievement({
                   height: myHorizontalPaddingForContainer,
                 ),
                 Text(
-                  doc.description,
+                  doc.description ?? "Описание не добавлено",
                   style: myTextStyleFontUbuntu(
                     context: context,
                     textColor: isUserAchiv

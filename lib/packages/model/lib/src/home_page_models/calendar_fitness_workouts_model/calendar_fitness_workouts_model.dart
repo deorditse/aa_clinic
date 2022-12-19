@@ -30,14 +30,8 @@ class FitnessWorkoutModel with _$FitnessWorkoutModel {
 @freezed
 class WorkoutObject with _$WorkoutObject {
   const factory WorkoutObject({
-    // Fitness Generic Workout Exercise object
     FitnessGenericWorkoutExerciseObject? generic,
-
-    ///todo добавить для динамической модели еще однно поле
-
-    //an array consisting of approach objects consisting of two objects target - a goal set by a specialist, real - what the user has done
     @Default([]) List<ApproachObjectsConsisting?> sets,
-    //percentage of fulfillment
     @Default(0) int fulfillment,
   }) = _WorkoutObject;
 
@@ -69,34 +63,22 @@ class FitnessGenericWorkoutExerciseObject
 
 @freezed
 class ApproachObjectsConsisting with _$ApproachObjectsConsisting {
-  //object with exercise data
   const factory ApproachObjectsConsisting({
-    required DescriptionApproachObjectsConsisting target,
-    required DescriptionApproachObjectsConsisting real,
+    ///первое поле динамически меняется
+    required Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
+        target,
+
+    ///первое поле динамически меняется
+    required Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
+        real,
     String? startedAt,
     String? finishedAt,
     String? comment,
-    //rest time in seconds
     int? restTime,
   }) = _ApproachObjectsConsisting;
 
   factory ApproachObjectsConsisting.fromJson(Map<String, Object?> json) =>
       _$ApproachObjectsConsistingFromJson(json);
-}
-
-@freezed
-class DescriptionApproachObjectsConsisting
-    with _$DescriptionApproachObjectsConsisting {
-  const factory DescriptionApproachObjectsConsisting({
-    ///тут могут быть разные поля duration
-
-    // Имя объекта зависит от значения свойства fieldKey в объекте содержащемся в массиве setCriteries у объекта fitnessWorkoutExerciseType также все свойства будут такие же как у объекта к массиве setCriteries, id fitnessWorkoutExerciseType можно найти в generic по свойству type, кроме свойства value, которое устанавливается специалистом
-    required TargetObjectsDescriptionApproachObjectsConsisting duration,
-  }) = _DescriptionApproachObjectsConsisting;
-
-  factory DescriptionApproachObjectsConsisting.fromJson(
-          Map<String, Object?> json) =>
-      _$DescriptionApproachObjectsConsistingFromJson(json);
 }
 
 @freezed

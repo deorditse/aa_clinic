@@ -346,8 +346,8 @@ Achievement _$AchievementFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Achievement {
   String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
@@ -367,8 +367,8 @@ abstract class $AchievementCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String title,
-      String description,
+      String? title,
+      String? description,
       String? image,
       String? createdAt,
       String? updatedAt,
@@ -389,8 +389,8 @@ class _$AchievementCopyWithImpl<$Res, $Val extends Achievement>
   @override
   $Res call({
     Object? id = null,
-    Object? title = null,
-    Object? description = null,
+    Object? title = freezed,
+    Object? description = freezed,
     Object? image = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -401,14 +401,14 @@ class _$AchievementCopyWithImpl<$Res, $Val extends Achievement>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
+              as String?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -439,8 +439,8 @@ abstract class _$$_AchievementCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String title,
-      String description,
+      String? title,
+      String? description,
       String? image,
       String? createdAt,
       String? updatedAt,
@@ -459,8 +459,8 @@ class __$$_AchievementCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? title = null,
-    Object? description = null,
+    Object? title = freezed,
+    Object? description = freezed,
     Object? image = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -471,14 +471,14 @@ class __$$_AchievementCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      title: null == title
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
+              as String?,
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -504,8 +504,8 @@ class __$$_AchievementCopyWithImpl<$Res>
 class _$_Achievement implements _Achievement {
   const _$_Achievement(
       {required this.id,
-      required this.title,
-      required this.description,
+      this.title,
+      this.description,
       this.image,
       this.createdAt,
       this.updatedAt,
@@ -517,9 +517,9 @@ class _$_Achievement implements _Achievement {
   @override
   final String id;
   @override
-  final String title;
+  final String? title;
   @override
-  final String description;
+  final String? description;
   @override
   final String? image;
   @override
@@ -574,8 +574,8 @@ class _$_Achievement implements _Achievement {
 abstract class _Achievement implements Achievement {
   const factory _Achievement(
       {required final String id,
-      required final String title,
-      required final String description,
+      final String? title,
+      final String? description,
       final String? image,
       final String? createdAt,
       final String? updatedAt,
@@ -587,9 +587,9 @@ abstract class _Achievement implements Achievement {
   @override
   String get id;
   @override
-  String get title;
+  String? get title;
   @override
-  String get description;
+  String? get description;
   @override
   String? get image;
   @override

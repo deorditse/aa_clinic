@@ -93,12 +93,21 @@ class RowWithPhotoAndDataProfile extends StatelessWidget {
                   ),
                 ),
                 mySizedHeightBetweenContainer,
-                Text(
-                  "${dataFitnessWorkout.specialist?.firstName != null ? 'Професссия API' : 'Специалист'}",
-                  style: myTextStyleFontUbuntu(
-                      textColor: Theme.of(context).textTheme.headline3!.color,
-                      context: context),
-                ),
+                FutureBuilder<UserMinifiedDataIdModel?>(
+                    future: ImplementSettingGetXController.instance
+                        .getDataUserMinified(
+                            idUser: dataFitnessWorkout.specialistId),
+                    builder: (context,
+                        AsyncSnapshot<UserMinifiedDataIdModel?> snapshot) {
+                      return Text(
+                        "${snapshot.hasData ? (snapshot.data!.specialist ?? "Специалист") : 'Специалист'}",
+                        style: myTextStyleFontUbuntu(
+                            textColor:
+                                Theme.of(context).textTheme.headline3!.color,
+                            context: context),
+                      );
+                    }),
+
                 mySizedHeightBetweenContainer,
                 Text(
                   // '12.12.1975 (47 лет)',

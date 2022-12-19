@@ -17,20 +17,24 @@ import 'package:http/http.dart' as http;
 class AboutArticlePage extends StatefulWidget {
   static const String id = '/aboutArticlePage';
 
-  AboutArticlePage({Key? key, this.indexArticle, this.articleAuthor})
+  AboutArticlePage(
+      {Key? key, this.indexArticle, this.articleAuthor, this.title})
       : super(key: key);
   int? indexArticle;
+  final String? title;
   UserMinifiedDataIdModel? articleAuthor;
 
   static goToAboutArticlePage(
           {required BuildContext context,
           required int indexArticle,
+          required String? title,
           required UserMinifiedDataIdModel? articleAuthor}) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: const RouteSettings(name: AboutArticlePage.id),
         screen: AboutArticlePage(
           indexArticle: indexArticle,
+          title: title,
           articleAuthor: articleAuthor,
         ),
         withNavBar: true,
@@ -54,13 +58,7 @@ class _AboutArticlePageState extends State<AboutArticlePage>
   @override
   Widget build(BuildContext context) {
     return MySliverNewPageWithoutBorder(
-      titleAppBar: ArticlesControllerGetxState
-              .instance
-              .mapIndexCategoryAndArticlesPageModel[
-                  ArticlesControllerGetxState.instance.indexCategorySelected]!
-              .docs[widget.indexArticle!]
-              ?.category ??
-          "Статья",
+      titleAppBar: widget.title ?? "Статья",
       onlyBack: true,
       widgetBody: _BodyAboutArticlePage(
         indexArticle: widget.indexArticle!,
@@ -90,29 +88,10 @@ class _BodyAboutArticlePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         mySizedHeightBetweenContainer,
-        Container(
-          clipBehavior: Clip.antiAlias,
-          height: article?.coverFileId != null
-              ? MediaQuery.of(context).size.height / 3.3
-              : 40,
-          width: double.infinity,
-          decoration: myStyleContainer(context: context).copyWith(
-            color: Theme.of(context).backgroundColor,
-          ),
-          child: article?.coverFileId != null
-              ? ContainerForPhotoFuture(
-                  coverFileId: article!.coverFileId!,
-                  openView: true,
-                )
-              : Center(
-                  child: Text(
-                    'no photo',
-                    style: myTextStyleFontUbuntu(
-                      context: context,
-                      textColor: Theme.of(context).textTheme.headline3!.color,
-                    ),
-                  ),
-                ),
+        ContainerForPhotoFuture(
+          coverFileId: article?.coverFileId,
+          openView: true,
+          borderRadius: 20,
         ),
         mySizedHeightBetweenContainer,
         Text(
