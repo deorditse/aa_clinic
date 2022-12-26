@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/other_pages/authentication_page/main_login_page.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:model/model.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -38,8 +35,9 @@ class FoodPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titleDate = abbreviatedTitleDateAppBar(
-        mySelectedDay:
-            HomePageCalendarControllerGetxState.instance.mySelectedDay);
+      mySelectedDay: HomePageCalendarControllerGetxState.instance.mySelectedDay,
+      isShort: true,
+    );
 
     return MySliverNewPageWithoutBorder(
       titleAppBar: '$titleDate, $title',
@@ -93,7 +91,7 @@ class _BodyFoodPage extends StatelessWidget {
             SizedBox(height: myTopPaddingForContent / 2),
             if (isDataForPage)
               Text(
-                "${dataNutriMeal.description}",
+                "${dataNutriMeal.description ?? "Описание не добавлено"}",
                 style: myTextStyleFontUbuntu(
                     context: context, newFontWeight: FontWeight.w300),
               )

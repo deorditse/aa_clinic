@@ -16,15 +16,17 @@ class ProfileControllerGetxState extends GetxController {
 
   //для поиска документов
   void changeIsSearchingDocument({String? searchText}) {
-    searchDocumentsListText = searchText;
-    update();
-    if (searchText != null && searchText != '') {
+    if (searchText != null) {
+      searchDocumentsListText = searchText;
+      update();
+    } else if (searchText != null && searchText != '') {
       getDocumentsList(
         currentDocsPage: 1,
         updateSearchResultDocumentList: true,
         searchText: searchText,
       );
     } else {
+      searchDocumentsListText = null;
       searchResultDocumentList = null;
       update();
     }
@@ -36,8 +38,10 @@ class ProfileControllerGetxState extends GetxController {
     super.onInit();
   }
 
-  void initControllerProfile() {
-    ImplementSettingGetXController.instance.getFindMe(isUpdateData: true).then(
+  Future<void> initControllerProfile() async {
+    await ImplementSettingGetXController.instance
+        .getFindMe(isUpdateData: true)
+        .then(
       (userAllData) {
         //инициализация списка документов
         getDocumentsList(currentDocsPage: 1);
@@ -131,25 +135,6 @@ class ProfileControllerGetxState extends GetxController {
     }
   }
 
-  ///Роут для загрузки файлов в создании документов (только картинки)
-  Future<String?> postAttachmentsAndGetIdImage(
-      {required File fileImage}) async {
-    //возвращает Map данных {
-    //   "id": "string",
-    //   "userId": "string",
-    //   "type": "string",
-    //   "fileId": "string",
-    //   "thumbnailFileId": "string",
-    //   "createdAt": "string",
-    //   "updatedAt": "string"
-    // }
-    return await _services.postAttachmentsAndGetIdImageData(
-      fileImage: fileImage,
-      accessToken:
-          ImplementAuthController.instance.userAuthorizedData!.accessToken,
-    );
-  }
-
   ///Роут для создания документа пациента +
   Future<void> postPatientDocuments({
     required String category,
@@ -157,7 +142,7 @@ class ProfileControllerGetxState extends GetxController {
     required String? description,
     required List<String> attachmentsIds, //Массив с id вложений
   }) async {
-    _services
+    await _services
         .postPatientDocumentsData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,

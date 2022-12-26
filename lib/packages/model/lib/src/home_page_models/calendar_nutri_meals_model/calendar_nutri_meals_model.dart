@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:io';  //delete for add new model File
+import 'dart:io'; //delete for add new model File
 
 part 'calendar_nutri_meals_model.freezed.dart';
 

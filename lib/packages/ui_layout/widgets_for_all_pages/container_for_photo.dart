@@ -98,58 +98,28 @@ class ContainerForPhotoFuture extends StatelessWidget {
           } else if (snapshot.hasData &&
               (snapshot.data!.keys.first == 404 ||
                   snapshot.data!.keys.first == 500)) {
-            return Container(
-              clipBehavior: Clip.antiAlias,
-              height: 40,
-              width: double.infinity,
-              decoration: myStyleContainer(context: context).copyWith(
-                color: Theme.of(context).backgroundColor,
-              ),
-              child: Center(
-                child: snapshot.data!.keys.first == 500
-                    ? Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .color!
-                              .withOpacity(0.2),
-                          size: 40,
-                        ),
-                      )
-                    : Text(
-                        'Фото не найдено',
-                        style: myTextStyleFontUbuntu(
-                          context: context,
-                          textColor:
-                              Theme.of(context).textTheme.headline3!.color,
-                        ),
-                      ),
-              ),
-            );
+            return containerIfNotPhoto(context: context);
           } else {
             return myShimmerEffectContainer(context: context);
           }
         },
       );
     } else {
-      return Container(
-        clipBehavior: Clip.antiAlias,
-        height: 40,
-        width: double.infinity,
-        decoration: myStyleContainer(context: context).copyWith(
-          color: Theme.of(context).backgroundColor,
-        ),
-        child: Center(
-          child: Icon(
-            Icons.image_not_supported_outlined,
-            color:
-                Theme.of(context).textTheme.headline3!.color!.withOpacity(0.2),
-            size: 40,
-          ),
-        ),
-      );
+      return containerIfNotPhoto(context: context);
     }
   }
 }
+
+Container containerIfNotPhoto({required BuildContext context}) => Container(
+      clipBehavior: Clip.antiAlias,
+      height: 40,
+      width: double.infinity,
+      decoration: myStyleContainer(context: context).copyWith(
+        color: Theme.of(context).backgroundColor,
+      ),
+      child: Center(
+          child: Icon(
+        Icons.image_not_supported_outlined,
+        color: Theme.of(context).textTheme.headline3!.color!.withOpacity(0.2),
+      )),
+    );

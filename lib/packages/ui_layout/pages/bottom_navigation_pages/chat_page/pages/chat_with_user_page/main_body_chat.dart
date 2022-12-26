@@ -10,10 +10,6 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/message_types/alert_message.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/widgets/message_types/message.dart';
-import 'package:http/http.dart' as http;
-import 'package:model/model.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MainBodyChatPage extends StatelessWidget {
   const MainBodyChatPage({
@@ -26,63 +22,31 @@ class MainBodyChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ChatPageControllerGetx>(builder: (controllerChat) {
-      return controllerChat.chatMessages != null
-          ? ListViewMessagesForChat()
-          : Center(
-              child: CircularProgressIndicator(
-                color: myColorIsActive,
-              ),
-            );
-    });
+    return GetBuilder<ChatPageControllerGetx>(
+      builder: (controllerChat) {
+        return (controllerChat.mapWithMessage[chatId] != null)
+            ? ListViewMessagesForChat(chatId: chatId)
+            : Center(
+                child: CircularProgressIndicator(
+                  color: myColorIsActive,
+                ),
+              );
+      },
+    );
   }
 }
 
-class ListViewMessagesForChat extends StatefulWidget {
-  const ListViewMessagesForChat({Key? key}) : super(key: key);
-
-  @override
-  State<ListViewMessagesForChat> createState() =>
-      _ListViewMessagesForChatState();
-}
-
-class _ListViewMessagesForChatState extends State<ListViewMessagesForChat> {
-  IO.Socket? socket;
-
-  void socketConnect({
-    required String? accessToken,
-  }) {
-    socket?.on(
-      'connected',
-      (data) => {print(data)},
-    );
-    // socket?.onConnect((data) => print("connection"));
-    socket?.onConnectError((data) => print(data));
-    socket?.onError((data) => {print(data)});
-    socket?.onDisconnect((data) => {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    socket = IO.io(
-      "https://$urlMainApiConst",
-      IO.OptionBuilder().setTransports(['websocket']).setAuth({
-        "token":
-            ImplementAuthController.instance.userAuthorizedData!.accessToken
-      }).build(),
-    );
-    socketConnect(
-      accessToken:
-          ImplementAuthController.instance.userAuthorizedData!.accessToken,
-    );
-  }
+class ListViewMessagesForChat extends StatelessWidget {
+  const ListViewMessagesForChat({Key? key, required this.chatId})
+      : super(key: key);
+  final String chatId;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ChatPageControllerGetx>(
       builder: (controllerChat) {
-        List<MessageModel> listChatMessages = controllerChat.chatMessages!.docs;
+        List<MessageModel> listChatMessages =
+            controllerChat.mapWithMessage[chatId] ?? [];
 
         return listChatMessages.isNotEmpty
             ? Align(
@@ -102,22 +66,19 @@ class _ListViewMessagesForChatState extends State<ListViewMessagesForChat> {
                         ),
                       ),
                       ListView.builder(
+                        key: key,
                         itemCount: listChatMessages.length,
                         padding: EdgeInsets.zero,
                         primary: false,
+                        reverse: true,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           MessageModel chatMessage = listChatMessages[index];
                           return MessageWidget(
                             chatMessage: chatMessage,
+                            key: key,
                           );
                         },
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _main();
-                        },
-                        child: Text('test'),
                       ),
                     ],
                   ),
@@ -146,9 +107,5 @@ class _ListViewMessagesForChatState extends State<ListViewMessagesForChat> {
               );
       },
     );
-  }
-
-  _main() {
-    socket?.on('createChatMessage', (data) => print(data));
   }
 }

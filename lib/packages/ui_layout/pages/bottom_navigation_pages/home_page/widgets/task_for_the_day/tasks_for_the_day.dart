@@ -33,10 +33,11 @@ _goToPage({
       break;
     case 'workout':
       print('Тренировка');
+      Get.lazyPut(() => ImplementWorkoutControllerHomePage());
       WorkoutPageFromHomePage.openWorkoutPageFromHomePage(
           context: context, title: title, targetId: targetId);
       //при переходе делаю запрос на получение данных события Тренировка
-      HomePageCalendarControllerGetxState.instance
+      ImplementWorkoutControllerHomePage.instance
           .getFitnessWorkoutsWithId(targetId: targetId);
       break;
     case 'meal':
@@ -146,7 +147,7 @@ class TaskForTheDay extends StatelessWidget {
                                 },
                                 child: RowWithTask(
                                   index: index,
-                                  dailySheet: _dailyTaskSheet[index]!,
+                                  dailySheet: _dayTask,
                                 ),
                               );
                             },

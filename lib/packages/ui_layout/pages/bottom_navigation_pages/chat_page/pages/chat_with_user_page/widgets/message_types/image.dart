@@ -9,7 +9,7 @@ class ImageWidget extends StatelessWidget {
   const ImageWidget(
       {Key? key, required this.attachments, required this.isSendMessage})
       : super(key: key);
-  final List<AttachmentsModel?> attachments;
+  final List<AttachmentModel?> attachments;
   final bool isSendMessage;
 
   @override
@@ -27,6 +27,7 @@ class ImageWidget extends StatelessWidget {
                 child: ContainerForPhotoFuture(
                   coverFileId: attachment.fileId,
                   openView: true,
+                  borderRadius: 16,
                 ),
               );
             } else {

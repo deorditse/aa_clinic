@@ -2,13 +2,14 @@ import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/user_profile_page/user_profile_page.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/material_sceleton_without_borders.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'widgets/app_bar_chat_with_user.dart';
 import 'main_body_chat.dart';
 import 'widgets/row_with_text_field_and_button.dart';
 import 'package:model/model.dart';
 
-class ChatWithUserPage extends StatefulWidget {
+class ChatWithUserPage extends StatelessWidget {
   static const String id = '/chatWithUserPage';
 
   const ChatWithUserPage({
@@ -47,21 +48,7 @@ class ChatWithUserPage extends StatefulWidget {
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
       );
 
-  @override
-  State<ChatWithUserPage> createState() => _ChatWithUserPageState();
-}
-
-class _ChatWithUserPageState extends State<ChatWithUserPage> {
   final int countUnreadChats = 12;
-
-  @override
-  void initState() {
-    super.initState();
-    ChatPageControllerGetx.instance.getMessagesInChat(
-      isOfficialChat: widget.isOfficialChat,
-      chatId: widget.chatId!,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,28 +60,34 @@ class _ChatWithUserPageState extends State<ChatWithUserPage> {
         children: [
           Expanded(
             child: MainBodyChatPage(
-              chatId: widget.chatId!,
-              isOfficialChat: widget.isOfficialChat,
+              chatId: chatId!,
+              isOfficialChat: isOfficialChat,
             ),
           ),
-          RowWithTextFieldAndButton(),
+          RowWithTextFieldAndButton(
+            recipientId: userMinified?.id,
+            isOfficialChat: isOfficialChat,
+            chatId: chatId!,
+          ),
         ],
       ),
       myNewMaterialAppBar: ChatMaterialAppBar(
         rightVoidCallback: () {
-          if (!widget.isOfficialChat) {
+          if (!isOfficialChat) {
             UserProfilePage.goToUserProfilePage(
               context: context,
-              userMinified: widget.userMinified,
+              userMinified: userMinified,
             );
           }
         },
         title:
-            "${widget.userMinified?.lastName ?? ""} ${widget.userMinified?.middleName ?? ""} ${widget.userMinified?.firstName ?? ""}",
-        isSvgImage: widget.isSvgImage,
+            "${userMinified?.lastName?.capitalizeFirst ?? ""} ${userMinified?.middleName?.capitalizeFirst ?? ""} ${userMinified?.firstName?.capitalizeFirst ?? ""}",
+        isSvgImage: isSvgImage,
         countUnreadChats: countUnreadChats,
+
+        ///todo
         subTitle: 'Онлайн 14 мин. назад',
-        imagePath: widget.userMinified?.avatar,
+        imagePath: userMinified?.avatar,
       ),
     );
   }

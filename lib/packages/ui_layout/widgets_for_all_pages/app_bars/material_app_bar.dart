@@ -20,7 +20,7 @@ class MyAppBar extends StatelessWidget {
   final bool backLine;
 
   final BuildContext myContext;
-  final String title;
+  final String? title;
   final Widget? widgetRight;
   final BodyScreens? bodyScreens;
   final bool onlyBack;
@@ -55,8 +55,11 @@ class MyAppBar extends StatelessWidget {
 
       //что эпп бар будет зафиксен после скролла
       title: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (backLine) myBackLineInAppBar(context: context),
+          // if (title != null || subTitle != null)
           Center(
             child: FittedBox(
               child: Padding(
@@ -68,9 +71,10 @@ class MyAppBar extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      // if (title != null)
                       FittedBox(
                         child: Text(
-                          title,
+                          title?.capitalizeFirst ?? " ",
                           style: myTextStyleFontUbuntu(
                             fontSize: fontSizeAppBar ?? 20,
                             newFontWeight: FontWeight.w500,
@@ -82,7 +86,7 @@ class MyAppBar extends StatelessWidget {
                       if (subTitle != null)
                         FittedBox(
                           child: Text(
-                            subTitle!,
+                            subTitle!.capitalizeFirst!,
                             style: myTextStyleFontUbuntu(
                               fontSize: 10,
                               newFontWeight: FontWeight.w300,

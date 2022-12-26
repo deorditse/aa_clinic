@@ -7,8 +7,8 @@ part 'chat_messages_model.g.dart';
 // flutter pub run build_runner build --delete-conflicting-outputs
 
 @unfreezed
-class ChatMessagesModel with _$ChatMessagesModel{
-   factory ChatMessagesModel({
+class ChatMessagesModel with _$ChatMessagesModel {
+  factory ChatMessagesModel({
     @Default([]) List<MessageModel> docs,
     int? totalDocs,
     int? limit,
@@ -17,17 +17,17 @@ class ChatMessagesModel with _$ChatMessagesModel{
     int? offset,
     bool? hasPrevPage,
     bool? hasNextPage,
-    String? prevPage,
-    String? nextPage,
+    int? prevPage,
+    int? nextPage,
   }) = _OfficialChatMessagesModel;
 
   factory ChatMessagesModel.fromJson(Map<String, Object?> json) =>
       _$ChatMessagesModelFromJson(json);
 }
 
-@freezed
+@unfreezed
 class MessageModel with _$MessageModel {
-  const factory MessageModel({
+  factory MessageModel({
     required String id,
     String? chatId,
     String? senderId,
@@ -36,7 +36,7 @@ class MessageModel with _$MessageModel {
     int? status,
     @Default(false) bool isReaded,
     @Default([]) List<String?> attachmentsIds,
-    @Default([]) List<AttachmentsModel?> attachments,
+    @Default([]) List<AttachmentModel?> attachments,
     String? readedAt,
     String? createdAt,
     String? updatedAt,
@@ -47,15 +47,15 @@ class MessageModel with _$MessageModel {
 }
 
 @freezed
-class AttachmentsModel with _$AttachmentsModel {
-  const factory AttachmentsModel({
+class AttachmentModel with _$AttachmentModel {
+  const factory AttachmentModel({
     required String id,
     String? userId,
     String? type, //example: img/png
     String? fileId,
     String? thumbnailFileId,
-  }) = _AttachmentsModel;
+  }) = _AttachmentModel;
 
-  factory AttachmentsModel.fromJson(Map<String, Object?> json) =>
-      _$AttachmentsModelFromJson(json);
+  factory AttachmentModel.fromJson(Map<String, Object?> json) =>
+      _$AttachmentModelFromJson(json);
 }

@@ -14,6 +14,7 @@ class ChatFindManyModel with _$ChatFindManyModel {
     String? patientId,
     @Default(false) bool isHidden,
     String? lastMessageDate,
+    String? lastMessage,
     int? unreadedMessages,
   }) = _ChatFindManyModel;
 

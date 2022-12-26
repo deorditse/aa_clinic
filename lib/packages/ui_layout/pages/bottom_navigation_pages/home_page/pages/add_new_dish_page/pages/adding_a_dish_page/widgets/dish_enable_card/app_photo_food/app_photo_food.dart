@@ -10,7 +10,6 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 
 import 'adding_a_dish_photo_food_bottom_sheet_widget.dart';
-import '../../../list_with_dish_card.dart';
 
 class PhotoFood extends StatelessWidget {
   const PhotoFood({Key? key, required this.indexDishCard}) : super(key: key);

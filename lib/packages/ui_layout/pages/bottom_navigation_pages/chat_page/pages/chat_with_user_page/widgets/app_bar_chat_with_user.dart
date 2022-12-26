@@ -82,7 +82,7 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
                 children: [
                   FittedBox(
                     child: Text(
-                      title,
+                      title.capitalizeFirst!,
                       style: myTextStyleFontUbuntu(
                         fontSize: fontSizeAppBar ?? 16,
                         context: context,
@@ -95,7 +95,7 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
                   if (subTitle != null)
                     FittedBox(
                       child: Text(
-                        subTitle!,
+                        subTitle!.capitalizeFirst!,
                         style: myTextStyleFontUbuntu(
                           fontSize: 12,
                           textColor:
@@ -124,24 +124,29 @@ class ChatMaterialAppBar extends StatelessWidget with PreferredSizeWidget {
   }) {
     return GestureDetector(
       onTap: rightVoidCallback,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 6, right: 6),
-        child: (imagePath != null && imagePath != '')
-            ? CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: isSvgImage
-                    ? SvgPicture.asset(
-                        "$imagePath",
-                        semanticsLabel: 'addNewEvent',
-                        fit: BoxFit.contain,
-                      )
-                    : ContainerForPhotoFuture(
+      child: (imagePath != null && imagePath != '')
+          ? CircleAvatar(
+              backgroundColor: Colors.transparent,
+              child: isSvgImage
+                  ? Padding(
+                      padding: EdgeInsets.only(bottom: 6, right: 6),
+                      child: FittedBox(
+                        child: SvgPicture.asset(
+                          "$imagePath",
+                          semanticsLabel: 'addNewEvent',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(bottom: 6, right: 6),
+                      child: ContainerForPhotoFuture(
                         coverFileId: imagePath,
                         isCircular: true,
                       ),
-              )
-            : FittedBox(child: Icon(Icons.person)),
-      ),
+                    ),
+            )
+          : FittedBox(child: Icon(Icons.person)),
     );
   }
 }

@@ -6,9 +6,9 @@ part 'calendar_fitness_workouts_model.g.dart';
 
 // flutter pub run build_runner build --delete-conflicting-outputs
 
-@freezed
+@unfreezed
 class FitnessWorkoutModel with _$FitnessWorkoutModel {
-  const factory FitnessWorkoutModel({
+  factory FitnessWorkoutModel({
     required String id,
     required String creatorId,
     required String userId,
@@ -27,9 +27,9 @@ class FitnessWorkoutModel with _$FitnessWorkoutModel {
       _$FitnessWorkoutModelFromJson(json);
 }
 
-@freezed
+@unfreezed
 class WorkoutObject with _$WorkoutObject {
-  const factory WorkoutObject({
+  factory WorkoutObject({
     FitnessGenericWorkoutExerciseObject? generic,
     @Default([]) List<ApproachObjectsConsisting?> sets,
     @Default(0) int fulfillment,
@@ -61,9 +61,9 @@ class FitnessGenericWorkoutExerciseObject
       _$FitnessGenericWorkoutExerciseObjectFromJson(json);
 }
 
-@freezed
+@unfreezed
 class ApproachObjectsConsisting with _$ApproachObjectsConsisting {
-  const factory ApproachObjectsConsisting({
+  factory ApproachObjectsConsisting({
     ///первое поле динамически меняется
     required Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
         target,
@@ -81,10 +81,10 @@ class ApproachObjectsConsisting with _$ApproachObjectsConsisting {
       _$ApproachObjectsConsistingFromJson(json);
 }
 
-@freezed
+@unfreezed
 class TargetObjectsDescriptionApproachObjectsConsisting
     with _$TargetObjectsDescriptionApproachObjectsConsisting {
-  const factory TargetObjectsDescriptionApproachObjectsConsisting({
+  factory TargetObjectsDescriptionApproachObjectsConsisting({
     String? title,
     String? units,
     String? fieldType,

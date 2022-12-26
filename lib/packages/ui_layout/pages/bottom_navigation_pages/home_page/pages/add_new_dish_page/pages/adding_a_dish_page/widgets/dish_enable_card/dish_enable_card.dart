@@ -10,7 +10,6 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 
 import 'app_photo_food/adding_a_dish_photo_food_bottom_sheet_widget.dart';
-import '../../list_with_dish_card.dart';
 import 'app_photo_food/app_photo_food.dart';
 
 class AddDishEnableCard extends StatelessWidget {

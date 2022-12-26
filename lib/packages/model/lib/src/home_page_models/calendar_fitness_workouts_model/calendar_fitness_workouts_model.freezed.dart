@@ -21,17 +21,30 @@ FitnessWorkoutModel _$FitnessWorkoutModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$FitnessWorkoutModel {
   String get id => throw _privateConstructorUsedError;
+  set id(String value) => throw _privateConstructorUsedError;
   String get creatorId => throw _privateConstructorUsedError;
+  set creatorId(String value) => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
+  set userId(String value) => throw _privateConstructorUsedError;
   String? get startedAt => throw _privateConstructorUsedError;
+  set startedAt(String? value) => throw _privateConstructorUsedError;
   String? get finishedAt => throw _privateConstructorUsedError;
+  set finishedAt(String? value) => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  set description(String? value) => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
+  set title(String? value) => throw _privateConstructorUsedError;
   List<WorkoutObject?> get exercises => throw _privateConstructorUsedError;
+  set exercises(List<WorkoutObject?> value) =>
+      throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
+  set comment(String? value) => throw _privateConstructorUsedError;
   int get fulfillment => throw _privateConstructorUsedError;
+  set fulfillment(int value) => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
+  set createdAt(String? value) => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
+  set updatedAt(String? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -216,7 +229,7 @@ class __$$_FitnessWorkoutModelCopyWithImpl<$Res>
           : title // ignore: cast_nullable_to_non_nullable
               as String?,
       exercises: null == exercises
-          ? _value._exercises
+          ? _value.exercises
           : exercises // ignore: cast_nullable_to_non_nullable
               as List<WorkoutObject?>,
       comment: freezed == comment
@@ -242,7 +255,7 @@ class __$$_FitnessWorkoutModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_FitnessWorkoutModel implements _FitnessWorkoutModel {
-  const _$_FitnessWorkoutModel(
+  _$_FitnessWorkoutModel(
       {required this.id,
       required this.creatorId,
       required this.userId,
@@ -250,97 +263,46 @@ class _$_FitnessWorkoutModel implements _FitnessWorkoutModel {
       this.finishedAt,
       this.description,
       this.title,
-      final List<WorkoutObject?> exercises = const [],
+      this.exercises = const [],
       this.comment,
       this.fulfillment = 0,
       this.createdAt,
-      this.updatedAt})
-      : _exercises = exercises;
+      this.updatedAt});
 
   factory _$_FitnessWorkoutModel.fromJson(Map<String, dynamic> json) =>
       _$$_FitnessWorkoutModelFromJson(json);
 
   @override
-  final String id;
+  String id;
   @override
-  final String creatorId;
+  String creatorId;
   @override
-  final String userId;
+  String userId;
   @override
-  final String? startedAt;
+  String? startedAt;
   @override
-  final String? finishedAt;
+  String? finishedAt;
   @override
-  final String? description;
+  String? description;
   @override
-  final String? title;
-  final List<WorkoutObject?> _exercises;
-  @override
-  @JsonKey()
-  List<WorkoutObject?> get exercises {
-    if (_exercises is EqualUnmodifiableListView) return _exercises;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_exercises);
-  }
-
-  @override
-  final String? comment;
+  String? title;
   @override
   @JsonKey()
-  final int fulfillment;
+  List<WorkoutObject?> exercises;
   @override
-  final String? createdAt;
+  String? comment;
   @override
-  final String? updatedAt;
+  @JsonKey()
+  int fulfillment;
+  @override
+  String? createdAt;
+  @override
+  String? updatedAt;
 
   @override
   String toString() {
     return 'FitnessWorkoutModel(id: $id, creatorId: $creatorId, userId: $userId, startedAt: $startedAt, finishedAt: $finishedAt, description: $description, title: $title, exercises: $exercises, comment: $comment, fulfillment: $fulfillment, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_FitnessWorkoutModel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.creatorId, creatorId) ||
-                other.creatorId == creatorId) &&
-            (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.startedAt, startedAt) ||
-                other.startedAt == startedAt) &&
-            (identical(other.finishedAt, finishedAt) ||
-                other.finishedAt == finishedAt) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.title, title) || other.title == title) &&
-            const DeepCollectionEquality()
-                .equals(other._exercises, _exercises) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.fulfillment, fulfillment) ||
-                other.fulfillment == fulfillment) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      creatorId,
-      userId,
-      startedAt,
-      finishedAt,
-      description,
-      title,
-      const DeepCollectionEquality().hash(_exercises),
-      comment,
-      fulfillment,
-      createdAt,
-      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -358,47 +320,59 @@ class _$_FitnessWorkoutModel implements _FitnessWorkoutModel {
 }
 
 abstract class _FitnessWorkoutModel implements FitnessWorkoutModel {
-  const factory _FitnessWorkoutModel(
-      {required final String id,
-      required final String creatorId,
-      required final String userId,
-      final String? startedAt,
-      final String? finishedAt,
-      final String? description,
-      final String? title,
-      final List<WorkoutObject?> exercises,
-      final String? comment,
-      final int fulfillment,
-      final String? createdAt,
-      final String? updatedAt}) = _$_FitnessWorkoutModel;
+  factory _FitnessWorkoutModel(
+      {required String id,
+      required String creatorId,
+      required String userId,
+      String? startedAt,
+      String? finishedAt,
+      String? description,
+      String? title,
+      List<WorkoutObject?> exercises,
+      String? comment,
+      int fulfillment,
+      String? createdAt,
+      String? updatedAt}) = _$_FitnessWorkoutModel;
 
   factory _FitnessWorkoutModel.fromJson(Map<String, dynamic> json) =
       _$_FitnessWorkoutModel.fromJson;
 
   @override
   String get id;
+  set id(String value);
   @override
   String get creatorId;
+  set creatorId(String value);
   @override
   String get userId;
+  set userId(String value);
   @override
   String? get startedAt;
+  set startedAt(String? value);
   @override
   String? get finishedAt;
+  set finishedAt(String? value);
   @override
   String? get description;
+  set description(String? value);
   @override
   String? get title;
+  set title(String? value);
   @override
   List<WorkoutObject?> get exercises;
+  set exercises(List<WorkoutObject?> value);
   @override
   String? get comment;
+  set comment(String? value);
   @override
   int get fulfillment;
+  set fulfillment(int value);
   @override
   String? get createdAt;
+  set createdAt(String? value);
   @override
   String? get updatedAt;
+  set updatedAt(String? value);
   @override
   @JsonKey(ignore: true)
   _$$_FitnessWorkoutModelCopyWith<_$_FitnessWorkoutModel> get copyWith =>
@@ -413,9 +387,14 @@ WorkoutObject _$WorkoutObjectFromJson(Map<String, dynamic> json) {
 mixin _$WorkoutObject {
   FitnessGenericWorkoutExerciseObject? get generic =>
       throw _privateConstructorUsedError;
+  set generic(FitnessGenericWorkoutExerciseObject? value) =>
+      throw _privateConstructorUsedError;
   List<ApproachObjectsConsisting?> get sets =>
       throw _privateConstructorUsedError;
+  set sets(List<ApproachObjectsConsisting?> value) =>
+      throw _privateConstructorUsedError;
   int get fulfillment => throw _privateConstructorUsedError;
+  set fulfillment(int value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -522,7 +501,7 @@ class __$$_WorkoutObjectCopyWithImpl<$Res>
           : generic // ignore: cast_nullable_to_non_nullable
               as FitnessGenericWorkoutExerciseObject?,
       sets: null == sets
-          ? _value._sets
+          ? _value.sets
           : sets // ignore: cast_nullable_to_non_nullable
               as List<ApproachObjectsConsisting?>,
       fulfillment: null == fulfillment
@@ -536,50 +515,24 @@ class __$$_WorkoutObjectCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_WorkoutObject implements _WorkoutObject {
-  const _$_WorkoutObject(
-      {this.generic,
-      final List<ApproachObjectsConsisting?> sets = const [],
-      this.fulfillment = 0})
-      : _sets = sets;
+  _$_WorkoutObject({this.generic, this.sets = const [], this.fulfillment = 0});
 
   factory _$_WorkoutObject.fromJson(Map<String, dynamic> json) =>
       _$$_WorkoutObjectFromJson(json);
 
   @override
-  final FitnessGenericWorkoutExerciseObject? generic;
-  final List<ApproachObjectsConsisting?> _sets;
+  FitnessGenericWorkoutExerciseObject? generic;
   @override
   @JsonKey()
-  List<ApproachObjectsConsisting?> get sets {
-    if (_sets is EqualUnmodifiableListView) return _sets;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_sets);
-  }
-
+  List<ApproachObjectsConsisting?> sets;
   @override
   @JsonKey()
-  final int fulfillment;
+  int fulfillment;
 
   @override
   String toString() {
     return 'WorkoutObject(generic: $generic, sets: $sets, fulfillment: $fulfillment)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_WorkoutObject &&
-            (identical(other.generic, generic) || other.generic == generic) &&
-            const DeepCollectionEquality().equals(other._sets, _sets) &&
-            (identical(other.fulfillment, fulfillment) ||
-                other.fulfillment == fulfillment));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, generic,
-      const DeepCollectionEquality().hash(_sets), fulfillment);
 
   @JsonKey(ignore: true)
   @override
@@ -596,20 +549,23 @@ class _$_WorkoutObject implements _WorkoutObject {
 }
 
 abstract class _WorkoutObject implements WorkoutObject {
-  const factory _WorkoutObject(
-      {final FitnessGenericWorkoutExerciseObject? generic,
-      final List<ApproachObjectsConsisting?> sets,
-      final int fulfillment}) = _$_WorkoutObject;
+  factory _WorkoutObject(
+      {FitnessGenericWorkoutExerciseObject? generic,
+      List<ApproachObjectsConsisting?> sets,
+      int fulfillment}) = _$_WorkoutObject;
 
   factory _WorkoutObject.fromJson(Map<String, dynamic> json) =
       _$_WorkoutObject.fromJson;
 
   @override
   FitnessGenericWorkoutExerciseObject? get generic;
+  set generic(FitnessGenericWorkoutExerciseObject? value);
   @override
   List<ApproachObjectsConsisting?> get sets;
+  set sets(List<ApproachObjectsConsisting?> value);
   @override
   int get fulfillment;
+  set fulfillment(int value);
   @override
   @JsonKey(ignore: true)
   _$$_WorkoutObjectCopyWith<_$_WorkoutObject> get copyWith =>
@@ -1020,15 +976,33 @@ ApproachObjectsConsisting _$ApproachObjectsConsistingFromJson(
 
 /// @nodoc
 mixin _$ApproachObjectsConsisting {
-//DescriptionApproachObjectsConsisting
+  ///первое поле динамически меняется
   Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target =>
-      throw _privateConstructorUsedError; //DescriptionApproachObjectsConsisting
+      throw _privateConstructorUsedError;
+
+  ///первое поле динамически меняется
+  set target(
+          Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
+              value) =>
+      throw _privateConstructorUsedError;
+
+  ///первое поле динамически меняется
   Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real =>
       throw _privateConstructorUsedError;
+
+  ///первое поле динамически меняется
+  set real(
+          Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
+              value) =>
+      throw _privateConstructorUsedError;
   String? get startedAt => throw _privateConstructorUsedError;
+  set startedAt(String? value) => throw _privateConstructorUsedError;
   String? get finishedAt => throw _privateConstructorUsedError;
+  set finishedAt(String? value) => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
+  set comment(String? value) => throw _privateConstructorUsedError;
   int? get restTime => throw _privateConstructorUsedError;
+  set restTime(int? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1141,11 +1115,11 @@ class __$$_ApproachObjectsConsistingCopyWithImpl<$Res>
   }) {
     return _then(_$_ApproachObjectsConsisting(
       target: null == target
-          ? _value._target
+          ? _value.target
           : target // ignore: cast_nullable_to_non_nullable
               as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       real: null == real
-          ? _value._real
+          ? _value.real
           : real // ignore: cast_nullable_to_non_nullable
               as Map<String, TargetObjectsDescriptionApproachObjectsConsisting>,
       startedAt: freezed == startedAt
@@ -1171,83 +1145,37 @@ class __$$_ApproachObjectsConsistingCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
-  const _$_ApproachObjectsConsisting(
-      {required final Map<String,
-              TargetObjectsDescriptionApproachObjectsConsisting>
-          target,
-      required final Map<String,
-              TargetObjectsDescriptionApproachObjectsConsisting>
-          real,
+  _$_ApproachObjectsConsisting(
+      {required this.target,
+      required this.real,
       this.startedAt,
       this.finishedAt,
       this.comment,
-      this.restTime})
-      : _target = target,
-        _real = real;
+      this.restTime});
 
   factory _$_ApproachObjectsConsisting.fromJson(Map<String, dynamic> json) =>
       _$$_ApproachObjectsConsistingFromJson(json);
 
-//DescriptionApproachObjectsConsisting
-  final Map<String, TargetObjectsDescriptionApproachObjectsConsisting> _target;
-//DescriptionApproachObjectsConsisting
+  ///первое поле динамически меняется
   @override
-  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target {
-    if (_target is EqualUnmodifiableMapView) return _target;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_target);
-  }
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> target;
 
-//DescriptionApproachObjectsConsisting
-  final Map<String, TargetObjectsDescriptionApproachObjectsConsisting> _real;
-//DescriptionApproachObjectsConsisting
+  ///первое поле динамически меняется
   @override
-  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real {
-    if (_real is EqualUnmodifiableMapView) return _real;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_real);
-  }
-
+  Map<String, TargetObjectsDescriptionApproachObjectsConsisting> real;
   @override
-  final String? startedAt;
+  String? startedAt;
   @override
-  final String? finishedAt;
+  String? finishedAt;
   @override
-  final String? comment;
+  String? comment;
   @override
-  final int? restTime;
+  int? restTime;
 
   @override
   String toString() {
     return 'ApproachObjectsConsisting(target: $target, real: $real, startedAt: $startedAt, finishedAt: $finishedAt, comment: $comment, restTime: $restTime)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ApproachObjectsConsisting &&
-            const DeepCollectionEquality().equals(other._target, _target) &&
-            const DeepCollectionEquality().equals(other._real, _real) &&
-            (identical(other.startedAt, startedAt) ||
-                other.startedAt == startedAt) &&
-            (identical(other.finishedAt, finishedAt) ||
-                other.finishedAt == finishedAt) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
-            (identical(other.restTime, restTime) ||
-                other.restTime == restTime));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_target),
-      const DeepCollectionEquality().hash(_real),
-      startedAt,
-      finishedAt,
-      comment,
-      restTime);
 
   @JsonKey(ignore: true)
   @override
@@ -1265,33 +1193,47 @@ class _$_ApproachObjectsConsisting implements _ApproachObjectsConsisting {
 }
 
 abstract class _ApproachObjectsConsisting implements ApproachObjectsConsisting {
-  const factory _ApproachObjectsConsisting(
-      {required final Map<String,
-              TargetObjectsDescriptionApproachObjectsConsisting>
+  factory _ApproachObjectsConsisting(
+      {required Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
           target,
-      required final Map<String,
-              TargetObjectsDescriptionApproachObjectsConsisting>
+      required Map<String, TargetObjectsDescriptionApproachObjectsConsisting>
           real,
-      final String? startedAt,
-      final String? finishedAt,
-      final String? comment,
-      final int? restTime}) = _$_ApproachObjectsConsisting;
+      String? startedAt,
+      String? finishedAt,
+      String? comment,
+      int? restTime}) = _$_ApproachObjectsConsisting;
 
   factory _ApproachObjectsConsisting.fromJson(Map<String, dynamic> json) =
       _$_ApproachObjectsConsisting.fromJson;
 
-  @override //DescriptionApproachObjectsConsisting
+  @override
+
+  ///первое поле динамически меняется
   Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get target;
-  @override //DescriptionApproachObjectsConsisting
+
+  ///первое поле динамически меняется
+  set target(
+      Map<String, TargetObjectsDescriptionApproachObjectsConsisting> value);
+  @override
+
+  ///первое поле динамически меняется
   Map<String, TargetObjectsDescriptionApproachObjectsConsisting> get real;
+
+  ///первое поле динамически меняется
+  set real(
+      Map<String, TargetObjectsDescriptionApproachObjectsConsisting> value);
   @override
   String? get startedAt;
+  set startedAt(String? value);
   @override
   String? get finishedAt;
+  set finishedAt(String? value);
   @override
   String? get comment;
+  set comment(String? value);
   @override
   int? get restTime;
+  set restTime(int? value);
   @override
   @JsonKey(ignore: true)
   _$$_ApproachObjectsConsistingCopyWith<_$_ApproachObjectsConsisting>
@@ -1307,9 +1249,13 @@ TargetObjectsDescriptionApproachObjectsConsisting
 /// @nodoc
 mixin _$TargetObjectsDescriptionApproachObjectsConsisting {
   String? get title => throw _privateConstructorUsedError;
+  set title(String? value) => throw _privateConstructorUsedError;
   String? get units => throw _privateConstructorUsedError;
+  set units(String? value) => throw _privateConstructorUsedError;
   String? get fieldType => throw _privateConstructorUsedError;
+  set fieldType(String? value) => throw _privateConstructorUsedError;
   int? get value => throw _privateConstructorUsedError;
+  set value(int? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1432,7 +1378,7 @@ class __$$_TargetObjectsDescriptionApproachObjectsConsistingCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TargetObjectsDescriptionApproachObjectsConsisting
     implements _TargetObjectsDescriptionApproachObjectsConsisting {
-  const _$_TargetObjectsDescriptionApproachObjectsConsisting(
+  _$_TargetObjectsDescriptionApproachObjectsConsisting(
       {this.title, this.units, this.fieldType, this.value});
 
   factory _$_TargetObjectsDescriptionApproachObjectsConsisting.fromJson(
@@ -1440,34 +1386,18 @@ class _$_TargetObjectsDescriptionApproachObjectsConsisting
       _$$_TargetObjectsDescriptionApproachObjectsConsistingFromJson(json);
 
   @override
-  final String? title;
+  String? title;
   @override
-  final String? units;
+  String? units;
   @override
-  final String? fieldType;
+  String? fieldType;
   @override
-  final int? value;
+  int? value;
 
   @override
   String toString() {
     return 'TargetObjectsDescriptionApproachObjectsConsisting(title: $title, units: $units, fieldType: $fieldType, value: $value)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_TargetObjectsDescriptionApproachObjectsConsisting &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.units, units) || other.units == units) &&
-            (identical(other.fieldType, fieldType) ||
-                other.fieldType == fieldType) &&
-            (identical(other.value, value) || other.value == value));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, title, units, fieldType, value);
 
   @JsonKey(ignore: true)
   @override
@@ -1489,11 +1419,11 @@ class _$_TargetObjectsDescriptionApproachObjectsConsisting
 
 abstract class _TargetObjectsDescriptionApproachObjectsConsisting
     implements TargetObjectsDescriptionApproachObjectsConsisting {
-  const factory _TargetObjectsDescriptionApproachObjectsConsisting(
-      {final String? title,
-      final String? units,
-      final String? fieldType,
-      final int? value}) = _$_TargetObjectsDescriptionApproachObjectsConsisting;
+  factory _TargetObjectsDescriptionApproachObjectsConsisting(
+      {String? title,
+      String? units,
+      String? fieldType,
+      int? value}) = _$_TargetObjectsDescriptionApproachObjectsConsisting;
 
   factory _TargetObjectsDescriptionApproachObjectsConsisting.fromJson(
           Map<String, dynamic> json) =
@@ -1501,12 +1431,16 @@ abstract class _TargetObjectsDescriptionApproachObjectsConsisting
 
   @override
   String? get title;
+  set title(String? value);
   @override
   String? get units;
+  set units(String? value);
   @override
   String? get fieldType;
+  set fieldType(String? value);
   @override
   int? get value;
+  set value(int? value);
   @override
   @JsonKey(ignore: true)
   _$$_TargetObjectsDescriptionApproachObjectsConsistingCopyWith<

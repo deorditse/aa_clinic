@@ -44,38 +44,62 @@ class ImplementAuthController extends GetxController {
 
   //когда пользователь зарегистрировался сохранять ID в локальную базу и каждый раз при входе проверять актуальность данныхч
   ///для виджета входа
-  Future<String> signInUser(
+  Future<void> signInUser(
       {required String? username, required String? password}) async {
     if (username != null && password != null) {
       return await _services
           .postSignInUserDataAuth(username: username, password: password)
           .then(
-        (Map<String, UserAuthorizedModel?> newUserAuthorizedData) async {
+        (Map<String, Map<String, dynamic>> newUserAuthorizedData) async {
           await _savePassAndLoginInLocalStorage(
             username: username.trim(),
             newPassword: password.trim(),
           );
           if (newUserAuthorizedData.keys.first == '200') {
-            if (newUserAuthorizedData.values.first != null) {
-              userAuthorizedData = newUserAuthorizedData.values.first;
+            if (newUserAuthorizedData.values.first.isNotEmpty) {
+              userAuthorizedData = UserAuthorizedModel.fromJson(
+                  newUserAuthorizedData.values.first);
               update();
 
               Get.offAllNamed("/main");
+            }else{
+              Get.snackbar(
+                'Ошибка входа',
+                'Ошибка сервера, попробуйте позже',
+                snackPosition: SnackPosition.TOP,
+              );
             }
 
-            return '200';
           } else if (newUserAuthorizedData.keys.first == '401') {
-            //если 401 - то email не подтвержден перевожу confirmMail
-            switchForm(newFormType: FormType.confirmMail);
-            return '401';
-          } else {
-            // switchForm(newFormType: FormType.login);
-            return newUserAuthorizedData.keys.first;
+            //Обработка ошибки 401 Unathorized
+            print(newUserAuthorizedData.values.first);
+            String _code = newUserAuthorizedData.values.first['code'];
+
+            if (_code == "TOKEN_EXPIRED") {
+              Get.snackbar(
+                'Ошибка входа',
+                'Войдите в аккаунт!',
+                snackPosition: SnackPosition.TOP,
+              );
+              switchForm(newFormType: FormType.login);
+            } else if (_code == "EMAIL_IS_NOT_VERIFIED") {
+              Get.snackbar(
+                'Ваш email не подтвержден',
+                'Необходимо подвердить email!',
+                snackPosition: SnackPosition.TOP,
+              );
+              switchForm(newFormType: FormType.confirmMail);
+            } else if (_code == "WRONG_DATA") {
+              Get.snackbar(
+                'Проверьте данные входа',
+                'Логин или пароль неверны',
+                snackPosition: SnackPosition.TOP,
+              );
+              switchForm(newFormType: FormType.login);
+            }
           }
         },
       );
-    } else {
-      return 'null';
     }
   }
 

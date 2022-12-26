@@ -17,6 +17,11 @@ class FoodCard extends StatelessWidget {
         .instance.mapTargetIdAndNutriMealsWithId[targetId]!.dishes[indexDish]!;
     return TextButton(
       onPressed: () {
+        HomePageCalendarControllerGetxState.instance.changePhotoFood(
+          isDeletePhotoFoodFile: true,
+          indexDish: 0,
+          targetId: '0',
+        );
         AboutFoodPage.openAboutFoodPage(
           title: dish.title,
           context: context,

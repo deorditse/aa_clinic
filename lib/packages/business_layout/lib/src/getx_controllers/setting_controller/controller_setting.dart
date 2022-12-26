@@ -29,14 +29,14 @@ class ImplementSettingGetXController extends GetxController {
 
     initializedControllersForPage();
 
-    ///инициирую сокет для всего приложения
-    // if (ImplementAuthController.instance.userAuthorizedData != null) {
-    //   print("инициализация сокета для всего приложения");
-    //   _services.socketConnect(
-    //     accessToken:
-    //         ImplementAuthController.instance.userAuthorizedData!.accessToken,
-    //   );
-    // }
+    // инициирую сокет для всего приложения
+    if (ImplementAuthController.instance.userAuthorizedData != null) {
+      print("инициализация сокета для всего приложения");
+      _services.socketConnect(
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      );
+    }
   }
 
   void goToScreenBody({required BodyScreens bodyScreens}) {
@@ -194,17 +194,28 @@ class ImplementSettingGetXController extends GetxController {
     }
   }
 
-  ///Роут для загрузки файлов (только картинки)
-  Future<String?> postStaticFilesAndGetIdImage(
-      {required File fileImage, required String category}) async {
-    //возвращает coverId
+  ///Роут для получения вложения по его id
+  Future<AttachmentModel?> getAttachmentInfo(
+      {required String idAttachment}) async {
+    return await _services.getAttachmentInfoData(
+      idAttachment: idAttachment,
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    );
+  }
 
-    update();
+  ///Роут для загрузки файлов (только картинки) возвращает coverId
+  Future<String?> postStaticFilesAndGetIdImage({
+    required String filePath,
+    String? category = "publicForUsers",
+    bool isAttachmentsRoute = true,
+  }) async {
     return await _services.postStaticFilesAndGetIdImageData(
-      fileImage: fileImage,
+      filePath: filePath,
       category: category,
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      isAttachmentsRoute: isAttachmentsRoute,
     );
   }
 

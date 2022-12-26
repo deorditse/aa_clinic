@@ -409,7 +409,7 @@ class HomePageData {
         url,
         headers: {
           'Authorization': 'Bearer ${accessToken}',
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
         body: jsonEncode(_jsonData),
       );
@@ -439,7 +439,6 @@ class HomePageData {
   Future<void> updateNutriMealsData({
     required String targetId,
     required NutriMealsModel dataNutriMeal,
-    required String? coverIdLifeImage,
     required String accessToken,
   }) async {
     try {
@@ -457,7 +456,7 @@ class HomePageData {
         url,
         headers: {
           'Authorization': 'Bearer ${accessToken}',
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
         body: json.encode(_jsonData),
       );
@@ -480,6 +479,52 @@ class HomePageData {
         snackPosition: SnackPosition.TOP,
       );
       print('я в ошибке from updateNutriMealsData $error ');
+    }
+  }
+
+  ///Route for update one fitness workouts by id
+  Future<void> putFitnessWorkoutWithIdData(
+      {required String accessToken,
+      required FitnessWorkoutModel fitnessWorkout,
+      required}) async {
+    try {
+      print(fitnessWorkout.exercises);
+      Uri url = urlMain(urlPath: 'api/fitnessWorkouts/${fitnessWorkout.id}');
+      Map<String, dynamic> _jsonData = {
+        'userId': fitnessWorkout.userId,
+        "creatorId": fitnessWorkout.creatorId,
+        'startedAt': fitnessWorkout.startedAt,
+        'finishedAt': fitnessWorkout.finishedAt,
+        'description': fitnessWorkout.description ?? "",
+        'title': fitnessWorkout.title,
+        'exercises': fitnessWorkout.exercises,
+      };
+      var response = await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${accessToken}',
+        },
+        body: json.encode(_jsonData),
+      );
+      print(
+          'Response status from putFitnessWorkoutWithIdData: ${response.statusCode}');
+      log('putFitnessWorkoutWithIdData ${response.body}');
+
+      if (response.statusCode == 200) {
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request putFitnessWorkoutWithIdData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error putFitnessWorkoutWithIdData:$error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from putFitnessWorkoutWithIdData $error ');
     }
   }
 }

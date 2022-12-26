@@ -39,25 +39,9 @@ class _FormSignIn extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // Get.offNamed('/main');///todo delete
-      await ImplementAuthController.instance
-          .signInUser(username: username.trim(), password: password.trim())
-          .then(
-        (status) {
-          if (status == '200') {
-          } else if (status == '401') {
-            Get.snackbar(
-              'Неправильные данные',
-              'Проверьте поля логина и пароля!',
-              snackPosition: SnackPosition.TOP,
-            );
-          } else {
-            Get.snackbar(
-              'Exception',
-              'Status $status',
-              snackPosition: SnackPosition.TOP,
-            );
-          }
-        },
+      await ImplementAuthController.instance.signInUser(
+        username: username.trim(),
+        password: password.trim(),
       );
     }
   }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'package:business_layout/business_layout.dart';
@@ -111,9 +112,9 @@ class HomePageCalendarControllerGetxState extends GetxController {
     if (isMarkForDay) {
       ///проверяю есть ли такой лист eventsForDay в контроллере
 
-      if ((eventsForDay[_formatData] == null &&
-              ImplementAuthController.instance.userAuthorizedData != null) ||
-          isUpdate) {
+      if (isUpdate ||
+          (eventsForDay[_formatData] == null &&
+              ImplementAuthController.instance.userAuthorizedData != null)) {
         List<DailyCalendarEventsModel?> _res =
             await _services.getDailyCalendarEventsData(
           accessToken:
@@ -154,27 +155,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
       );
 
       update();
-    }
-  }
-
-  ///СТРАНИЦА FITNESS WORKOUT для получения данных на странице задачи на день +
-  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, FitnessWorkoutModel> == targetId :  FitnessWorkoutModel
-
-  Map<String, FitnessWorkoutModel?> mapTargetIdAndWorkoutsWithId = {};
-
-  Future<FitnessWorkoutModel?> getFitnessWorkoutsWithId(
-      {required String targetId, bool isUpdate = false}) async {
-    if (mapTargetIdAndWorkoutsWithId[targetId] == null || isUpdate) {
-      final result = await _services.getFitnessWorkoutsWithIdData(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-        targetId: targetId,
-      );
-      mapTargetIdAndWorkoutsWithId[targetId] = result;
-      update();
-      return result;
-    } else {
-      return mapTargetIdAndWorkoutsWithId[targetId];
     }
   }
 
@@ -266,7 +246,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
       () async {
         //обновляю данные на этот день
         if (mapTargetIdAndCalendarActionsWithId[targetId]?.startedAt != null) {
-          await getDailyCalendarEvents(
+          getDailyCalendarEvents(
             isUpdate: true,
             dateDaily: DateTime.parse(
               mapTargetIdAndCalendarActionsWithId[targetId]!.startedAt!,
@@ -292,7 +272,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
       () async {
         //обновляю данные на этот день
         if (mapTargetIdAndCalendarActionsWithId[targetId]?.startedAt != null) {
-          await getDailyCalendarEvents(
+          getDailyCalendarEvents(
             isUpdate: true,
             dateDaily: DateTime.parse(
               mapTargetIdAndCalendarActionsWithId[targetId]!.startedAt!,
@@ -433,53 +413,117 @@ class HomePageCalendarControllerGetxState extends GetxController {
 
   ///добавление фото еды в карточку / удаление
   //обновление lifeImage еды чтобы закрыть прием пищи +
-
   Future<void> changePhotoFood({
     File? file,
     bool isDeletePhoto = false,
     required int indexDish,
     required String targetId,
+    bool isDeletePhotoFoodFile = false,
   }) async {
-    NutriMealsModel nutriMeal = mapTargetIdAndNutriMealsWithId[targetId]!;
+    if (isDeletePhotoFoodFile) {
+      photoFood = null;
+      update();
+      return;
+    }
     if (file != null) {
+      photoFood = file;
+      update();
       //сохраняю фото еды на сервер
       //сначала получим coverId
+
       await ImplementSettingGetXController.instance
           .postStaticFilesAndGetIdImage(
-        fileImage: file,
-        category: 'publicForUsers',
+        filePath: file.path,
+        isAttachmentsRoute: false,
       )
           .then(
         (coverId) async {
           //теперь записываю в базу
 
-          nutriMeal.dishes[indexDish]!.lifeImage = coverId;
+          if (coverId != null) {
+            mapTargetIdAndNutriMealsWithId[targetId]!
+                .dishes[indexDish]!
+                .lifeImage = coverId;
+            update();
+          }
 
-          await _services.updateNutriMealsData(
+          await _services
+              .updateNutriMealsData(
             targetId: targetId,
-            dataNutriMeal: nutriMeal,
-            coverIdLifeImage: coverId,
+            dataNutriMeal: mapTargetIdAndNutriMealsWithId[targetId]!,
             accessToken: ImplementAuthController
                 .instance.userAuthorizedData!.accessToken,
+          )
+              .whenComplete(
+            () async {
+              await getDailyCalendarEvents(
+                dateDaily: mySelectedDay,
+                isUpdate: true,
+              );
+            },
           );
         },
       );
     } else {
+      NutriDishModel? dish =
+          mapTargetIdAndNutriMealsWithId[targetId]!.dishes[indexDish];
       if (isDeletePhoto) {
-        if (nutriMeal.creatorId ==
-            ImplementAuthController.instance.userAuthorizedData?.id) {
-          nutriMeal.dishes[indexDish]!.lifeImage = null;
-          photoFood = null;
-          update();
+        photoFood = null;
+        update();
 
-          if (nutriMeal.dishes[indexDish]!.lifeImage != null) {
+        if (dish?.image != dish?.lifeImage) {
+          //if image != lifeImage то могу удалить lifeImage
+          if (dish?.lifeImage != null) {
             await ImplementSettingGetXController.instance
                 .deleteStaticFilesAndGetIdImage(
-              coverId: nutriMeal.dishes[indexDish]!.lifeImage!,
+              coverId: dish!.lifeImage!,
+            )
+                .whenComplete(
+              () async {
+                mapTargetIdAndNutriMealsWithId[targetId]!
+                    .dishes[indexDish]!
+                    .lifeImage = null;
+                update();
+
+                await _services
+                    .updateNutriMealsData(
+                  targetId: targetId,
+                  dataNutriMeal: mapTargetIdAndNutriMealsWithId[targetId]!,
+                  accessToken: ImplementAuthController
+                      .instance.userAuthorizedData!.accessToken,
+                )
+                    .whenComplete(
+                  () async {
+                    await getDailyCalendarEvents(
+                      dateDaily: mySelectedDay,
+                      isUpdate: true,
+                    );
+                  },
+                );
+              },
             );
           }
         } else {
-          Get.snackbar('', 'Нет прав для удаления карточки еды');
+          //if image == lifeImage то могу удалить lifeImage
+          mapTargetIdAndNutriMealsWithId[targetId]!
+              .dishes[indexDish]!
+              .lifeImage = null;
+          update();
+          await _services
+              .updateNutriMealsData(
+            targetId: targetId,
+            dataNutriMeal: mapTargetIdAndNutriMealsWithId[targetId]!,
+            accessToken: ImplementAuthController
+                .instance.userAuthorizedData!.accessToken,
+          )
+              .whenComplete(
+            () async {
+              await getDailyCalendarEvents(
+                dateDaily: mySelectedDay,
+                isUpdate: true,
+              );
+            },
+          );
         }
       }
     }
@@ -502,10 +546,13 @@ class HomePageCalendarControllerGetxState extends GetxController {
     await getMonthlyCalendarMarksForMouth(
       dateMarksMouth: mySelectedDay,
       isUpdate: true,
-    );
-    await getDailyCalendarEvents(
-      dateDaily: mySelectedDay,
-      isUpdate: true,
+    ).whenComplete(
+      () {
+        getDailyCalendarEvents(
+          dateDaily: mySelectedDay,
+          isUpdate: true,
+        );
+      },
     );
   }
 }

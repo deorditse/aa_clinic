@@ -1,40 +1,56 @@
 import 'package:business_layout/business_layout.dart';
+import 'package:get/get.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 
 class SearchChatsWidget extends StatefulWidget {
-  const SearchChatsWidget({Key? key}) : super(key: key);
+  SearchChatsWidget({Key? key}) : super(key: key);
 
   @override
   State<SearchChatsWidget> createState() => _SearchChatsWidgetState();
 }
 
-class _SearchChatsWidgetState extends State<SearchChatsWidget> {
-  final TextEditingController _searchQueryControllerProfilePage =
-      TextEditingController();
-  String searchQuery = "Search query";
+final TextEditingController _searchQueryControllerDocPage =
+    TextEditingController(
+        text: ChatPageControllerGetx.instance.searchingChatsText);
 
+final RxString _searchQuery = "".obs;
+
+class _SearchChatsWidgetState extends State<SearchChatsWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
           child: TextField(
-            controller: _searchQueryControllerProfilePage,
+            key: widget.key,
             autofocus: true,
+            controller: _searchQueryControllerDocPage,
             cursorColor: myColorIsActive,
-            decoration: myStyleTextField(context, hintText: 'Поиск по чатам'),
+            decoration:
+                myStyleTextField(context, hintText: 'Поиск по документам'),
             style: myTextStyleFontUbuntu(context: context),
-            onChanged: (query) => updateSearchQuery(query),
+            onChanged: (query) => _searchQuery.value = query,
+            onSubmitted: (searchText) {
+              FocusManager.instance.primaryFocus?.unfocus();
+
+              if (_searchQuery.value != '') {
+                ChatPageControllerGetx.instance.getChatsFindMany(
+                  searchText: searchText,
+                );
+              }
+            },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: GestureDetector(
-            onTap: () {
-              _stopSearching();
-            },
-            child: _searchQueryControllerProfilePage.text.isEmpty
+        SizedBox(width: 8),
+        GestureDetector(
+          onTap: () {
+            _stopSearching();
+          },
+          child: Obx(
+            () => _searchQuery.value == ""
                 ? Icon(
                     Icons.clear,
                   )
@@ -48,24 +64,16 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
     );
   }
 
-  void updateSearchQuery(String newQuery) {
-    setState(() {
-      searchQuery = newQuery;
-    });
-  }
-
   void _stopSearching() {
-    if (_searchQueryControllerProfilePage.text.isEmpty) {
-      ChatPageControllerGetx.instance
-          .changeIsSearchingChats(isSearching: false);
+    if (_searchQuery.value != '') {
+      _clearSearchQuery();
+    } else {
+      ChatPageControllerGetx.instance.changeIsSearchingChats(searchText: null);
     }
-    _clearSearchQuery();
   }
 
   void _clearSearchQuery() {
-    setState(() {
-      _searchQueryControllerProfilePage.clear();
-      updateSearchQuery("");
-    });
+    _searchQuery.value = '';
+    _searchQueryControllerDocPage.clear();
   }
 }

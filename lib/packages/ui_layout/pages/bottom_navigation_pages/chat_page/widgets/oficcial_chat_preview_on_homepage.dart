@@ -11,6 +11,7 @@ import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
+import 'column_with_fio_and_message.dart';
 
 class OfficialChatPreviewOnHomepage extends StatelessWidget {
   const OfficialChatPreviewOnHomepage({Key? key}) : super(key: key);
@@ -27,11 +28,15 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
           padding: MaterialStateProperty.all(EdgeInsets.zero),
         ),
         onPressed: () {
+          ChatPageControllerGetx.instance.getMessagesInChat(
+            isOfficialChat: true,
+            chatId: "AAClinic",
+          );
           ChatWithUserPage.openChatWithUserPage(
             isOfficialChat: true,
             context: context,
             isSvgImage: true,
-            chatId: 'chatInfo.specialistId!',
+            chatId: 'AAClinic',
             userMinified: UserMinifiedDataIdModel(
               id: "id",
               lastName: "AA",
@@ -45,25 +50,36 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: photoAndMarker(
+              child: _photoAndMarker(
                 isHidden: true, //chat.isHidden,
                 context: context,
                 avatar: avatar,
               ),
             ),
             Expanded(
-              flex: 6,
-              child: _columnWithFioAndMessage(
-                context: context,
-                fullName: "AA Clinic",
-                lastMessageDate: DateTime.now().toIso8601String(),
-              ),
-            ),
-            Expanded(
-              child: _columnWithTimeAndValue(
-                context: context,
-                lastMessageDate: DateTime.now().toIso8601String(),
-                unreadedMessages: 3,
+              flex: 7,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: myTopPaddingForContent / 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: ColumnWithFioAndMessage(
+                        fullName: "AA Clinic",
+                        lastMessageDate: "Чат с модератором",
+                      ),
+                    ),
+                    Expanded(
+                      child: _columnWithTimeAndValue(
+                        context: context,
+                        lastMessageDate: DateTime.now().toIso8601String(),
+                        unreadedMessages: 3,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -72,10 +88,9 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
     );
   }
 
-  _columnWithTimeAndValue(
-      {required BuildContext context,
-      required String? lastMessageDate,
-      required int? unreadedMessages}) {
+  _columnWithTimeAndValue({required BuildContext context,
+    required String? lastMessageDate,
+    required int? unreadedMessages}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -87,7 +102,11 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: myTextStyleFontUbuntu(
               fontSize: 14,
-              textColor: Theme.of(context).textTheme.headline3!.color,
+              textColor: Theme
+                  .of(context)
+                  .textTheme
+                  .headline3!
+                  .color,
               newFontWeight: FontWeight.w300,
               context: context),
         ),
@@ -103,7 +122,9 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
                 newFontWeight: FontWeight.w500,
                 fontSize: 14,
                 context: context,
-                textColor: Get.isDarkMode ? null : Theme.of(context).cardColor,
+                textColor: Get.isDarkMode ? null : Theme
+                    .of(context)
+                    .cardColor,
               ),
             ),
           ),
@@ -112,38 +133,7 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
     );
   }
 
-  _columnWithFioAndMessage({
-    required BuildContext context,
-    required String fullName,
-    required String? lastMessageDate,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: myHorizontalPaddingForContainer),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$fullName',
-            overflow: TextOverflow.ellipsis,
-            style: myTextStyleFontUbuntu(context: context),
-          ),
-          Text(
-            lastMessageDate != null ? '$lastMessageDate' : "...",
-            overflow: TextOverflow.ellipsis,
-            style: myTextStyleFontUbuntu(
-                fontSize: 14,
-                textColor: Theme.of(context).textTheme.headline3!.color,
-                newFontWeight: FontWeight.w300,
-                context: context),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget photoAndMarker({
+  Widget _photoAndMarker({
     required BuildContext context,
     required String avatar,
     bool? isHidden = false,
@@ -174,3 +164,4 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
     );
   }
 }
+

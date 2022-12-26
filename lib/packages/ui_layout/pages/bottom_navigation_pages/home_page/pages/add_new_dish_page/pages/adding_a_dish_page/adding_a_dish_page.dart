@@ -11,7 +11,6 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'widgets/button_add_dish_card.dart';
-import 'list_with_dish_card.dart';
 import 'package:http/http.dart' as http;
 
 import 'widgets/dish_enable_card/dish_enable_card.dart';
@@ -68,7 +67,6 @@ class _BodyAddNewEventHomePageState extends State<_BodyAddNewEventHomePage> {
   RxString messageInfo = "".obs;
 
   Future<void> _submit({
-    required List<AddNewDishCardModel> modelDishCardList,
     required String title,
     required String? description,
     required BuildContext context,
@@ -76,6 +74,8 @@ class _BodyAddNewEventHomePageState extends State<_BodyAddNewEventHomePage> {
     FocusManager.instance.primaryFocus?.unfocus();
     messageInfo.value = "Проверка данных...";
     Rx<bool> _isAllValidate = false.obs;
+    final List<AddNewDishCardModel> modelDishCardList =
+        ImplementAddNewDishController.instance.modelDishCardList;
 
     for (var modelDish in modelDishCardList) {
       if (modelDish.globalKeyFormState.currentState!.validate()) {
@@ -96,19 +96,28 @@ class _BodyAddNewEventHomePageState extends State<_BodyAddNewEventHomePage> {
     if (listIndexWherePhotosNotAdded.isEmpty && _isAllValidate.value) {
       messageInfo.value = "Отправка фото на сервер...";
       for (var dish in modelDishCardList) {
-        await ImplementSettingGetXController.instance
-            .postStaticFilesAndGetIdImage(
-                fileImage: dish.nutriDish.file!, category: "publicForUsers")
-            .then(
-          (coverId) {
-            dish.nutriDish.lifeImage = coverId;
-            dish.nutriDish.image = coverId;
-          },
-        );
+        if (dish.nutriDish.file != null) {
+          await ImplementSettingGetXController.instance
+              .postStaticFilesAndGetIdImage(
+            filePath: dish.nutriDish.file!.path,
+            isAttachmentsRoute: false,
+          )
+              .then(
+            (coverId) {
+              if (coverId != null) {
+                dish.nutriDish.lifeImage = coverId;
+                dish.nutriDish.image = coverId;
+              }
+            },
+          );
 
-        //обнуляю файл
-        dish.nutriDish.file = null;
-        _listDishes.add(dish.nutriDish);
+          //обнуляю файл
+          dish.nutriDish.file = null;
+          _listDishes.add(dish.nutriDish);
+        } else {
+          print(
+              "dish.nutriDish.file == null from _BodyAddNewEventHomePageState");
+        }
       }
       messageInfo.value = "Завершение загрузки...";
       await HomePageCalendarControllerGetxState.instance.postNutriMeals(
@@ -195,8 +204,6 @@ class _BodyAddNewEventHomePageState extends State<_BodyAddNewEventHomePage> {
                           title: widget.title,
                           description: widget.description,
                           context: context,
-                          modelDishCardList:
-                              controllerAddDish.modelDishCardList,
                         );
                       },
                       child: Text('СОХРАНИТЬ'),

@@ -32,10 +32,8 @@ class ContainerForMessageWidget extends StatelessWidget {
                   ? Alignment.centerRight
                   : Alignment.centerLeft,
           child: Container(
-            clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(
               maxWidth: Get.width * 0.7,
-              minWidth: Get.width * 0.2,
             ),
             decoration: myStyleContainer(
               context: context,
@@ -69,7 +67,7 @@ class IconReadAndUnreadMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment:
           isSendMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,

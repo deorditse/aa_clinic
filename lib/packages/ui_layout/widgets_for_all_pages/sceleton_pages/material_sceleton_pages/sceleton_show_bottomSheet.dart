@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 Future<void> showBottomSheetContainer({
   required BuildContext context,
-  required final String titleAppBar,
-  required final Widget widgetBody,
+  required String? titleAppBar,
+  required Widget widgetBody,
   final bool onlyBack = true,
   final Widget? widgetRightAppBar,
   final enableDrag = true,

@@ -5,22 +5,47 @@ import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:business_layout/business_layout.dart';
 
 class WorkoutCard extends StatelessWidget {
-  const WorkoutCard({Key? key, required this.workoutObject}) : super(key: key);
+  const WorkoutCard(
+      {Key? key, required this.indexExercises, required this.targetIdWorkout})
+      : super(key: key);
 
-  final WorkoutObject workoutObject;
+  final int indexExercises;
+  final String targetIdWorkout;
 
   @override
   Widget build(BuildContext context) {
-    FitnessGenericWorkoutExerciseObject? fitnessGenericWorkoutExerciseObject =
-        workoutObject.generic;
+    WorkoutObject? fitnessWorkoutObject = ImplementWorkoutControllerHomePage
+        .instance
+        .mapTargetIdAndWorkoutsWithId[targetIdWorkout]!
+        .exercises[indexExercises]!;
     return TextButton(
-      onPressed: () {
+      onPressed: () async {
+        ImplementWorkoutControllerHomePage.instance.startTimer(
+          timerSecondsValue: ImplementWorkoutControllerHomePage
+                  .instance
+                  .mapTargetIdAndWorkoutsWithId[targetIdWorkout]
+                  ?.exercises[indexExercises]
+                  ?.sets
+                  .first
+                  ?.restTime ??
+              30,
+          isStopTimer: true,
+        );
+
         WorkoutProgressPage.openWorkoutProgressPage(
           context: context,
-          workoutObject: workoutObject,
+          indexExercises: indexExercises,
+          targetIdWorkout: targetIdWorkout,
         );
+
+        if (fitnessWorkoutObject.sets.isNotEmpty) {
+          await ImplementWorkoutControllerHomePage.instance.getListWorkouts(
+            newSetsExercise: fitnessWorkoutObject.sets,
+          );
+        }
       },
       style: ButtonStyle(
         padding: MaterialStateProperty.all(
@@ -34,7 +59,7 @@ class WorkoutCard extends StatelessWidget {
             child: SizedBox(
               height: Get.height / 10,
               child: ContainerForPhotoFuture(
-                coverFileId: fitnessGenericWorkoutExerciseObject?.image,
+                coverFileId: fitnessWorkoutObject.generic?.image,
                 borderRadius: 15,
               ),
             ),
@@ -48,12 +73,12 @@ class WorkoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  fitnessGenericWorkoutExerciseObject?.title ?? 'Упражнение',
+                  fitnessWorkoutObject.generic?.title ?? 'Упражнение',
                   style: myTextStyleFontUbuntu(context: context),
                 ),
                 mySizedHeightBetweenContainer,
                 Text(
-                  'Подходов: ${workoutObject.sets.length} ',
+                  'Подходов: ${fitnessWorkoutObject.sets.length} ',
                   style: myTextStyleFontUbuntu(
                       textColor: Theme.of(context).textTheme.headline3!.color,
                       context: context),
@@ -67,9 +92,9 @@ class WorkoutCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "${workoutObject.fulfillment}%",
+                  "${fitnessWorkoutObject.fulfillment}%",
                   style: myTextStyleFontUbuntu(
-                    textColor: workoutObject.fulfillment == 100
+                    textColor: fitnessWorkoutObject.fulfillment == 100
                         ? myColorIsActive
                         : Theme.of(context).textTheme.headline3!.color,
                     context: context,

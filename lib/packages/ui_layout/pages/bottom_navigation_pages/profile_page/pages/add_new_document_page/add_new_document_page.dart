@@ -63,12 +63,12 @@ class _BodyAddNewDocumentProfilePageState
     List<String> _listCoverId = [];
     for (var newFileImage
         in ProfileControllerGetxState.instance.listWithPhotoImage) {
-      await ProfileControllerGetxState.instance
-          .postAttachmentsAndGetIdImage(fileImage: newFileImage)
+      await ImplementSettingGetXController.instance
+          .postStaticFilesAndGetIdImage(filePath: newFileImage.path)
           .then(
-        (idFile) {
-          if (idFile != null) {
-            _listCoverId.add(idFile);
+        (coverId) {
+          if (coverId != null) {
+            _listCoverId.add(coverId);
           }
         },
       );
@@ -98,8 +98,9 @@ class _BodyAddNewDocumentProfilePageState
         );
 
         //обнуляю лист с фото
-        ProfileControllerGetxState.instance
-            .changeListWithPhotoImage(isRemoveAll: true);
+        ProfileControllerGetxState.instance.changeListWithPhotoImage(
+          isRemoveAll: true,
+        );
       });
 
       Navigator.of(context).pop();

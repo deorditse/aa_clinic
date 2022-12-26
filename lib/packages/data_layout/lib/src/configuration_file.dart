@@ -1,7 +1,7 @@
-// const String urlMainApiConst = 'aaclinic-dev.glavstudio.pro';
-
 const String urlMainApiConst = 'api.aaclinic.online';
-const String  urlForSocket=  "https://$urlMainApiConst";
+// const String urlMainApiConst = '10.0.0.28:5000';
+const String urlForSocket = "https://$urlMainApiConst";
+
 Uri urlMain({Map<String, dynamic>? queryParameters, required String urlPath}) =>
     Uri.https(urlMainApiConst, urlPath, queryParameters);
 

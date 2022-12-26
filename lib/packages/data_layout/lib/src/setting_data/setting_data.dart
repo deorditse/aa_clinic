@@ -5,6 +5,7 @@ import 'package:data_layout/data_layout.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:model/model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -74,48 +75,62 @@ class SettingPageData {
   }
 
   ///Роут для загрузки файлов(только картинки)
-  Future<String?> postStaticFilesAndGetIdImageData(
-      {required File fileImage,
-      required String accessToken,
-      required String category}) async {
+  Future<String?> postStaticFilesAndGetIdImageData({
+    required String filePath,
+    required String accessToken,
+    required String? category,
+    required bool isAttachmentsRoute,
+  }) async {
     try {
-      Uri url = urlMain(urlPath: 'api/staticFiles');
+      Uri url = urlMain(
+          urlPath: isAttachmentsRoute ? 'api/attachments' : 'api/staticFiles');
 
-      var request = http.MultipartRequest("POST", url)
-        ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
-        ..fields['category'] = category
-        ..files.add(
-          await http.MultipartFile.fromPath(
-            "file",
-            fileImage.path,
-            contentType: MediaType('image', 'jpeg'),
-          ),
-        );
+      String? mimeType = lookupMimeType(filePath);
+      if (mimeType != null) {
+        var request = http.MultipartRequest("POST", url)
+          ..headers.addAll({"Authorization": "Bearer $accessToken"})
+          ..fields['category'] = category ?? ""
+          ..files.add(
+            await http.MultipartFile.fromPath(
+              "file",
+              filePath,
+              contentType: MediaType(
+                mimeType.split('/').first,
+                mimeType.split('/').last,
+              ),
+            ),
+          );
+        http.StreamedResponse response = await request.send();
+        print(
+            'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode}');
+        log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
 
-      http.StreamedResponse response = await request.send();
-
-      print(
-          'Response status from postStaticFilesAndGetIdImageData: ${response.statusCode}');
-      log('postStaticFilesImageData ${response.reasonPhrase}');
-
-      if (response.statusCode == 201) {
-        var responseData = await response.stream.toBytes();
-        Map responseString = json.decode(String.fromCharCodes(responseData));
-        return responseString['id'];
+        if (response.statusCode == 201) {
+          var responseData = await response.stream.toBytes();
+          Map<String, dynamic> responseString =
+              json.decode(String.fromCharCodes(responseData));
+          return responseString['id'];
+        } else {
+          Get.snackbar(
+            'Exception',
+            'Response status postAttachmentsAndGetIdImageData: ${response.statusCode}',
+            snackPosition: SnackPosition.TOP,
+          );
+        }
       } else {
         Get.snackbar(
-          'Exception',
-          'Response status postStaticFilesImageData: ${response.statusCode}',
+          'Формат не поддерживается',
+          '${filePath.split('/').last.capitalizeFirst} файл нельзя загрузить',
           snackPosition: SnackPosition.TOP,
         );
       }
     } catch (error) {
       Get.snackbar(
         'Exception',
-        'error from postStaticFilesImageData:$error}',
+        'error from postAttachmentsAndGetIdImageData:$error}',
         snackPosition: SnackPosition.TOP,
       );
-      print('я в ошибке from postStaticFilesImageData $error');
+      print('я в ошибке from postAttachmentsAndGetIdImageData $error');
       return null;
     }
   }
@@ -304,4 +319,37 @@ class SettingPageData {
     }
     return null;
   }
+
+  ///Роут для получения файла по его id
+  Future<AttachmentModel?> getAttachmentInfoData(
+      {required String accessToken, required String idAttachment}) async {
+    try {
+      Uri url = urlMain(urlPath: 'api/attachments/$idAttachment');
+
+      var response = await http
+          .get(url, headers: {"Authorization": "Bearer $accessToken"});
+
+      print('Response status from getAttachmentInfoData: ${response.statusCode}');
+      log('getAttachmentInfoData ${response.body}');
+
+      if (response.statusCode == 200) {
+        return AttachmentModel.fromJson(jsonDecode(response.body));
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request getAttachmentInfoData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error getAttachmentInfoData Storage: $error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from getAttachmentInfoData $error ');
+    }
+    return null;
+  }
+
 }

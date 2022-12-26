@@ -27,7 +27,7 @@ class RowWithProgress extends StatelessWidget {
               ),
             ),
             Text(
-             '${progress ?? 0}%',
+              '${progress ?? 0}%',
               style: myTextStyleFontUbuntu(
                 fontSize: 14,
                 context: context,

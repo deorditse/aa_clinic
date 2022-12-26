@@ -7,30 +7,30 @@ import 'package:model/model.dart';
 
 class AuthPageData {
   ///вход в приложение
-  Future<Map<String, UserAuthorizedModel?>> postSignInUserDataAuth(
+  Future<Map<String, Map<String, dynamic>>> postSignInUserDataAuth(
       {required String username, required String password}) async {
     try {
       Uri url = urlMain(urlPath: 'api/auth/signin');
 
-      var response = await http.post(url, body: {
-        'username': "$username",
-        'password': "$password",
-      });
+      var response = await http.post(
+        url,
+        body: {
+          'username': "$username",
+          'password': "$password",
+        },
+      );
       print(
           'Response status from postSignInUserDataAuth: ${response.statusCode}');
       log('postSignInUserDataAuth UserAuthorizedModel ${response.body}');
 
       if (response.statusCode == 200) {
-        return {
-          '${response.statusCode}':
-              UserAuthorizedModel.fromJson(jsonDecode(response.body)),
-        };
+        return {'${response.statusCode}': json.decode(response.body)};
       } else {
-        return {'${response.statusCode}': null};
+        return {'${response.statusCode}': json.decode(response.body)};
       }
     } catch (error) {
       print('я в ошибке from postSignInUserDataAuth $error');
-      return {'error $error': null};
+      return {'error $error': {}};
     }
   }
 

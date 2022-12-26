@@ -75,7 +75,6 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
           .changeListWithPhotoImage(file: imageTemporary);
 
       ///сделал сохранение на сервер
-
     }
   }
 
@@ -96,8 +95,9 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      ProfileControllerGetxState.instance
-          .changeListWithPhotoImage(file: imageTemporary);
+      ProfileControllerGetxState.instance.changeListWithPhotoImage(
+        file: imageTemporary,
+      );
     }
   }
 }

@@ -7,25 +7,22 @@ import 'package:http/http.dart' as http;
 import 'package:model/model.dart';
 
 class ChatPageData {
-  void initSocketChat() {
-    SettingPageData.socket?.on(
-      'createChatMessage',
-      (data) {
-        print(data);
-        print('ChatPageData initSocketChat data socket?');
-      },
-    );
-  }
-
   ///для чатов на странице со списком чатов
   Future<List<ChatFindManyModel?>> getChatsData(
-      {required String accessToken}) async {
+      {required String accessToken, String? searchText}) async {
     try {
-      Uri url = urlMain(urlPath: '/api/chats');
+      Uri url = urlMain(urlPath: 'api/chats');
 
-      var response = await http.get(url, headers: {
-        "Authorization": "Bearer ${accessToken}",
-      });
+      //для поиска
+      if (searchText != null && searchText != '') {
+        url = urlMain(
+            urlPath: 'api/chats', queryParameters: {'search': searchText});
+      }
+
+      print('Uri url from getChatsData: ${url}');
+
+      var response = await http
+          .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
 
       print('Response status from getChatsData: ${response.statusCode}');
       log('getChatsData ChatFindManyModel ${response.body}');
@@ -63,7 +60,7 @@ class ChatPageData {
   }) async {
     try {
       Uri url = isOfficialChat
-          ? urlMain(urlPath: '/api/officialChatMessages')
+          ? urlMain(urlPath: 'api/officialChatMessages')
           : urlMain(urlPath: 'api/chatMessages/inChat/$chatId');
 
       var response = await http
@@ -74,7 +71,6 @@ class ChatPageData {
       log('getMessagesInChatData ${isOfficialChat ? "isOfficialChat" : "chats"} ChatMessagesModel ${response.body}');
       if (response.statusCode == 200) {
         //прочитано сообщение
-
         await http.put(
           urlMain(
               urlPath: isOfficialChat
@@ -100,6 +96,103 @@ class ChatPageData {
         snackPosition: SnackPosition.TOP,
       );
       print('я в ошибке from getMessagesInChatData $error ');
+    }
+    return null;
+  }
+
+  ///получить новое сообщение в чате
+  Future<MessageModel?> getOneChatMessageWithIdData({
+    required String accessToken,
+    required String messageId,
+  }) async {
+    try {
+      Uri url = urlMain(urlPath: 'api/chatMessages/$messageId');
+
+      var response = await http
+          .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
+
+      print(
+          'Response status from getOneChatMessageWithIdData: ${response.statusCode}');
+      log('getMessagesInId MessageModel ${response.body}');
+      if (response.statusCode == 200) {
+        // //прочитано сообщение
+        // await http.put(
+        //   urlMain(urlPath: 'api/chatMessages/readChat/$chatId'),
+        //   headers: {'Authorization': 'Bearer ${accessToken}'},
+        // );
+
+        return await MessageModel.fromJson(
+          json.decode(response.body),
+        );
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request getOneChatMessageWithIdData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error getOneChatMessageWithIdData: $error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from getOneChatMessageWithIdData $error ');
+    }
+    return null;
+  }
+
+  ///Write message in chat
+  Future<MessageModel?> postMessagesInChatData({
+    required String accessToken,
+    required bool isOfficialChat,
+    required String? recipientId,
+    required String? text,
+    required List<String> attachmentsIds,
+  }) async {
+    try {
+      Uri url = isOfficialChat
+          ? urlMain(urlPath: 'api/officialChatMessages')
+          : urlMain(urlPath: 'api/chatMessages');
+
+      Map<String, dynamic> _jsonData = {
+        "recipientId": recipientId,
+        "text": text ?? '',
+        "attachmentsIds": attachmentsIds,
+      };
+      var response = await http.post(
+        url,
+        headers: {
+          "Authorization": "Bearer ${accessToken}",
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(_jsonData),
+      );
+
+      print(response.body);
+
+      print(
+          'Response status from ${isOfficialChat ? "isOfficialChat" : "chat"} postMessagesInChatData: ${response.statusCode}');
+      log('postMessagesInChatData ${isOfficialChat ? "isOfficialChat" : "chats"} ${response.body}');
+      if (response.statusCode == 201) {
+        return await MessageModel.fromJson(
+          jsonDecode(response.body),
+        );
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request ${isOfficialChat ? "isOfficialChat" : "chat"} postMessagesInChatData: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error ${isOfficialChat ? "isOfficialChat" : "chat"} postMessagesInChatData: $error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print(
+          'я в ошибке from ${isOfficialChat ? "isOfficialChat" : "chat"} postMessagesInChatData $error ');
     }
     return null;
   }

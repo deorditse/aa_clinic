@@ -90,7 +90,7 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
 
       final imageTemporary = File(image.path);
 
-      HomePageCalendarControllerGetxState.instance.changePhotoFood(
+      await HomePageCalendarControllerGetxState.instance.changePhotoFood(
         targetId: targetId,
         file: imageTemporary,
         indexDish: indexDish,
@@ -116,7 +116,8 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      HomePageCalendarControllerGetxState.instance.changePhotoFood(
+
+      await HomePageCalendarControllerGetxState.instance.changePhotoFood(
         targetId: targetId,
         file: imageTemporary,
         indexDish: indexDish,

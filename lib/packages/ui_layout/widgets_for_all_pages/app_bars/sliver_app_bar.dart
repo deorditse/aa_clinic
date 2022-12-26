@@ -59,42 +59,36 @@ class MySliverAppBar extends StatelessWidget {
         children: [
           if (backLine) myBackLineInAppBar(context: context),
           Center(
-            child: FittedBox(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 8.0,
-                ),
-                child: FittedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FittedBox(
-                        child: Text(
-                          title,
-                          style: myTextStyleFontUbuntu(
-                            fontSize: fontSizeAppBar ?? 20,
-                            newFontWeight: FontWeight.w500,
-                            context: myContext,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      if (subTitle != null)
-                        FittedBox(
-                          child: Text(
-                            subTitle!,
-                            style: myTextStyleFontUbuntu(
-                              fontSize: 10,
-                              newFontWeight: FontWeight.w300,
-                              context: myContext,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                    ],
+            child: Padding(
+              padding: const EdgeInsets.only(
+                bottom: 8.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: myTextStyleFontUbuntu(
+                      fontSize: fontSizeAppBar ?? 20,
+                      newFontWeight: FontWeight.w500,
+                      context: myContext,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
+                  if (subTitle != null)
+                    FittedBox(
+                      child: Text(
+                        subTitle!,
+                        style: myTextStyleFontUbuntu(
+                          fontSize: 10,
+                          newFontWeight: FontWeight.w300,
+                          context: myContext,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
               ),
             ),
           ),

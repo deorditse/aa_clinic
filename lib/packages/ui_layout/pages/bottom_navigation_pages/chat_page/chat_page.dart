@@ -15,6 +15,7 @@ import 'pages/chat_with_user_page/chat_with_user_page.dart';
 import 'widgets/app_bar_chat_sliver.dart';
 import 'widgets/chat_preview_on_homepage.dart';
 
+import 'widgets/is_search_active.dart';
 import 'widgets/oficcial_chat_preview_on_homepage.dart';
 
 class ChatPage extends StatelessWidget {
@@ -52,34 +53,39 @@ class _MainBodyChatPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            mySizedHeightBetweenContainer,
             OfficialChatPreviewOnHomepage(),
             mySizedHeightBetweenContainer,
-            ListView.builder(
-              shrinkWrap: true,
-              primary: false,
-              padding: EdgeInsets.zero,
-              itemCount: controllerChatPage.listChats.isNotEmpty
-                  ? controllerChatPage.listChats.length
-                  : 12,
-              itemBuilder: (context, index) {
-                if (controllerChatPage.listChats.isNotEmpty) {
-                  return Padding(
-                    padding:
-                        const EdgeInsets.only(bottom: myTopPaddingForContent),
-                    child: ChatPreviewOnHomepage(index: index),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: myTopPaddingForContent),
-                    child: myShimmerEffectContainer(
-                      context: context,
-                      newHeight: 60,
-                    ),
-                  );
-                }
-              },
-            ),
+            //если поиск начат
+            if (controllerChatPage.searchingChatsText != null &&
+                controllerChatPage.searchingChatsText != '')
+              ListViewIfSearchActiveFromChats()
+            else
+              ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                padding: EdgeInsets.zero,
+                itemCount: controllerChatPage.listChats != null
+                    ? controllerChatPage.listChats!.length
+                    : 12,
+                itemBuilder: (context, index) {
+                  if (controllerChatPage.listChats != null) {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: myTopPaddingForContent),
+                      child: ChatPreviewOnHomepage(index: index),
+                    );
+                  } else {
+                    return Padding(
+                      padding:
+                          const EdgeInsets.only(top: myTopPaddingForContent),
+                      child: myShimmerEffectContainer(
+                        context: context,
+                        newHeight: 60,
+                      ),
+                    );
+                  }
+                },
+              ),
           ],
         );
       },

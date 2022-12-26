@@ -89,7 +89,8 @@ _timeWidget({
   required String scheduleId,
   required DailyReceptionScheduleEventModel dailyReceptionScheduleEvent,
 }) {
-  bool isAfterDate = !DateTime.parse(dailyReceptionScheduleEvent.startedAt!)
+  bool isAfterDate = DateTime.parse(dailyReceptionScheduleEvent.startedAt!)
+      .toUtc()
       .isAfter(DateTime.now());
   return ElevatedButton(
     style: ButtonStyle().copyWith(
@@ -130,7 +131,8 @@ _timeWidget({
 
       // "${DateFormat.Hm().format(DateTime.parse(dailyReceptionScheduleEvent.startedAt!))}-${DateFormat.Hm().format(DateTime.parse(dailyReceptionScheduleEvent.finishedAt!))}",
       style: myTextStyleFontUbuntu(
-        textColor: dailyReceptionScheduleEvent.patientId == null
+        textColor: (dailyReceptionScheduleEvent.patientId == null) &&
+                isAfterDate
             ? Colors.white
             : Theme.of(context).textTheme.headline3!.color!.withOpacity(0.3),
         context: context,

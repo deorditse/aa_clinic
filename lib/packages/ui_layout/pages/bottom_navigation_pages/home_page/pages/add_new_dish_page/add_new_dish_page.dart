@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'pages/adding_a_dish_page/adding_a_dish_page.dart';
 import 'package:http/http.dart' as http;
 
-import 'pages/adding_a_dish_page/list_with_dish_card.dart';
 
 class AddNewDishHomePage extends StatelessWidget {
   static const String id = '/addNewDishHomePage';

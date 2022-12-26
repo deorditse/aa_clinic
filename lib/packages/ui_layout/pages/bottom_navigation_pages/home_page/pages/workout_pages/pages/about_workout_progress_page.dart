@@ -80,23 +80,10 @@ class _BodyAboutWorkoutProgressPageState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: Get.height / 3.6,
-                child: widget.coverId != '' && widget.coverId != null
-                    ? Container(
-                        decoration: myStyleContainer(
-                            context: context,
-                            color: Theme.of(context).backgroundColor),
-                        clipBehavior: Clip.hardEdge,
-                        height: Get.height / 3.6,
-                        width: double.maxFinite,
-                        child: ContainerForPhotoFuture(
-                          coverFileId: widget.coverId!,
-                          openView: true,
-                        ),
-                      )
-                    : const FittedBox(
-                        child: Icon(Icons.sports_gymnastics_rounded)),
+              ContainerForPhotoFuture(
+                coverFileId: widget.coverId,
+                openView: true,
+                borderRadius: 15,
               ),
               mySizedHeightBetweenContainer,
               Text(
@@ -106,7 +93,9 @@ class _BodyAboutWorkoutProgressPageState
               ),
               mySizedHeightBetweenContainer,
               Text(
-                widget.description,
+                widget.description.isNotEmpty
+                    ? widget.description
+                    : "Описание не добавлено",
                 style: myTextStyleFontUbuntu(
                   textColor: Theme.of(context).textTheme.headline3!.color,
                   newFontWeight: FontWeight.w300,

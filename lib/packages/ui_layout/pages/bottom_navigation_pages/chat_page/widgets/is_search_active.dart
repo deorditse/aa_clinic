@@ -1,21 +1,53 @@
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/chat_with_user_page.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/user_profile_page/user_profile_page.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/achievements_pages/achievements_page.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/pages/edit_profile_page/edit_profile_page.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:business_layout/business_layout.dart';
-import 'package:flutter/material.dart';
-import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:model/model.dart';
-
+import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
+import 'package:business_layout/business_layout.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:style_app/style_app.dart';
+import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/chat_page/pages/chat_with_user_page/chat_with_user_page.dart';
+import 'package:intl/intl.dart';
+import 'chat_preview_on_homepage.dart';
 import 'column_with_fio_and_message.dart';
 
-class ChatPreviewOnHomepage extends StatelessWidget {
-  const ChatPreviewOnHomepage({
+class ListViewIfSearchActiveFromChats extends StatelessWidget {
+  const ListViewIfSearchActiveFromChats({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ChatPageControllerGetx>(
+      builder: (controllerChat) {
+        List<ChatFindManyModel?> _listChatFindManyModel =
+            controllerChat.mapNameSearchAndChatFindManyModel[
+                    controllerChat.searchingChatsText] ??
+                [];
+        return _listChatFindManyModel.isNotEmpty
+            ? ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                padding: EdgeInsets.zero,
+                itemCount: _listChatFindManyModel.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: myTopPaddingForContent),
+                    child: _ChatPreviewOnHomepageForSearch(index: index),
+                  );
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: myTopPaddingForContent),
+                child: myShimmerEffectContainer(
+                  context: context,
+                  newHeight: 60,
+                ),
+              );
+      },
+    );
+  }
+}
+
+class _ChatPreviewOnHomepageForSearch extends StatelessWidget {
+  const _ChatPreviewOnHomepageForSearch({
     Key? key,
     String? imagePathAvatar,
     required this.index,
@@ -132,45 +164,4 @@ class ChatPreviewOnHomepage extends StatelessWidget {
       ],
     );
   }
-}
-
-Widget photoAndMarker({
-  required BuildContext context,
-  required UserMinifiedDataIdModel? userMinified,
-  bool? isHidden = false,
-}) {
-  return GestureDetector(
-    onTap: () {
-      if (userMinified != null) {
-        UserProfilePage.goToUserProfilePage(
-          context: context,
-          userMinified: userMinified,
-        );
-      }
-    },
-    child: FittedBox(
-      child: Stack(
-        children: [
-          CircleAvatar(
-            backgroundColor:
-                Theme.of(context).textTheme.headline3!.color!.withOpacity(0.1),
-            child: ContainerForPhotoFuture(
-              isCircular: true,
-              coverFileId: userMinified?.avatar,
-            ),
-          ),
-          Positioned(
-            right: 0,
-            child: Icon(
-              Icons.circle,
-              size: 10,
-              color: isHidden != null && isHidden
-                  ? Color.fromRGBO(14, 214, 166, 1)
-                  : Colors.grey,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }

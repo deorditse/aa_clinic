@@ -62,10 +62,10 @@ class _BodyWorkoutPageFromHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomePageCalendarControllerGetxState>(
-      builder: (controllerHome) {
+    return GetBuilder<ImplementWorkoutControllerHomePage>(
+      builder: (controllerWorkout) {
         FitnessWorkoutModel? dataFitnessWorkout =
-            controllerHome.mapTargetIdAndWorkoutsWithId[targetId];
+            controllerWorkout.mapTargetIdAndWorkoutsWithId[targetId];
         final bool isDataForPage = dataFitnessWorkout != null;
 
         return Column(
@@ -88,7 +88,8 @@ class _BodyWorkoutPageFromHomePage extends StatelessWidget {
                       top: myHorizontalPaddingForContainer),
                   child: isDataForPage
                       ? WorkoutCard(
-                          workoutObject: dataFitnessWorkout.exercises[index]!,
+                          indexExercises: index,
+                          targetIdWorkout: targetId,
                         )
                       : myShimmerEffectContainer(
                           context: context,

@@ -8,52 +8,7 @@ import 'package:model/model.dart';
 import 'package:http_parser/http_parser.dart';
 
 class ProfilePageData {
-  ///Роут для загрузки файлов в создании документов (только картинки)
-  Future<String?> postAttachmentsAndGetIdImageData({
-    required File fileImage,
-    required String accessToken,
-  }) async {
-    try {
-      Uri url = urlMain(urlPath: 'api/attachments');
 
-      var request = http.MultipartRequest("POST", url)
-        ..headers.addAll({"Authorization": "Bearer ${accessToken}"})
-        ..files.add(
-          await http.MultipartFile.fromPath(
-            "file",
-            fileImage.path,
-            contentType: MediaType('image', 'jpeg'),
-          ),
-        );
-
-      http.StreamedResponse response = await request.send();
-
-      print(
-          'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode}');
-      log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
-
-      if (response.statusCode == 201) {
-        var responseData = await response.stream.toBytes();
-        Map<String, dynamic> responseString =
-            json.decode(String.fromCharCodes(responseData));
-        return responseString['id'];
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Response status postAttachmentsAndGetIdImageData: ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
-    } catch (error) {
-      Get.snackbar(
-        'Exception',
-        'error from postAttachmentsAndGetIdImageData:$error}',
-        snackPosition: SnackPosition.TOP,
-      );
-      print('я в ошибке from postAttachmentsAndGetIdImageData $error');
-      return null;
-    }
-  }
 
   ///Роут для загрузки аватара пользователя +
   Future<String?> postSetAvatarData(
@@ -233,15 +188,13 @@ class ProfilePageData {
         "attachmentsIds": attachmentsIds,
       };
 
-      print('вот что уходит на сервер ${jsonEncode(_json)}');
-
       var response = await http.post(
         url,
         headers: {
           'Authorization': 'Bearer ${accessToken}',
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
-        body: jsonEncode(_json),
+        body: json.encode(_json),
       );
       print(
           'Response status from postPatientDocumentsData: ${response.statusCode}');

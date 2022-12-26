@@ -12,25 +12,33 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:model/model.dart';
 import 'widgets/list_with_history.dart';
-import 'widgets/row_with_timer.dart';
-import 'widgets/text_field_comment.dart';
+
+import 'widgets/worksheet_with_workouts.dart';
 
 class WorkoutProgressPage extends StatelessWidget {
   static const String id = '/workoutProgressPage';
 
   const WorkoutProgressPage({
     Key? key,
-    this.workoutObject,
+    this.indexExercises,
+    this.targetIdWorkout,
   }) : super(key: key);
 
-  final WorkoutObject? workoutObject;
+  final int? indexExercises;
+  final String? targetIdWorkout;
 
-  static openWorkoutProgressPage(
-          {required context, required WorkoutObject workoutObject}) =>
+  static openWorkoutProgressPage({
+    required context,
+    required int indexExercises,
+    required String targetIdWorkout,
+  }) =>
       PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: const RouteSettings(name: WorkoutProgressPage.id),
-        screen: WorkoutProgressPage(workoutObject: workoutObject),
+        screen: WorkoutProgressPage(
+          indexExercises: indexExercises,
+          targetIdWorkout: targetIdWorkout,
+        ),
         withNavBar: true,
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
       );
@@ -44,105 +52,74 @@ class WorkoutProgressPage extends StatelessWidget {
 
     return MySliverNewPageWithoutBorder(
       titleAppBar:
-          '$titleDate, ${workoutObject!.generic?.title?.toLowerCase() ?? 'Тренировка'}',
-      widgetBody: _BodyWorkoutProgressPage(workoutObject: workoutObject!),
+          '$titleDate, ${ImplementWorkoutControllerHomePage.instance.mapTargetIdAndWorkoutsWithId[targetIdWorkout]!.exercises[indexExercises!]!.generic?.title?.toLowerCase() ?? 'Тренировка'}',
+      widgetBody: _BodyWorkoutProgressPage(
+        indexExercises: indexExercises!,
+        targetIdWorkout: targetIdWorkout!,
+      ),
     );
   }
 }
 
 class _BodyWorkoutProgressPage extends StatelessWidget {
-  const _BodyWorkoutProgressPage({Key? key, required this.workoutObject})
-      : super(key: key);
-  final WorkoutObject workoutObject;
+  const _BodyWorkoutProgressPage({
+    Key? key,
+    required this.indexExercises,
+    required this.targetIdWorkout,
+  }) : super(key: key);
+  final int indexExercises;
+  final String targetIdWorkout;
 
   @override
   Widget build(BuildContext context) {
     FitnessGenericWorkoutExerciseObject? fitnessGenericWorkoutExerciseObject =
-        workoutObject.generic;
+        ImplementWorkoutControllerHomePage
+            .instance
+            .mapTargetIdAndWorkoutsWithId[targetIdWorkout]!
+            .exercises[indexExercises]!
+            .generic;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _photoWorkout(
-          coverId: workoutObject.generic?.image,
+          coverId: fitnessGenericWorkoutExerciseObject?.image,
           context: context,
           description: fitnessGenericWorkoutExerciseObject?.description,
           title: fitnessGenericWorkoutExerciseObject?.title,
         ),
         mySizedHeightBetweenContainer,
         rowWithNameAndAboutIcon(
-          fitnessGenericWorkoutExerciseObject: workoutObject.generic,
+          fitnessGenericWorkoutExerciseObject:
+              fitnessGenericWorkoutExerciseObject,
           context: context,
         ),
         mySizedHeightBetweenContainer,
-        RowWithProgress(
-          title: 'Прогресс упражнения',
-          progress: workoutObject.fulfillment,
+
+        ///этот лист динамически меняется при выполнении
+        WorksheetWithWorkouts(
+          indexExercises: indexExercises,
+          targetIdWorkout: targetIdWorkout,
         ),
         mySizedHeightBetweenContainer,
-        RowWithTimer(
-          title: 'Таймер отдыха',
-          newColor: Color.fromRGBO(14, 214, 166, 1),
-          timerSecondsValue: 40,
-          isStartTimer: true,
-        ),
-        mySizedHeightBetweenContainer,
-        Container(
-          height: 70,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  primary: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: workoutObject.sets.length,
-                  itemBuilder: (context, index) {
-                    final Map<String,
-                            TargetObjectsDescriptionApproachObjectsConsisting>
-                        _target = workoutObject.sets[index]!.target;
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(right: myTopPaddingForContent),
-                      child: _rowWithRecCount(
-                        containerText:
-                            _target.values.first.title!.capitalizeFirst!,
-                        title:
-                            'Рек: ${_target.values.first.value} ${_target.values.first.units}',
-                        context: context,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: myTopPaddingForContent),
-                child: SvgPicture.asset(
-                  Get.isDarkMode
-                      ? 'assets/icons/menu_icons_otherPage/add-circle.svg'
-                      : 'assets/icons/for_light_theme/add-circle_light.svg',
-                  semanticsLabel: 'addNewEvent',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ],
-          ),
-        ),
-        TextFieldComment(),
         mySizedHeightBetweenContainer,
         Text(
           'История выполнения',
           style: myTextStyleFontUbuntu(
-              context: context, newFontWeight: FontWeight.w500),
+            context: context,
+            newFontWeight: FontWeight.w500,
+          ),
         ),
-        SizedBox(height: myHorizontalPaddingForContainer),
-        Text(
-          "${DateFormat('d MMM y').format(HomePageCalendarControllerGetxState.instance.mySelectedDay)}",
-          style: myTextStyleFontUbuntu(
-              context: context, newFontWeight: FontWeight.w400),
+        Padding(
+          padding: const EdgeInsets.only(
+              bottom: myTopPaddingForContent / 2,
+              top: myTopPaddingForContent / 2),
+          child: Text(
+            "${DateFormat('d MMM y').format(HomePageCalendarControllerGetxState.instance.mySelectedDay)}",
+            style: myTextStyleFontUbuntu(
+                context: context, newFontWeight: FontWeight.w400),
+          ),
         ),
-        SizedBox(height: myHorizontalPaddingForContainer),
         ListWithHistory(),
       ],
     );
@@ -169,61 +146,11 @@ class _BodyWorkoutProgressPage extends StatelessWidget {
         );
       },
       child: Center(
-        child: Container(
-          decoration: myStyleContainer(
-              context: context, color: Theme.of(context).backgroundColor),
-          clipBehavior: Clip.hardEdge,
-          height: Get.height / 3.6,
-          width: double.maxFinite,
-          child: coverId != '' || coverId != null
-              ? ContainerForPhotoFuture(coverFileId: coverId!)
-              : FittedBox(child: Icon(Icons.sports_gymnastics_rounded)),
+        child: ContainerForPhotoFuture(
+          coverFileId: coverId,
+          borderRadius: 15,
         ),
       ),
-    );
-  }
-
-  _rowWithRecCount(
-      {required String containerText,
-      required String title,
-      required BuildContext context}) {
-    return Row(
-      children: [
-        IntrinsicWidth(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                title,
-                style: myTextStyleFontUbuntu(
-                    textColor: Theme.of(context).textTheme.headline3!.color,
-                    context: context),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Container(
-                decoration: myStyleContainer(
-                    color: Theme.of(context).backgroundColor, context: context),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: myHorizontalPaddingForContainer * 0.6),
-                  child: Center(
-                    child: Text(
-                      containerText,
-                      style: myTextStyleFontUbuntu(
-                          textColor:
-                              Theme.of(context).textTheme.headline3!.color,
-                          context: context),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
@@ -235,7 +162,7 @@ class _BodyWorkoutProgressPage extends StatelessWidget {
     return Row(
       children: [
         Text(
-          fitnessGenericWorkoutExerciseObject?.title ?? '',
+          fitnessGenericWorkoutExerciseObject?.title ?? 'Тренирповка',
           style: myTextStyleFontUbuntu(
             context: context,
             newFontWeight: FontWeight.w500,

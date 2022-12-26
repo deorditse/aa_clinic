@@ -25,6 +25,7 @@ mixin _$ChatFindManyModel {
   String? get patientId => throw _privateConstructorUsedError;
   bool get isHidden => throw _privateConstructorUsedError;
   String? get lastMessageDate => throw _privateConstructorUsedError;
+  String? get lastMessage => throw _privateConstructorUsedError;
   int? get unreadedMessages => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,6 +46,7 @@ abstract class $ChatFindManyModelCopyWith<$Res> {
       String? patientId,
       bool isHidden,
       String? lastMessageDate,
+      String? lastMessage,
       int? unreadedMessages});
 }
 
@@ -66,6 +68,7 @@ class _$ChatFindManyModelCopyWithImpl<$Res, $Val extends ChatFindManyModel>
     Object? patientId = freezed,
     Object? isHidden = null,
     Object? lastMessageDate = freezed,
+    Object? lastMessage = freezed,
     Object? unreadedMessages = freezed,
   }) {
     return _then(_value.copyWith(
@@ -89,6 +92,10 @@ class _$ChatFindManyModelCopyWithImpl<$Res, $Val extends ChatFindManyModel>
           ? _value.lastMessageDate
           : lastMessageDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
       unreadedMessages: freezed == unreadedMessages
           ? _value.unreadedMessages
           : unreadedMessages // ignore: cast_nullable_to_non_nullable
@@ -111,6 +118,7 @@ abstract class _$$_ChatFindManyModelCopyWith<$Res>
       String? patientId,
       bool isHidden,
       String? lastMessageDate,
+      String? lastMessage,
       int? unreadedMessages});
 }
 
@@ -130,6 +138,7 @@ class __$$_ChatFindManyModelCopyWithImpl<$Res>
     Object? patientId = freezed,
     Object? isHidden = null,
     Object? lastMessageDate = freezed,
+    Object? lastMessage = freezed,
     Object? unreadedMessages = freezed,
   }) {
     return _then(_$_ChatFindManyModel(
@@ -153,6 +162,10 @@ class __$$_ChatFindManyModelCopyWithImpl<$Res>
           ? _value.lastMessageDate
           : lastMessageDate // ignore: cast_nullable_to_non_nullable
               as String?,
+      lastMessage: freezed == lastMessage
+          ? _value.lastMessage
+          : lastMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
       unreadedMessages: freezed == unreadedMessages
           ? _value.unreadedMessages
           : unreadedMessages // ignore: cast_nullable_to_non_nullable
@@ -170,6 +183,7 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
       this.patientId,
       this.isHidden = false,
       this.lastMessageDate,
+      this.lastMessage,
       this.unreadedMessages});
 
   factory _$_ChatFindManyModel.fromJson(Map<String, dynamic> json) =>
@@ -187,11 +201,13 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
   @override
   final String? lastMessageDate;
   @override
+  final String? lastMessage;
+  @override
   final int? unreadedMessages;
 
   @override
   String toString() {
-    return 'ChatFindManyModel(id: $id, specialistId: $specialistId, patientId: $patientId, isHidden: $isHidden, lastMessageDate: $lastMessageDate, unreadedMessages: $unreadedMessages)';
+    return 'ChatFindManyModel(id: $id, specialistId: $specialistId, patientId: $patientId, isHidden: $isHidden, lastMessageDate: $lastMessageDate, lastMessage: $lastMessage, unreadedMessages: $unreadedMessages)';
   }
 
   @override
@@ -208,6 +224,8 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
                 other.isHidden == isHidden) &&
             (identical(other.lastMessageDate, lastMessageDate) ||
                 other.lastMessageDate == lastMessageDate) &&
+            (identical(other.lastMessage, lastMessage) ||
+                other.lastMessage == lastMessage) &&
             (identical(other.unreadedMessages, unreadedMessages) ||
                 other.unreadedMessages == unreadedMessages));
   }
@@ -215,7 +233,7 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, specialistId, patientId,
-      isHidden, lastMessageDate, unreadedMessages);
+      isHidden, lastMessageDate, lastMessage, unreadedMessages);
 
   @JsonKey(ignore: true)
   @override
@@ -239,6 +257,7 @@ abstract class _ChatFindManyModel implements ChatFindManyModel {
       final String? patientId,
       final bool isHidden,
       final String? lastMessageDate,
+      final String? lastMessage,
       final int? unreadedMessages}) = _$_ChatFindManyModel;
 
   factory _ChatFindManyModel.fromJson(Map<String, dynamic> json) =
@@ -254,6 +273,8 @@ abstract class _ChatFindManyModel implements ChatFindManyModel {
   bool get isHidden;
   @override
   String? get lastMessageDate;
+  @override
+  String? get lastMessage;
   @override
   int? get unreadedMessages;
   @override

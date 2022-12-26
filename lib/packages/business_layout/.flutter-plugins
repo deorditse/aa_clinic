@@ -1,12 +1,14 @@
 # This is a generated file; do not edit or check into version control.
 agora_rtc_engine=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/agora_rtc_engine-5.3.1/
 device_info_plus=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/device_info_plus-8.0.0/
+file_picker=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/file_picker-5.2.4/
+flutter_plugin_android_lifecycle=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
 flutter_secure_storage=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage-6.1.0/
 flutter_secure_storage_linux=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_linux-1.1.2/
 flutter_secure_storage_macos=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_macos-1.1.2/
 flutter_secure_storage_web=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_web-1.1.1/
 flutter_secure_storage_windows=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage_windows-1.1.3/
-health=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/health-4.3.0/
+health=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/health-4.4.0/
 path_provider=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.11/
 path_provider_android=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.22/
 path_provider_ios=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.11/
@@ -17,5 +19,5 @@ permission_handler=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/perm
 permission_handler_android=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/permission_handler_android-10.2.0/
 permission_handler_apple=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/permission_handler_apple-9.0.7/
 permission_handler_windows=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/permission_handler_windows-0.1.2/
-sqflite=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.1/
+sqflite=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.2/
 vibration=/Users/dmitrijdemidov/.pub-cache/hosted/pub.dartlang.org/vibration-1.7.6/

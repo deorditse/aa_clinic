@@ -10,19 +10,17 @@ class RowWithTask extends StatelessWidget {
   final int index;
   final DailyCalendarEventsModel? dailySheet;
 
-  Rx<Color> colorIndicator =
-      Get.textTheme.headline3!.color!.withOpacity(0.3).obs;
-
-  void initColorIndicator() {
+  Color? initColorIndicator() {
     if (dailySheet != null) {
       if (dailySheet!.isCanceled) {
-        colorIndicator.value = Colors.redAccent;
+        return Colors.redAccent;
       } else if (dailySheet!.isDone) {
-        colorIndicator.value = myColorIsActive;
+        return myColorIsActive;
       } else {
-        colorIndicator.value = Get.textTheme.headline3!.color!.withOpacity(0.3);
+        return Get.textTheme.headline3!.color!.withOpacity(0.3);
       }
     }
+    return null;
   }
 
   @override
@@ -33,12 +31,10 @@ class RowWithTask extends StatelessWidget {
       height: Get.height / 23,
       child: Row(
         children: [
-          Obx(
-            () => Container(
-              width: 4.73,
-              height: double.infinity,
-              color: colorIndicator.value,
-            ),
+          Container(
+            width: 4.73,
+            height: double.infinity,
+            color: initColorIndicator(),
           ),
           Expanded(
             child: Padding(

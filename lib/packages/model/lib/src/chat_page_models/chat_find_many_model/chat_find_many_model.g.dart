@@ -13,6 +13,7 @@ _$_ChatFindManyModel _$$_ChatFindManyModelFromJson(Map<String, dynamic> json) =>
       patientId: json['patientId'] as String?,
       isHidden: json['isHidden'] as bool? ?? false,
       lastMessageDate: json['lastMessageDate'] as String?,
+      lastMessage: json['lastMessage'] as String?,
       unreadedMessages: json['unreadedMessages'] as int?,
     );
 
@@ -24,5 +25,6 @@ Map<String, dynamic> _$$_ChatFindManyModelToJson(
       'patientId': instance.patientId,
       'isHidden': instance.isHidden,
       'lastMessageDate': instance.lastMessageDate,
+      'lastMessage': instance.lastMessage,
       'unreadedMessages': instance.unreadedMessages,
     };

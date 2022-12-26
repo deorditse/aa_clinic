@@ -22,9 +22,7 @@ class ArticlesControllerGetxState extends GetxController {
   String? searchingArticlesText;
   bool isSearchingArticles = false;
 
-  void changeIsSearchingArticles({
-    bool isSearching = false,
-  }) {
+  void changeIsSearchingArticles({bool isSearching = false}) {
     isSearchingArticles = isSearching;
     if (!isSearchingArticles) {
       searchingArticlesText = null;

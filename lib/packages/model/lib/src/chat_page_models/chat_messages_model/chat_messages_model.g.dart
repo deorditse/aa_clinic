@@ -20,8 +20,8 @@ _$_OfficialChatMessagesModel _$$_OfficialChatMessagesModelFromJson(
       offset: json['offset'] as int?,
       hasPrevPage: json['hasPrevPage'] as bool?,
       hasNextPage: json['hasNextPage'] as bool?,
-      prevPage: json['prevPage'] as String?,
-      nextPage: json['nextPage'] as String?,
+      prevPage: json['prevPage'] as int?,
+      nextPage: json['nextPage'] as int?,
     );
 
 Map<String, dynamic> _$$_OfficialChatMessagesModelToJson(
@@ -55,7 +55,7 @@ _$_MessageModel _$$_MessageModelFromJson(Map<String, dynamic> json) =>
       attachments: (json['attachments'] as List<dynamic>?)
               ?.map((e) => e == null
                   ? null
-                  : AttachmentsModel.fromJson(e as Map<String, dynamic>))
+                  : AttachmentModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       readedAt: json['readedAt'] as String?,
@@ -79,8 +79,8 @@ Map<String, dynamic> _$$_MessageModelToJson(_$_MessageModel instance) =>
       'updatedAt': instance.updatedAt,
     };
 
-_$_AttachmentsModel _$$_AttachmentsModelFromJson(Map<String, dynamic> json) =>
-    _$_AttachmentsModel(
+_$_AttachmentModel _$$_AttachmentModelFromJson(Map<String, dynamic> json) =>
+    _$_AttachmentModel(
       id: json['id'] as String,
       userId: json['userId'] as String?,
       type: json['type'] as String?,
@@ -88,7 +88,7 @@ _$_AttachmentsModel _$$_AttachmentsModelFromJson(Map<String, dynamic> json) =>
       thumbnailFileId: json['thumbnailFileId'] as String?,
     );
 
-Map<String, dynamic> _$$_AttachmentsModelToJson(_$_AttachmentsModel instance) =>
+Map<String, dynamic> _$$_AttachmentModelToJson(_$_AttachmentModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/add_new_dish_page/pages/adding_a_dish_page/adding_a_dish_page.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
 import 'package:get/get.dart';
@@ -8,30 +7,28 @@ import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-void addingADishPhotoFoodBottomSheetWidgetHomePage(
-    {required context, required int indexDishCard}) {
+void showAddFileBottomSheetWidgetInChatPage({required context}) {
   showBottomSheetContainer(
     context: context,
-    titleAppBar: 'Добавление фото блюда',
-    backLine: true,
+    // titleAppBar: null,
+    // backLine: true,
+    deleteAppBar: true,
     onlyBack: false,
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-    widgetBody: _AddPhotoBottomSheetWidget(
-      indexDishCard: indexDishCard,
-    ),
+    widgetBody: const _AddFileBottomSheetWidgetInChatPage(),
+    titleAppBar: 'Добавить файл',
   );
 }
 
-class _AddPhotoBottomSheetWidget extends StatelessWidget {
-  const _AddPhotoBottomSheetWidget({Key? key, required this.indexDishCard})
-      : super(key: key);
-  final int indexDishCard;
+class _AddFileBottomSheetWidgetInChatPage extends StatelessWidget {
+  const _AddFileBottomSheetWidgetInChatPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Center(child: myBackLineInAppBar(context: context)),
         ListView(
           shrinkWrap: true,
           primary: false,
@@ -40,18 +37,27 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
               child: ListTile(
                 onTap: () async {
                   Navigator.of(context).pop();
-                  await _pickImageFromGallery();
+                  await _pickImageFromCamera();
                 },
-                title: const Text('Из галереи'),
+                title: const Text('Сделать фото'),
               ),
             ),
             Card(
               child: ListTile(
                 onTap: () async {
                   Navigator.of(context).pop();
-                  await _pickImageFromCamera();
+                  await _pickImageFromGallery();
                 },
-                title: const Text('Сделать фото'),
+                title: const Text('Добавить фото из галереи'),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  ChatPageControllerGetx.instance.uploadDocument();
+                },
+                title: const Text('Прикрепить документ'),
               ),
             ),
           ],
@@ -72,19 +78,17 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       //если навсегда отключена mediaLibrary
       openAppSettings();
     } else {
-      final XFile? image =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
+      final List<XFile>? listImages = await ImagePicker().pickMultiImage();
 
-      final imageTemporary = File(image.path);
-      ImplementAddNewDishController.instance.changeListAddDishEnableCard(
-        index: indexDishCard,
-        file: imageTemporary,
-      );
+      if (listImages == null) return;
 
-      if (listIndexWherePhotosNotAdded.contains(indexDishCard)) {
-        listIndexWherePhotosNotAdded.remove(indexDishCard);
-      }
+      List<File> _listWithPhotoImage =
+          listImages.map((image) => File(image.path)).toList();
+
+      ChatPageControllerGetx.instance
+          .changeListWithPhotoImage(listImages: _listWithPhotoImage);
+
+      ///сделал сохранение на сервер
     }
   }
 
@@ -105,14 +109,8 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       if (image == null) return;
 
       final imageTemporary = File(image.path);
-      ImplementAddNewDishController.instance.changeListAddDishEnableCard(
-        index: indexDishCard,
-        file: imageTemporary,
-      );
-
-      if (listIndexWherePhotosNotAdded.contains(indexDishCard)) {
-        listIndexWherePhotosNotAdded.remove(indexDishCard);
-      }
+      ProfileControllerGetxState.instance
+          .changeListWithPhotoImage(file: imageTemporary);
     }
   }
 }

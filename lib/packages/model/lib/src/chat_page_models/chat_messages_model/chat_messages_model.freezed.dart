@@ -36,10 +36,10 @@ mixin _$ChatMessagesModel {
   set hasPrevPage(bool? value) => throw _privateConstructorUsedError;
   bool? get hasNextPage => throw _privateConstructorUsedError;
   set hasNextPage(bool? value) => throw _privateConstructorUsedError;
-  String? get prevPage => throw _privateConstructorUsedError;
-  set prevPage(String? value) => throw _privateConstructorUsedError;
-  String? get nextPage => throw _privateConstructorUsedError;
-  set nextPage(String? value) => throw _privateConstructorUsedError;
+  int? get prevPage => throw _privateConstructorUsedError;
+  set prevPage(int? value) => throw _privateConstructorUsedError;
+  int? get nextPage => throw _privateConstructorUsedError;
+  set nextPage(int? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,8 +62,8 @@ abstract class $ChatMessagesModelCopyWith<$Res> {
       int? offset,
       bool? hasPrevPage,
       bool? hasNextPage,
-      String? prevPage,
-      String? nextPage});
+      int? prevPage,
+      int? nextPage});
 }
 
 /// @nodoc
@@ -126,11 +126,11 @@ class _$ChatMessagesModelCopyWithImpl<$Res, $Val extends ChatMessagesModel>
       prevPage: freezed == prevPage
           ? _value.prevPage
           : prevPage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       nextPage: freezed == nextPage
           ? _value.nextPage
           : nextPage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ) as $Val);
   }
 }
@@ -153,8 +153,8 @@ abstract class _$$_OfficialChatMessagesModelCopyWith<$Res>
       int? offset,
       bool? hasPrevPage,
       bool? hasNextPage,
-      String? prevPage,
-      String? nextPage});
+      int? prevPage,
+      int? nextPage});
 }
 
 /// @nodoc
@@ -216,11 +216,11 @@ class __$$_OfficialChatMessagesModelCopyWithImpl<$Res>
       prevPage: freezed == prevPage
           ? _value.prevPage
           : prevPage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       nextPage: freezed == nextPage
           ? _value.nextPage
           : nextPage // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
     ));
   }
 }
@@ -262,9 +262,9 @@ class _$_OfficialChatMessagesModel implements _OfficialChatMessagesModel {
   @override
   bool? hasNextPage;
   @override
-  String? prevPage;
+  int? prevPage;
   @override
-  String? nextPage;
+  int? nextPage;
 
   @override
   String toString() {
@@ -296,8 +296,8 @@ abstract class _OfficialChatMessagesModel implements ChatMessagesModel {
       int? offset,
       bool? hasPrevPage,
       bool? hasNextPage,
-      String? prevPage,
-      String? nextPage}) = _$_OfficialChatMessagesModel;
+      int? prevPage,
+      int? nextPage}) = _$_OfficialChatMessagesModel;
 
   factory _OfficialChatMessagesModel.fromJson(Map<String, dynamic> json) =
       _$_OfficialChatMessagesModel.fromJson;
@@ -327,11 +327,11 @@ abstract class _OfficialChatMessagesModel implements ChatMessagesModel {
   bool? get hasNextPage;
   set hasNextPage(bool? value);
   @override
-  String? get prevPage;
-  set prevPage(String? value);
+  int? get prevPage;
+  set prevPage(int? value);
   @override
-  String? get nextPage;
-  set nextPage(String? value);
+  int? get nextPage;
+  set nextPage(int? value);
   @override
   @JsonKey(ignore: true)
   _$$_OfficialChatMessagesModelCopyWith<_$_OfficialChatMessagesModel>
@@ -345,17 +345,30 @@ MessageModel _$MessageModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MessageModel {
   String get id => throw _privateConstructorUsedError;
+  set id(String value) => throw _privateConstructorUsedError;
   String? get chatId => throw _privateConstructorUsedError;
+  set chatId(String? value) => throw _privateConstructorUsedError;
   String? get senderId => throw _privateConstructorUsedError;
+  set senderId(String? value) => throw _privateConstructorUsedError;
   String? get recipientId => throw _privateConstructorUsedError;
+  set recipientId(String? value) => throw _privateConstructorUsedError;
   String? get text => throw _privateConstructorUsedError;
+  set text(String? value) => throw _privateConstructorUsedError;
   int? get status => throw _privateConstructorUsedError;
+  set status(int? value) => throw _privateConstructorUsedError;
   bool get isReaded => throw _privateConstructorUsedError;
+  set isReaded(bool value) => throw _privateConstructorUsedError;
   List<String?> get attachmentsIds => throw _privateConstructorUsedError;
-  List<AttachmentsModel?> get attachments => throw _privateConstructorUsedError;
+  set attachmentsIds(List<String?> value) => throw _privateConstructorUsedError;
+  List<AttachmentModel?> get attachments => throw _privateConstructorUsedError;
+  set attachments(List<AttachmentModel?> value) =>
+      throw _privateConstructorUsedError;
   String? get readedAt => throw _privateConstructorUsedError;
+  set readedAt(String? value) => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
+  set createdAt(String? value) => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
+  set updatedAt(String? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -378,7 +391,7 @@ abstract class $MessageModelCopyWith<$Res> {
       int? status,
       bool isReaded,
       List<String?> attachmentsIds,
-      List<AttachmentsModel?> attachments,
+      List<AttachmentModel?> attachments,
       String? readedAt,
       String? createdAt,
       String? updatedAt});
@@ -446,7 +459,7 @@ class _$MessageModelCopyWithImpl<$Res, $Val extends MessageModel>
       attachments: null == attachments
           ? _value.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
-              as List<AttachmentsModel?>,
+              as List<AttachmentModel?>,
       readedAt: freezed == readedAt
           ? _value.readedAt
           : readedAt // ignore: cast_nullable_to_non_nullable
@@ -480,7 +493,7 @@ abstract class _$$_MessageModelCopyWith<$Res>
       int? status,
       bool isReaded,
       List<String?> attachmentsIds,
-      List<AttachmentsModel?> attachments,
+      List<AttachmentModel?> attachments,
       String? readedAt,
       String? createdAt,
       String? updatedAt});
@@ -540,13 +553,13 @@ class __$$_MessageModelCopyWithImpl<$Res>
           : isReaded // ignore: cast_nullable_to_non_nullable
               as bool,
       attachmentsIds: null == attachmentsIds
-          ? _value._attachmentsIds
+          ? _value.attachmentsIds
           : attachmentsIds // ignore: cast_nullable_to_non_nullable
               as List<String?>,
       attachments: null == attachments
-          ? _value._attachments
+          ? _value.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
-              as List<AttachmentsModel?>,
+              as List<AttachmentModel?>,
       readedAt: freezed == readedAt
           ? _value.readedAt
           : readedAt // ignore: cast_nullable_to_non_nullable
@@ -566,7 +579,7 @@ class __$$_MessageModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_MessageModel implements _MessageModel {
-  const _$_MessageModel(
+  _$_MessageModel(
       {required this.id,
       this.chatId,
       this.senderId,
@@ -574,105 +587,47 @@ class _$_MessageModel implements _MessageModel {
       this.text,
       this.status,
       this.isReaded = false,
-      final List<String?> attachmentsIds = const [],
-      final List<AttachmentsModel?> attachments = const [],
+      this.attachmentsIds = const [],
+      this.attachments = const [],
       this.readedAt,
       this.createdAt,
-      this.updatedAt})
-      : _attachmentsIds = attachmentsIds,
-        _attachments = attachments;
+      this.updatedAt});
 
   factory _$_MessageModel.fromJson(Map<String, dynamic> json) =>
       _$$_MessageModelFromJson(json);
 
   @override
-  final String id;
+  String id;
   @override
-  final String? chatId;
+  String? chatId;
   @override
-  final String? senderId;
+  String? senderId;
   @override
-  final String? recipientId;
+  String? recipientId;
   @override
-  final String? text;
+  String? text;
   @override
-  final int? status;
-  @override
-  @JsonKey()
-  final bool isReaded;
-  final List<String?> _attachmentsIds;
+  int? status;
   @override
   @JsonKey()
-  List<String?> get attachmentsIds {
-    if (_attachmentsIds is EqualUnmodifiableListView) return _attachmentsIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_attachmentsIds);
-  }
-
-  final List<AttachmentsModel?> _attachments;
+  bool isReaded;
   @override
   @JsonKey()
-  List<AttachmentsModel?> get attachments {
-    if (_attachments is EqualUnmodifiableListView) return _attachments;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_attachments);
-  }
-
+  List<String?> attachmentsIds;
   @override
-  final String? readedAt;
+  @JsonKey()
+  List<AttachmentModel?> attachments;
   @override
-  final String? createdAt;
+  String? readedAt;
   @override
-  final String? updatedAt;
+  String? createdAt;
+  @override
+  String? updatedAt;
 
   @override
   String toString() {
     return 'MessageModel(id: $id, chatId: $chatId, senderId: $senderId, recipientId: $recipientId, text: $text, status: $status, isReaded: $isReaded, attachmentsIds: $attachmentsIds, attachments: $attachments, readedAt: $readedAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_MessageModel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.chatId, chatId) || other.chatId == chatId) &&
-            (identical(other.senderId, senderId) ||
-                other.senderId == senderId) &&
-            (identical(other.recipientId, recipientId) ||
-                other.recipientId == recipientId) &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.isReaded, isReaded) ||
-                other.isReaded == isReaded) &&
-            const DeepCollectionEquality()
-                .equals(other._attachmentsIds, _attachmentsIds) &&
-            const DeepCollectionEquality()
-                .equals(other._attachments, _attachments) &&
-            (identical(other.readedAt, readedAt) ||
-                other.readedAt == readedAt) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      chatId,
-      senderId,
-      recipientId,
-      text,
-      status,
-      isReaded,
-      const DeepCollectionEquality().hash(_attachmentsIds),
-      const DeepCollectionEquality().hash(_attachments),
-      readedAt,
-      createdAt,
-      updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -689,59 +644,71 @@ class _$_MessageModel implements _MessageModel {
 }
 
 abstract class _MessageModel implements MessageModel {
-  const factory _MessageModel(
-      {required final String id,
-      final String? chatId,
-      final String? senderId,
-      final String? recipientId,
-      final String? text,
-      final int? status,
-      final bool isReaded,
-      final List<String?> attachmentsIds,
-      final List<AttachmentsModel?> attachments,
-      final String? readedAt,
-      final String? createdAt,
-      final String? updatedAt}) = _$_MessageModel;
+  factory _MessageModel(
+      {required String id,
+      String? chatId,
+      String? senderId,
+      String? recipientId,
+      String? text,
+      int? status,
+      bool isReaded,
+      List<String?> attachmentsIds,
+      List<AttachmentModel?> attachments,
+      String? readedAt,
+      String? createdAt,
+      String? updatedAt}) = _$_MessageModel;
 
   factory _MessageModel.fromJson(Map<String, dynamic> json) =
       _$_MessageModel.fromJson;
 
   @override
   String get id;
+  set id(String value);
   @override
   String? get chatId;
+  set chatId(String? value);
   @override
   String? get senderId;
+  set senderId(String? value);
   @override
   String? get recipientId;
+  set recipientId(String? value);
   @override
   String? get text;
+  set text(String? value);
   @override
   int? get status;
+  set status(int? value);
   @override
   bool get isReaded;
+  set isReaded(bool value);
   @override
   List<String?> get attachmentsIds;
+  set attachmentsIds(List<String?> value);
   @override
-  List<AttachmentsModel?> get attachments;
+  List<AttachmentModel?> get attachments;
+  set attachments(List<AttachmentModel?> value);
   @override
   String? get readedAt;
+  set readedAt(String? value);
   @override
   String? get createdAt;
+  set createdAt(String? value);
   @override
   String? get updatedAt;
+  set updatedAt(String? value);
   @override
   @JsonKey(ignore: true)
   _$$_MessageModelCopyWith<_$_MessageModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-AttachmentsModel _$AttachmentsModelFromJson(Map<String, dynamic> json) {
-  return _AttachmentsModel.fromJson(json);
+AttachmentModel _$AttachmentModelFromJson(Map<String, dynamic> json) {
+  return _AttachmentModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$AttachmentsModel {
+mixin _$AttachmentModel {
   String get id => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError; //example: img/png
@@ -750,15 +717,15 @@ mixin _$AttachmentsModel {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $AttachmentsModelCopyWith<AttachmentsModel> get copyWith =>
+  $AttachmentModelCopyWith<AttachmentModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AttachmentsModelCopyWith<$Res> {
-  factory $AttachmentsModelCopyWith(
-          AttachmentsModel value, $Res Function(AttachmentsModel) then) =
-      _$AttachmentsModelCopyWithImpl<$Res, AttachmentsModel>;
+abstract class $AttachmentModelCopyWith<$Res> {
+  factory $AttachmentModelCopyWith(
+          AttachmentModel value, $Res Function(AttachmentModel) then) =
+      _$AttachmentModelCopyWithImpl<$Res, AttachmentModel>;
   @useResult
   $Res call(
       {String id,
@@ -769,9 +736,9 @@ abstract class $AttachmentsModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AttachmentsModelCopyWithImpl<$Res, $Val extends AttachmentsModel>
-    implements $AttachmentsModelCopyWith<$Res> {
-  _$AttachmentsModelCopyWithImpl(this._value, this._then);
+class _$AttachmentModelCopyWithImpl<$Res, $Val extends AttachmentModel>
+    implements $AttachmentModelCopyWith<$Res> {
+  _$AttachmentModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -813,11 +780,11 @@ class _$AttachmentsModelCopyWithImpl<$Res, $Val extends AttachmentsModel>
 }
 
 /// @nodoc
-abstract class _$$_AttachmentsModelCopyWith<$Res>
-    implements $AttachmentsModelCopyWith<$Res> {
-  factory _$$_AttachmentsModelCopyWith(
-          _$_AttachmentsModel value, $Res Function(_$_AttachmentsModel) then) =
-      __$$_AttachmentsModelCopyWithImpl<$Res>;
+abstract class _$$_AttachmentModelCopyWith<$Res>
+    implements $AttachmentModelCopyWith<$Res> {
+  factory _$$_AttachmentModelCopyWith(
+          _$_AttachmentModel value, $Res Function(_$_AttachmentModel) then) =
+      __$$_AttachmentModelCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -829,11 +796,11 @@ abstract class _$$_AttachmentsModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AttachmentsModelCopyWithImpl<$Res>
-    extends _$AttachmentsModelCopyWithImpl<$Res, _$_AttachmentsModel>
-    implements _$$_AttachmentsModelCopyWith<$Res> {
-  __$$_AttachmentsModelCopyWithImpl(
-      _$_AttachmentsModel _value, $Res Function(_$_AttachmentsModel) _then)
+class __$$_AttachmentModelCopyWithImpl<$Res>
+    extends _$AttachmentModelCopyWithImpl<$Res, _$_AttachmentModel>
+    implements _$$_AttachmentModelCopyWith<$Res> {
+  __$$_AttachmentModelCopyWithImpl(
+      _$_AttachmentModel _value, $Res Function(_$_AttachmentModel) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -845,7 +812,7 @@ class __$$_AttachmentsModelCopyWithImpl<$Res>
     Object? fileId = freezed,
     Object? thumbnailFileId = freezed,
   }) {
-    return _then(_$_AttachmentsModel(
+    return _then(_$_AttachmentModel(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -872,16 +839,16 @@ class __$$_AttachmentsModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AttachmentsModel implements _AttachmentsModel {
-  const _$_AttachmentsModel(
+class _$_AttachmentModel implements _AttachmentModel {
+  const _$_AttachmentModel(
       {required this.id,
       this.userId,
       this.type,
       this.fileId,
       this.thumbnailFileId});
 
-  factory _$_AttachmentsModel.fromJson(Map<String, dynamic> json) =>
-      _$$_AttachmentsModelFromJson(json);
+  factory _$_AttachmentModel.fromJson(Map<String, dynamic> json) =>
+      _$$_AttachmentModelFromJson(json);
 
   @override
   final String id;
@@ -897,14 +864,14 @@ class _$_AttachmentsModel implements _AttachmentsModel {
 
   @override
   String toString() {
-    return 'AttachmentsModel(id: $id, userId: $userId, type: $type, fileId: $fileId, thumbnailFileId: $thumbnailFileId)';
+    return 'AttachmentModel(id: $id, userId: $userId, type: $type, fileId: $fileId, thumbnailFileId: $thumbnailFileId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AttachmentsModel &&
+            other is _$_AttachmentModel &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.type, type) || other.type == type) &&
@@ -921,27 +888,27 @@ class _$_AttachmentsModel implements _AttachmentsModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AttachmentsModelCopyWith<_$_AttachmentsModel> get copyWith =>
-      __$$_AttachmentsModelCopyWithImpl<_$_AttachmentsModel>(this, _$identity);
+  _$$_AttachmentModelCopyWith<_$_AttachmentModel> get copyWith =>
+      __$$_AttachmentModelCopyWithImpl<_$_AttachmentModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AttachmentsModelToJson(
+    return _$$_AttachmentModelToJson(
       this,
     );
   }
 }
 
-abstract class _AttachmentsModel implements AttachmentsModel {
-  const factory _AttachmentsModel(
+abstract class _AttachmentModel implements AttachmentModel {
+  const factory _AttachmentModel(
       {required final String id,
       final String? userId,
       final String? type,
       final String? fileId,
-      final String? thumbnailFileId}) = _$_AttachmentsModel;
+      final String? thumbnailFileId}) = _$_AttachmentModel;
 
-  factory _AttachmentsModel.fromJson(Map<String, dynamic> json) =
-      _$_AttachmentsModel.fromJson;
+  factory _AttachmentModel.fromJson(Map<String, dynamic> json) =
+      _$_AttachmentModel.fromJson;
 
   @override
   String get id;
@@ -955,6 +922,6 @@ abstract class _AttachmentsModel implements AttachmentsModel {
   String? get thumbnailFileId;
   @override
   @JsonKey(ignore: true)
-  _$$_AttachmentsModelCopyWith<_$_AttachmentsModel> get copyWith =>
+  _$$_AttachmentModelCopyWith<_$_AttachmentModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

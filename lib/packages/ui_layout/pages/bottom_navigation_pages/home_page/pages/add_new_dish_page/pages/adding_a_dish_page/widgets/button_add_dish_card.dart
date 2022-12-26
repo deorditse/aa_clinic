@@ -4,8 +4,6 @@ import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
-import '../list_with_dish_card.dart';
 import 'dish_enable_card/dish_enable_card.dart';
 
 addDishDisableCard({required BuildContext context, required int index}) {
