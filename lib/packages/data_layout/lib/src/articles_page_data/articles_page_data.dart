@@ -39,12 +39,6 @@ class ArticlesPageData {
 
       if (response.statusCode == 200) {
         return ArticlesPageModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getArticlesData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -72,12 +66,6 @@ class ArticlesPageData {
 
       if (response.statusCode == 200) {
         return ArticleCategoriesModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getArticleCategoriesData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -106,15 +94,6 @@ class ArticlesPageData {
       print(
           'Response status from postArticleRateWithIdData: ${response.statusCode}');
       log('postArticleRateWithIdData ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request postArticleRateWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',

@@ -4,6 +4,7 @@ import 'package:data_layout/data_layout.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
+import 'package:http/http.dart' as http;
 
 //каждый раз при изменении запускать кодогенерацию
 //для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -25,18 +26,9 @@ class ChatPageControllerGetx extends GetxController {
     print("createOfficialChatMessage socket");
     SettingPageData.socket?.on(
       'createOfficialChatMessage',
-      (data) {
+      (data) async {
         MessageModel _message = MessageModel.fromJson(data);
         print("createOfficialChatMessage new message ${_message}");
-
-        if (_message.senderId !=
-            ImplementAuthController.instance.userAuthorizedData?.id) {
-          Get.snackbar(
-            'Новое сообщение',
-            '${_message.text}',
-            snackPosition: SnackPosition.TOP,
-          );
-        }
         mapWithMessage["AAClinic"]!.insert(0, _message);
         update();
 
@@ -54,6 +46,14 @@ class ChatPageControllerGetx extends GetxController {
             }
           },
         );
+        //прочитано сообщение
+        await http.put(
+          urlMain(urlPath: 'api/officialChatMessages/read'),
+          headers: {
+            'Authorization':
+                'Bearer ${ImplementAuthController.instance.userAuthorizedData!.accessToken}'
+          },
+        );
       },
     );
 
@@ -61,30 +61,16 @@ class ChatPageControllerGetx extends GetxController {
     SettingPageData.socket?.on(
       'createChatMessage',
       (data) async {
-        //socketCreateChatMessage{
-        // id	string
-        // chatId	string
-        // senderId	string
-        // recipientId	string
-        // example: 634be2093f86cd440599aff4
-        // }
         ///получить новое сообщение в чате
         MessageModel? _message = await _services.getOneChatMessageWithIdData(
           accessToken:
               ImplementAuthController.instance.userAuthorizedData!.accessToken,
           messageId: data["id"],
+          chatId: data['chatId'],
         );
         print("createChatMessage new message ${_message}");
 
         if (_message != null) {
-          if (_message.senderId !=
-              ImplementAuthController.instance.userAuthorizedData?.id) {
-            Get.snackbar(
-              'Новое сообщение',
-              '${_message.text}',
-              snackPosition: SnackPosition.TOP,
-            );
-          }
           mapWithMessage[_message.chatId]!.insert(0, _message);
           update();
         }
@@ -115,16 +101,15 @@ class ChatPageControllerGetx extends GetxController {
 
   Future<void> getChatsFindMany({String? searchText}) async {
     if (searchText != null) {
+      ///todo chats search
       mapNameSearchAndChatFindManyModel[searchText] =
           await _services.getChatsData(
-        searchText: searchText,
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
       update();
     } else {
       listChats = await _services.getChatsData(
-        searchText: searchText,
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
@@ -162,6 +147,8 @@ class ChatPageControllerGetx extends GetxController {
     }
   }
 
+  bool isSendMessageLoading = false;
+
   Future<void> addNewMessage({
     required String accessToken,
     required bool isOfficialChat,
@@ -169,36 +156,45 @@ class ChatPageControllerGetx extends GetxController {
     required String? text,
     required String chatId,
   }) async {
+    if ((text == "" || text == null) &&
+        listWithPhotoImage.isEmpty &&
+        listDocuments.isEmpty) {
+      return;
+    }
+    isSendMessageLoading = true;
     update();
     List<String> attachmentsIds = [];
-    if (listWithPhotoImage.isNotEmpty) {
-      for (var image in listWithPhotoImage) {
+    List<File?> _listWithPhoto = listWithPhotoImage;
+    List<PlatformFile> _listDocuments = listDocuments;
+    uploadDocument(isDeleteListDocuments: true);
+    changeListWithPhotoImage(isRemoveAll: true);
+
+    if (_listWithPhoto.isNotEmpty) {
+      for (var image in _listWithPhoto) {
         if (image?.path != null) {
           String? _res = await ImplementSettingGetXController.instance
               .postStaticFilesAndGetIdImage(filePath: image!.path);
           if (_res != null) {
             attachmentsIds.add(_res);
+            update();
           }
         }
       }
       print("listWithPhotoImage.isNotEmpty ${attachmentsIds}");
     }
 
-    changeListWithPhotoImage(isRemoveAll: true);
-
-    if (listDocuments.isNotEmpty) {
-      for (var doc in listDocuments) {
+    if (_listDocuments.isNotEmpty) {
+      for (var doc in _listDocuments) {
         if (doc.path != null) {
           String? _res = await ImplementSettingGetXController.instance
               .postStaticFilesAndGetIdImage(filePath: doc.path!);
           if (_res != null) {
             attachmentsIds.add(_res);
+            update();
           }
         }
       }
     }
-
-    uploadDocument(isDeleteListDocuments: true);
 
     print(
         "attachmentsIds для загрузки через postMessagesInChatData ${attachmentsIds}");
@@ -210,6 +206,8 @@ class ChatPageControllerGetx extends GetxController {
       text: text,
       attachmentsIds: attachmentsIds,
     );
+    isSendMessageLoading = false;
+    update();
   }
 
   ///лист с файлами фото для добавления в чат

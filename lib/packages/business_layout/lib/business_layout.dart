@@ -27,4 +27,3 @@ export 'src/getx_controllers/home_page_controller/workout_controller.dart';
 
 ///real_time_call_controller
 export 'src/getx_controllers/real_time_call_controller/real_time_call_controller.dart';
-export 'src/getx_controllers/real_time_call_controller/rtc_binding.dart';

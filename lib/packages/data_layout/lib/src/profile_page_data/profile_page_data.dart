@@ -8,8 +8,6 @@ import 'package:model/model.dart';
 import 'package:http_parser/http_parser.dart';
 
 class ProfilePageData {
-
-
   ///Роут для загрузки аватара пользователя +
   Future<String?> postSetAvatarData(
       {required File avatar, required String accessToken}) async {
@@ -35,12 +33,6 @@ class ProfilePageData {
         var responseData = await response.stream.toBytes();
         Map responseString = json.decode(String.fromCharCodes(responseData));
         return responseString['avatar'];
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Response status postSetAvatarData: ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -51,6 +43,7 @@ class ProfilePageData {
       print('я в ошибке from postSetAvatarData $error');
       return null;
     }
+    return null;
   }
 
   ///роут для получения доков выбранного промежутка и поиска доков
@@ -83,12 +76,6 @@ class ProfilePageData {
 
       if (response.statusCode == 200) {
         return DocumentsListModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getPatientDocumentsByUserIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -116,12 +103,6 @@ class ProfilePageData {
 
       if (response.statusCode == 200) {
         return AchievementsModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getAchievementsData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -152,12 +133,6 @@ class ProfilePageData {
 
       if (response.statusCode == 200) {
         return Achievement.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getAchievementsWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -203,12 +178,6 @@ class ProfilePageData {
       if (response.statusCode == 201) {
         print(DocumentForIdModel.fromJson(jsonDecode(response.body)));
         return DocumentForIdModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request postPatientDocumentsData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(

@@ -5,6 +5,5 @@ class SettingBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => ImplementSettingGetXController(), fenix: true);
-
   }
 }

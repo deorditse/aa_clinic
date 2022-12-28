@@ -18,8 +18,6 @@ class RTCControllerGetxState extends GetxController {
 
   RealTimeCall? incomingRealTimeCall;
   RealTimeCallSocketEvent? incomingRealTimeCallFromSocket;
-  String? RTCFromId;
-  String? RTCId;
   UserMinifiedDataIdModel? RTCFromUser;
   int status = 0;
 
@@ -27,10 +25,39 @@ class RTCControllerGetxState extends GetxController {
 
   final RealTimeCallData _services = RealTimeCallData();
 
+  Function newRTCCallback = () {};
+  Function finishRTCCallback = () {};
+
   @override
-  onInit() {
-    super.onInit();
+  void onReady() {
+    super.onReady();
+    initializeDataRTC();
     _myInitRTCController();
+  }
+
+  void initializeDataRTC() {
+    // в штатном режиме подключиться сокетом к серверу и в случае newRTC получить максимум простых данных и опять открыть скрин звонка
+
+    print('initializeDataRTC from RTCControllerGetxState');
+    SettingPageData.socket?.on('newRealTimeCall', (data) {
+      print(data);
+      newRTCCallback(RealTimeCallSocketEvent.fromJson(data));
+    });
+    SettingPageData.socket?.on(
+      'finishRealTimeCall',
+      (data) {
+        print(data);
+        finishRTCCallback();
+      },
+    );
+  }
+
+  void setNewRTCCallback(Function callback) {
+    newRTCCallback = callback;
+  }
+
+  void setFinishRTCCallback(Function callback) {
+    finishRTCCallback = callback;
   }
 
   Future<void> _myInitRTCController() async {
@@ -38,34 +65,30 @@ class RTCControllerGetxState extends GetxController {
       _vibrate();
       // при загрузке приложения проверить наличие входящих звонков и если они есть, то открыть скрин
       Get.toNamed('/incomingVideoChatPage');
+      return;
     }
-    print('INIT socket for RTC');
-    // в штатном режиме подключиться сокетом к серверу и в случае newRTC получить максимум простых данных и опять открыть скрин звонка
 
-    if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-        null) {
-      _services.initializeDataRTC();
-
-      _services.setNewRTCCallback(
-        (RealTimeCallSocketEvent incomingRTC) async {
-          print('INCOMING');
-          if (status != 0) {
-            // если пациент уже с кем-то разговаривает или кто-то уже ему звонит
-            return null;
-          }
-          status = 1;
-          incomingRealTimeCallFromSocket = incomingRTC;
-          RTCFromId = incomingRealTimeCallFromSocket?.from;
-          // TODO: get minifieduserdata
-          RTCId = incomingRealTimeCallFromSocket?.id;
-          if (RTCId != null) {
-            incomingRealTimeCall = await getRealTimeCallById(id: RTCId!);
-            Get.toNamed('/incomingVideoChatPage');
-          }
-          update();
-        },
-      );
-    }
+    setNewRTCCallback(
+      (RealTimeCallSocketEvent incomingRTC) async {
+        if (status != 0) {
+          // если пациент уже с кем-то разговаривает или кто-то уже ему звонит
+          return null;
+        }
+        status = 1;
+        incomingRealTimeCallFromSocket = incomingRTC;
+        RTCFromUser = await updateRTCFromUser();
+        if (incomingRealTimeCallFromSocket?.id != null) {
+          await getRealTimeCallById(id: incomingRealTimeCallFromSocket!.id)
+              .then(
+            (value) {
+              incomingRealTimeCall = value;
+              update();
+              Get.toNamed('/incomingVideoChatPage');
+            },
+          );
+        }
+      },
+    );
   }
 
   void _vibrate() async {
@@ -88,19 +111,24 @@ class RTCControllerGetxState extends GetxController {
     if (ImplementAuthController.instance.userAuthorizedData != null) {
       return await _services
           .getIncomingRealTimeCalls(
-              accessToken: ImplementAuthController
-                  .instance.userAuthorizedData!.accessToken)
+        accessToken:
+            ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      )
           .then(
         (RealTimeCallModel? calls) async {
-          if (calls!.docs.isNotEmpty && calls.docs.first.finishedAt == null) {
+          if (calls != null &&
+              calls.docs.isNotEmpty &&
+              calls.docs.first.finishedAt == null) {
             incomingRealTimeCall = calls.docs.first;
             if (incomingRealTimeCall!.members.first !=
                 ImplementAuthController.instance.userAuthorizedData!.id) {
-              RTCFromId = incomingRealTimeCall!.members.first;
+              incomingRealTimeCallFromSocket?.from =
+                  incomingRealTimeCall!.members.first!;
             } else {
-              RTCFromId = incomingRealTimeCall!.members[1];
+              incomingRealTimeCallFromSocket?.from =
+                  incomingRealTimeCall!.members[1]!;
             }
-            RTCId = incomingRealTimeCall!.id;
+            incomingRealTimeCallFromSocket?.id = incomingRealTimeCall!.id;
             update();
             await updateRTCFromUser();
             return calls.docs.first;
@@ -113,9 +141,9 @@ class RTCControllerGetxState extends GetxController {
   }
 
   Future updateRTCFromUser() async {
-    if (RTCFromId != null) {
+    if (incomingRealTimeCallFromSocket?.from != null) {
       RTCFromUser = await ImplementSettingGetXController.instance
-          .getDataUserMinified(idUser: RTCFromId!);
+          .getDataUserMinified(idUser: incomingRealTimeCallFromSocket!.from);
       update();
     }
   }
@@ -131,9 +159,10 @@ class RTCControllerGetxState extends GetxController {
 
   Future finishRealTimeCall() async {
     await _services.finishRealTimeCalls(
-        id: incomingRealTimeCall!.id,
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken);
+      id: incomingRealTimeCall!.id,
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    );
     status = 0;
     update();
   }

@@ -10,18 +10,23 @@ import 'package:model/model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class HealthSnapshotsLoaderData {
-  Future<Map<String, dynamic>?> getLastValues(
-      {required String accessToken}) async {
+class HealthSnapshotsLoader {
+  Future getLastValues({required String accessToken}) async {
     try {
-      Uri url = urlMain(urlPath: 'api/healthSnapshots/lastValues');
-
+      Uri url = Uri.http(urlMainApiConst, 'api/healthSnapshots/lastValues');
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
       print('Response status from getLastValues: ${response.statusCode}');
       if (response.statusCode == 200) {
-        return await jsonDecode(response.body);
+        final Map? res = jsonDecode(response.body);
+        return res;
+      } else {
+        Get.snackbar(
+          'Exception',
+          'Bad Request getLastValues: status ${response.statusCode}',
+          snackPosition: SnackPosition.TOP,
+        );
       }
     } catch (error) {
       print(error);
@@ -29,21 +34,21 @@ class HealthSnapshotsLoaderData {
     return null;
   }
 
-  DateTime? _lastDataFetchedDateTime;
+  DateTime? lastDataFetchedDateTime = null;
 
   // функция вызывает fetchData только при достижении определенного интервала (чтобы не перегружать)
-  Future<void> safeFetchData({
+  Future safeFetchData({
     required String accessToken,
   }) async {
-    if (_lastDataFetchedDateTime == null ||
-        _lastDataFetchedDateTime!
+    if (lastDataFetchedDateTime == null ||
+        lastDataFetchedDateTime!
             .isBefore(DateTime.now().subtract(const Duration(minutes: 1)))) {
-      await fetchData(accessToken: accessToken);
-      _lastDataFetchedDateTime = DateTime.now();
+      fetchData(accessToken: accessToken);
+      lastDataFetchedDateTime = DateTime.now();
     }
   }
 
-  Future<void> fetchData({
+  Future fetchData({
     required String accessToken,
   }) async {
     Map<String, dynamic>? lastValues =
@@ -108,15 +113,17 @@ class HealthSnapshotsLoaderData {
       SettingPageData.socket
           ?.emit('createHealthSnapshotFromArray', {"data": _healthDataList});
     } else {
-      // если прямо сейчас сокет не доступен, пробуем через 5 секунд
-      await SettingPageData.socket?.connect();
-
-      if (SettingPageData.socketIOAvailable) {
-        SettingPageData.socket?.emit(
-          'createHealthSnapshotFromArray',
-          {"data": _healthDataList},
-        );
-      }
+      SettingPageData.socket?.connect();
+      Timer(
+          const Duration(seconds: 10),
+          () => {
+                if (SettingPageData.socketIOAvailable)
+                  {
+                    SettingPageData.socket?.emit(
+                        'createHealthSnapshotFromArray',
+                        {"data": _healthDataList})
+                  }
+              });
     }
   }
 

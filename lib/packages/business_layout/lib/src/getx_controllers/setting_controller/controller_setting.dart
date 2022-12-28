@@ -27,16 +27,14 @@ class ImplementSettingGetXController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    initializedControllersForPage();
-
     // инициирую сокет для всего приложения
-    if (ImplementAuthController.instance.userAuthorizedData != null) {
-      print("инициализация сокета для всего приложения");
-      _services.socketConnect(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
-    }
+    print("инициализация сокета для всего приложения");
+    _services.socketConnect(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    );
+    getFindMe(isUpdateData: true);
+    initializedControllersForPage();
   }
 
   void goToScreenBody({required BodyScreens bodyScreens}) {
@@ -68,33 +66,26 @@ class ImplementSettingGetXController extends GetxController {
     switch (indexPage) {
       case 0:
         print('initState BodyProfilePage');
-        // Get.lazyPut(() => ProfileControllerGetxState(), fenix: true);
+
         Get.lazyPut(() => ProfileControllerGetxState());
         Get.lazyPut(() => ActiveValueControllerProfilePage());
-        // Get.lazyPut(() => ActiveValueControllerProfilePage(), fenix: true);
         break;
       case 1:
         print('initState BodyChatPage');
-        // Get.lazyPut(() => ChatPageControllerGetx(), fenix: true);
         Get.lazyPut(() => ChatPageControllerGetx());
-
         break;
       case 2:
         print('initState BodyHomePage');
-        // Get.lazyPut(() => HomePageCalendarControllerGetxState(), fenix: true);
         Get.lazyPut(() => HomePageCalendarControllerGetxState());
-
+        Get.put(RTCControllerGetxState());
         break;
       case 3:
         print('initState BodyArticlesPage');
         Get.lazyPut(() => ArticlesControllerGetxState());
-        // Get.lazyPut(() => ArticlesControllerGetxState(), fenix: true);
         break;
       case 4:
         print('initState BodyOtherPage');
         Get.lazyPut(() => OtherControllerGetxState());
-
-        // Get.lazyPut(() => OtherControllerGetxState(), fenix: true);
         break;
     }
   }
@@ -103,16 +94,29 @@ class ImplementSettingGetXController extends GetxController {
 
   Future<UserDataModel?> getFindMe({bool isUpdateData = false}) async {
     if (userAllData == null || isUpdateData) {
-      final result = await _services.getFindMeData(
+      _services
+          .getFindMeData(
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
+      )
+          .then(
+        (mapFindMeDat) {
+          if (mapFindMeDat!.keys.first == 200) {
+            userAllData = UserDataModel.fromJson(mapFindMeDat.values.first);
+            update();
+            return userAllData;
+          } else if (mapFindMeDat.keys.first == 401) {
+            ImplementAuthController.instance.codeResponseStatus401(
+              codeString: mapFindMeDat.values.first['code'],
+            );
+          }
+          return null;
+        },
       );
-      userAllData = result;
-      update();
-      return result;
     } else {
       return userAllData;
     }
+    return null;
   }
 
   ///обновление данных пользователя
@@ -127,26 +131,25 @@ class ImplementSettingGetXController extends GetxController {
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
       userEdit: editUserAllData,
     );
-    // }
   }
 
   ///Роут для получения минимальной информации о пользователе по ID +
   //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, UserMinifiedDataIdModel?>? == IdUser :  UserMinifiedDataIdModel
-  Map<String, UserMinifiedDataIdModel?> _mapIdUserAndUserMinifiedData = {};
+  Map<String, UserMinifiedDataIdModel?> mapIdUserAndUserMinifiedData = {};
 
   Future<UserMinifiedDataIdModel?> getDataUserMinified(
       {required String idUser}) async {
-    if (_mapIdUserAndUserMinifiedData[idUser] == null) {
+    if (mapIdUserAndUserMinifiedData[idUser] == null) {
       final result = await _services.getDataUserMinifiedData(
         idUser: idUser,
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
       );
-      _mapIdUserAndUserMinifiedData[idUser] = result;
+      mapIdUserAndUserMinifiedData[idUser] = result;
       update();
       return result;
     } else {
-      return _mapIdUserAndUserMinifiedData[idUser];
+      return mapIdUserAndUserMinifiedData[idUser];
     }
   }
 

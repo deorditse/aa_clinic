@@ -98,15 +98,6 @@ class HomePageData {
       print(
           'Response status from calendarActionCancelData: ${response.statusCode}');
       log('calendarActionCancelData ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request calendarActionCancelData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -133,12 +124,6 @@ class HomePageData {
 
       if (response.statusCode == 200) {
         return CalendarActionsWithIdModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getCalendarActionsWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -167,12 +152,6 @@ class HomePageData {
 
       if (response.statusCode == 200) {
         return FitnessWorkoutModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getFitnessWorkoutsWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -201,12 +180,6 @@ class HomePageData {
 
       if (response.statusCode == 200) {
         return NutriMealsModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getNutriMealsWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -235,12 +208,6 @@ class HomePageData {
 
       if (response.statusCode == 200) {
         return AppointmentsModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getAppointmentsWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -286,13 +253,6 @@ class HomePageData {
         );
         log(_res.toString());
         return _res;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-        return {};
       }
     } catch (error) {
       Get.snackbar(
@@ -330,13 +290,6 @@ class HomePageData {
             .toList();
         print(listMapDailyCalendarEventsModel);
         return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-        return [];
       }
     } catch (error) {
       Get.snackbar(
@@ -367,13 +320,6 @@ class HomePageData {
         }
         final int? valHealth = res.first['value'];
         return valHealth;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getHealthRatesData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-        print(response.body);
       }
     } catch (error) {
       Get.snackbar(
@@ -416,15 +362,6 @@ class HomePageData {
       print(
           'Response status from updateNutriMealsData: ${response.statusCode}');
       log('updateNutriMealsData ${response.body}');
-
-      if (response.statusCode == 201) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request updateNutriMealsData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -463,15 +400,6 @@ class HomePageData {
       print(
           'Response status from updateNutriMealsData: ${response.statusCode}');
       log('updateNutriMealsData ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request updateNutriMealsData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -509,15 +437,6 @@ class HomePageData {
       print(
           'Response status from putFitnessWorkoutWithIdData: ${response.statusCode}');
       log('putFitnessWorkoutWithIdData ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request putFitnessWorkoutWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',

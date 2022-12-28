@@ -21,6 +21,10 @@ export 'src/auth_page_data/auth_page_data.dart';
 ///setting_page_data
 export 'src/setting_data/setting_data.dart';
 
+
+///health_snapshots_loader
+export 'src/home_page_data/health_snapshots_loader.dart';
+
 export 'src/real_time_call_data/real_time_call_data.dart';
 
 export 'src/configuration_file.dart';

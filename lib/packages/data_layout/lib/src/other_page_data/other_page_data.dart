@@ -10,9 +10,10 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class OtherPageData {
   ///Роут для обновления пароля пользователя этого сеанса +
-  Future<void> updatePasswordData({required String newPassword,
-    required String lastPassword,
-    required String accessToken}) async {
+  Future<void> updatePasswordData(
+      {required String newPassword,
+      required String lastPassword,
+      required String accessToken}) async {
     try {
       Uri url = urlMain(urlPath: 'api/users/updatePassword');
 
@@ -26,14 +27,6 @@ class OtherPageData {
       );
       print('Response status from updatePasswordData: ${response.statusCode}');
       log('updatePasswordData ${response.body}');
-
-      if (response.statusCode == 200) {} else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request updatePasswordData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -57,19 +50,11 @@ class OtherPageData {
         },
       );
       print(
-          'Response status from getMarketSubscriptionsData: ${response
-              .statusCode}');
+          'Response status from getMarketSubscriptionsData: ${response.statusCode}');
       log('getMarketSubscriptionsData SubscriptionsModel ${response.body}');
 
       if (response.statusCode == 200) {
         return SubscriptionsModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getMarketSubscriptionsData: status ${response
-              .statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -98,12 +83,6 @@ class OtherPageData {
 
       if (response.statusCode == 200) {
         return OrdersModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getOrdersData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -126,19 +105,11 @@ class OtherPageData {
           .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
 
       print(
-          'Response status from getMarketProductByOrderId: ${response
-              .statusCode}');
+          'Response status from getMarketProductByOrderId: ${response.statusCode}');
       log('getMarketProductByOrderId MarketProductModel ${response.body}');
 
       if (response.statusCode == 200) {
         return MarketProductModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getMarketProductByOrderId: status ${response
-              .statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -150,5 +121,4 @@ class OtherPageData {
     }
     return null;
   }
-
 }

@@ -52,18 +52,10 @@ class SettingPageData {
         headers: {'Authorization': 'Bearer $accessToken'},
         // body: {'cancelReason': cancelReason},
       );
-      if (response.statusCode == 200) {
-        print(
-          'Response status from deleteStaticFilesAndGetIdImage: ${response.statusCode}',
-        );
-        log("deleteStaticFilesAndGetIdImageData ${response.body}");
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request deleteStaticFilesAndGetIdImage: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
+      print(
+        'Response status from deleteStaticFilesAndGetIdImage: ${response.statusCode}',
+      );
+      log("deleteStaticFilesAndGetIdImageData ${response.body}");
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -87,7 +79,7 @@ class SettingPageData {
 
       String? mimeType = lookupMimeType(filePath);
       if (mimeType != null) {
-        var request = http.MultipartRequest("POST", url)
+        var request = await http.MultipartRequest("POST", url)
           ..headers.addAll({"Authorization": "Bearer $accessToken"})
           ..fields['category'] = category ?? ""
           ..files.add(
@@ -102,7 +94,7 @@ class SettingPageData {
           );
         http.StreamedResponse response = await request.send();
         print(
-            'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode}');
+            'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode} mimeType: $mimeType');
         log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
 
         if (response.statusCode == 201) {
@@ -110,12 +102,6 @@ class SettingPageData {
           Map<String, dynamic> responseString =
               json.decode(String.fromCharCodes(responseData));
           return responseString['id'];
-        } else {
-          Get.snackbar(
-            'Exception',
-            'Response status postAttachmentsAndGetIdImageData: ${response.statusCode}',
-            snackPosition: SnackPosition.TOP,
-          );
         }
       } else {
         Get.snackbar(
@@ -133,6 +119,7 @@ class SettingPageData {
       print('я в ошибке from postAttachmentsAndGetIdImageData $error');
       return null;
     }
+    return null;
   }
 
   ///обновление данных пользователя +
@@ -165,15 +152,6 @@ class SettingPageData {
       }
       print('Response status from updateMeData: ${response.statusCode}');
       log('updateMeData ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request updateMeData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -186,7 +164,8 @@ class SettingPageData {
 
   ///Роут для поиска пользователя этого сеанса
   //возможно нужно будет перенести в контроллер home page
-  Future<UserDataModel?> getFindMeData({required String accessToken}) async {
+  Future<Map<int, Map<String, dynamic>>?> getFindMeData(
+      {required String accessToken}) async {
     try {
       Uri url = urlMain(urlPath: 'api/users/findMe');
 
@@ -197,16 +176,7 @@ class SettingPageData {
       print('Response status from getFindMeData: ${response.statusCode}');
       log('getFindMeData UserDataModel ${response.body}');
 
-      print('GET FIND ME 1');
-      if (response.statusCode == 200) {
-        return UserDataModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getFindMeData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
+      return {response.statusCode: jsonDecode(response.body)};
     } catch (error) {
       Get.snackbar(
         'Exception',
@@ -234,12 +204,6 @@ class SettingPageData {
 
       if (response.statusCode == 200) {
         return UserMinifiedDataIdModel.fromJson(jsonDecode(response.body));
-      } else {
-        // Get.snackbar(
-        //   'Exception',
-        //   'Bad Request getDataUserMinifiedData: status ${response.statusCode}',
-        //   snackPosition: SnackPosition.TOP,
-        // );
       }
     } catch (error) {
       Get.snackbar(
@@ -266,12 +230,6 @@ class SettingPageData {
 
       if (response.statusCode == 200) {
         return StaticFileModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getStaticFileData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -301,12 +259,6 @@ class SettingPageData {
         List<int> list = response.body.codeUnits;
         Uint8List bytes = Uint8List.fromList(list);
         return {200: bytes};
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getStaticFilesS¬torageData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
       return {response.statusCode: null};
     } catch (error) {
@@ -329,17 +281,12 @@ class SettingPageData {
       var response = await http
           .get(url, headers: {"Authorization": "Bearer $accessToken"});
 
-      print('Response status from getAttachmentInfoData: ${response.statusCode}');
+      print(
+          'Response status from getAttachmentInfoData: ${response.statusCode}');
       log('getAttachmentInfoData ${response.body}');
 
       if (response.statusCode == 200) {
         return AttachmentModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getAttachmentInfoData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -351,5 +298,4 @@ class SettingPageData {
     }
     return null;
   }
-
 }

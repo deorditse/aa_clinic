@@ -54,13 +54,6 @@ class CalendarUserChatData {
 
         log(_res.toString());
         return _res;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-        return {};
       }
     } catch (error) {
       Get.snackbar(
@@ -104,13 +97,6 @@ class CalendarUserChatData {
             .toList();
         print(listMapDailyCalendarEventsModel);
         return listMapDailyCalendarEventsModel; // listMapDailyCalendarEventsModel;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-        return [];
       }
     } catch (error) {
       Get.snackbar(
@@ -147,14 +133,7 @@ class CalendarUserChatData {
           'Response status from putMakeAnAppointmentData: ${response.statusCode}');
       log('putMakeAnAppointmentData ${response.body}');
 
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request putMakeAnAppointmentData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
+
     } catch (error) {
       Get.snackbar(
         'Exception',

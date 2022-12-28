@@ -8,18 +8,11 @@ import 'package:model/model.dart';
 
 class ChatPageData {
   ///для чатов на странице со списком чатов
-  Future<List<ChatFindManyModel?>> getChatsData(
-      {required String accessToken, String? searchText}) async {
+  Future<List<ChatFindManyModel?>> getChatsData({
+    required String accessToken,
+  }) async {
     try {
       Uri url = urlMain(urlPath: 'api/chats');
-
-      //для поиска
-      if (searchText != null && searchText != '') {
-        url = urlMain(
-            urlPath: 'api/chats', queryParameters: {'search': searchText});
-      }
-
-      print('Uri url from getChatsData: ${url}');
 
       var response = await http
           .get(url, headers: {"Authorization": "Bearer ${accessToken}"});
@@ -33,12 +26,6 @@ class ChatPageData {
         });
 
         return _resList;
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getChatsData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -82,12 +69,6 @@ class ChatPageData {
         return await ChatMessagesModel.fromJson(
           jsonDecode(response.body),
         );
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getMessagesInChatData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -104,6 +85,7 @@ class ChatPageData {
   Future<MessageModel?> getOneChatMessageWithIdData({
     required String accessToken,
     required String messageId,
+    required String chatId,
   }) async {
     try {
       Uri url = urlMain(urlPath: 'api/chatMessages/$messageId');
@@ -116,19 +98,13 @@ class ChatPageData {
       log('getMessagesInId MessageModel ${response.body}');
       if (response.statusCode == 200) {
         // //прочитано сообщение
-        // await http.put(
-        //   urlMain(urlPath: 'api/chatMessages/readChat/$chatId'),
-        //   headers: {'Authorization': 'Bearer ${accessToken}'},
-        // );
+        await http.put(
+          urlMain(urlPath: 'api/chatMessages/readChat/$chatId'),
+          headers: {'Authorization': 'Bearer ${accessToken}'},
+        );
 
         return await MessageModel.fromJson(
           json.decode(response.body),
-        );
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getOneChatMessageWithIdData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (error) {
@@ -177,12 +153,6 @@ class ChatPageData {
       if (response.statusCode == 201) {
         return await MessageModel.fromJson(
           jsonDecode(response.body),
-        );
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request ${isOfficialChat ? "isOfficialChat" : "chat"} postMessagesInChatData: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
         );
       }
     } catch (error) {

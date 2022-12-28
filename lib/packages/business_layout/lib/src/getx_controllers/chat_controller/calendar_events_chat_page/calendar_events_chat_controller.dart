@@ -15,6 +15,25 @@ class ImplementationCalendarEventsChatPage extends GetxController {
   // final HomePageData _services = HomePageData();
   final CalendarUserChatData _services = CalendarUserChatData();
 
+  initCalendarChatUserEvents(
+      {required String specialistId,
+      DateTime? dateMarks,
+      bool isUpdate = false}) {
+    getMonthlyCalendarMarksForMouth(
+      specialistId: specialistId,
+      isUpdate: isUpdate,
+      dateMarksMouth: dateMarks ?? DateTime.now(),
+    ).whenComplete(
+      () {
+        getDailyCalendarEvents(
+          isUpdate: isUpdate,
+          specialistId: specialistId,
+          dateDaily: dateMarks ?? DateTime.now(),
+        );
+      },
+    );
+  }
+
   DateTime mySelectedDay = DateTime.now();
 
   void changeMySelectedDay({required DateTime newDateTime}) {
@@ -124,24 +143,26 @@ class ImplementationCalendarEventsChatPage extends GetxController {
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
     )
-        .whenComplete(() async {
-      Get.snackbar("", "Вы успешно записаны на прием");
-      getDailyCalendarEvents(
-              dateDaily: appointmentStartTime!,
-              specialistId: specialistId,
-              isUpdate: true)
-          .whenComplete(() {
-        appointmentStartTime = null;
-        appointmentEndTime = null;
-        scheduleId = null;
+        .whenComplete(
+      () async {
+        Get.snackbar("Вы успешно записаны на прием!", "");
+        getDailyCalendarEvents(
+                dateDaily: appointmentStartTime!,
+                specialistId: specialistId,
+                isUpdate: true)
+            .whenComplete(() {
+          appointmentStartTime = null;
+          appointmentEndTime = null;
+          scheduleId = null;
 
-        update();
-        changeMySelectedDay(newDateTime: DateTime.now());
-      });
-      HomePageCalendarControllerGetxState.instance.getDailyCalendarEvents(
-        dateDaily: appointmentStartTime!,
-        isUpdate: true,
-      );
-    });
+          update();
+          changeMySelectedDay(newDateTime: DateTime.now());
+        });
+        HomePageCalendarControllerGetxState.instance.initializeHomePageData(
+          dateMarksMouth: appointmentStartTime!,
+          isUpdate: true,
+        );
+      },
+    );
   }
 }

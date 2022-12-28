@@ -9,58 +9,31 @@ import 'package:health/health.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class RealTimeCallData {
-  Function newRTCCallback = () {};
-  Function finishRTCCallback = () {};
-
-  void initializeDataRTC() {
-    SettingPageData.socket?.on('newRealTimeCall', (data) {
-      newRTCCallback(RealTimeCallSocketEvent.fromJson(data));
-    });
-    SettingPageData.socket?.on('finishRealTimeCall', (data) {
-      // TODO: add model for finish callback struct
-      finishRTCCallback();
-    });
-  }
-
-  void setNewRTCCallback(Function callback) {
-    newRTCCallback = callback;
-  }
-
-  void setFinishRTCCallback(Function callback) {
-    finishRTCCallback = callback;
-  }
-
   Future<RealTimeCallModel?> getIncomingRealTimeCalls(
       {required String accessToken}) async {
     try {
+      final queryParameters = {'filter[finishedAt]': "null"};
       Uri url = urlMain(
-          urlPath: 'api/realTimeCalls?${makeQuery({
-            'filter': {'finishedAt': 'null'}
-          })}');
+          urlPath: 'api/realTimeCalls', queryParameters: queryParameters);
 
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
-      print('Response status from getTimeCall: ${response.statusCode}');
+      print(
+          'Response status from getIncomingRealTimeCalls: ${response.statusCode}');
       log('getIncomingRealTimeCalls ${jsonDecode(response.body)}');
 
       if (response.statusCode == 200) {
         return RealTimeCallModel.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request getTimeCall: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
       return null;
     } catch (error) {
       Get.snackbar(
         'Exception',
-        'error getTimeCall: $error',
+        'error getIncomingRealTimeCalls: $error',
         snackPosition: SnackPosition.TOP,
       );
-      print('я в ошибке from getTimeCall $error ');
+      print('я в ошибке from getIncomingRealTimeCalls $error ');
     }
   }
 
@@ -73,26 +46,20 @@ class RealTimeCallData {
       var response = await http.get(url, headers: {
         "Authorization": "Bearer $accessToken",
       });
-      print('Response status from getTimeCallById: ${response.statusCode}');
+      print('Response status from getRealTimeCallById: ${response.statusCode}');
       log('getRealTimeCallById RealTimeCall ${response.body}');
 
       if (response.statusCode == 200) {
         print(jsonDecode(response.body));
         return RealTimeCall.fromJson(jsonDecode(response.body));
-      } else {
-        Get.snackbar(
-          '${response.statusCode}',
-          response.body,
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
         'Exception',
-        'error getTimeCall: $error',
+        'error getRealTimeCallById: $error',
         snackPosition: SnackPosition.TOP,
       );
-      print('я в ошибке from getTimeCall $error ');
+      print('я в ошибке from getRealTimeCallById $error ');
     }
     return null;
   }
@@ -113,13 +80,6 @@ class RealTimeCallData {
         print(
             'Response status from acceptRealTimeCalls: ${response.statusCode}');
         log('acceptRealTimeCalls ${response.body}');
-      } else {
-        print(url.toString());
-        Get.snackbar(
-          'Exception',
-          jsonDecode(response.body)['message'],
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -131,6 +91,7 @@ class RealTimeCallData {
     }
   }
 
+  ///Роут для заканчивания звонка по его id
   Future finishRealTimeCalls({
     required String id,
     required String accessToken,
@@ -144,15 +105,6 @@ class RealTimeCallData {
       );
       print('Response status from finishRealTimeCalls: ${response.statusCode}');
       log('finishRealTimeCalls ${response.body}');
-
-      if (response.statusCode == 200) {
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request finishRealTimeCalls: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
-      }
     } catch (error) {
       Get.snackbar(
         'Exception',

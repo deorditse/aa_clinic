@@ -39,16 +39,10 @@ class ProfileControllerGetxState extends GetxController {
   }
 
   Future<void> initControllerProfile() async {
-    await ImplementSettingGetXController.instance
-        .getFindMe(isUpdateData: true)
-        .then(
-      (userAllData) {
-        //инициализация списка документов
-        getDocumentsList(currentDocsPage: 1);
-        //инициализация ачивок и статистики выполнения
-        getAchievements();
-      },
-    );
+    //инициализация списка документов
+    getDocumentsList(currentDocsPage: 1);
+    //инициализация ачивок и статистики выполнения
+    getAchievements();
   }
 
   ///Роут для получения списка достижений +

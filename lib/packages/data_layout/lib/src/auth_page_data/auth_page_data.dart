@@ -23,11 +23,7 @@ class AuthPageData {
           'Response status from postSignInUserDataAuth: ${response.statusCode}');
       log('postSignInUserDataAuth UserAuthorizedModel ${response.body}');
 
-      if (response.statusCode == 200) {
-        return {'${response.statusCode}': json.decode(response.body)};
-      } else {
-        return {'${response.statusCode}': json.decode(response.body)};
-      }
+      return {'${response.statusCode}': json.decode(response.body)};
     } catch (error) {
       print('я в ошибке from postSignInUserDataAuth $error');
       return {'error $error': {}};
@@ -54,12 +50,6 @@ class AuthPageData {
       } else if (response.statusCode == 400) {
         Get.snackbar('Ошибка валидации', jsonDecode(response.body)['message'],
             snackPosition: SnackPosition.TOP);
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request postSignUpUserDataAuth: status ${response.statusCode}',
-          snackPosition: SnackPosition.TOP,
-        );
       }
     } catch (error) {
       Get.snackbar(
@@ -91,12 +81,6 @@ class AuthPageData {
         Get.snackbar(
           'Exception',
           'Email обновлен',
-          snackPosition: SnackPosition.TOP,
-        );
-      } else {
-        Get.snackbar(
-          'Exception',
-          'Bad Request: status ${response.statusCode}',
           snackPosition: SnackPosition.TOP,
         );
       }

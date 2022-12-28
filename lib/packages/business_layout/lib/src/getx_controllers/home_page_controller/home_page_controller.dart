@@ -1,13 +1,13 @@
-import 'dart:async';
-import 'dart:collection';
+import 'dart:core';
 import 'dart:io';
+import 'dart:math';
 import 'package:business_layout/business_layout.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:model/model.dart';
 import 'package:data_layout/data_layout.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:timezone/timezone.dart' as tz;
 
 //каждый раз при изменении запускать кодогенерацию
 //для запуска кодогенерации flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -26,27 +26,30 @@ class HomePageCalendarControllerGetxState extends GetxController {
   }
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
-    await _initializeHomePageData();
+    initializeHomePageData();
+    getNotification();
+
     super.onInit();
   }
 
   ///  инициaлизация данных контроллера
-  Future<void> _initializeHomePageData() async {
+  Future<void> initializeHomePageData(
+      {DateTime? dateMarksMouth, bool isUpdate = false}) async {
     if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
         null) {
       //инициирую марки задач в календаре
-      await getMonthlyCalendarMarksForMouth(
-        dateMarksMouth: DateTime.now(),
-        isUpdate: true,
+      getMonthlyCalendarMarksForMouth(
+        dateMarksMouth: dateMarksMouth ?? DateTime.now(),
+        isUpdate: isUpdate,
       ).whenComplete(
         () async {
           //загружаю задачи на сегодняшний день
           await getDailyCalendarEvents(
-            dateDaily: DateTime.now(),
-            isUpdate: true,
+            dateDaily: dateMarksMouth ?? DateTime.now(),
+            isUpdate: isUpdate,
           );
         },
       );
@@ -88,12 +91,8 @@ class HomePageCalendarControllerGetxState extends GetxController {
     }
   }
 
-  ///получение событий выбранной даты +
-  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, DailyCalendarEventsModel> == год и месяц / DailyCalendarEventsModel
-  Map<String, List<DailyCalendarEventsModel?>> eventsForDay = {};
-
-  Future<List<DailyCalendarEventsModel?>> getDailyCalendarEvents(
-      {required DateTime dateDaily, bool isUpdate = false}) async {
+  bool isMarkForDayFun({DateTime? dateDay}) {
+    DateTime dateDaily = dateDay ?? mySelectedDay;
     String _formatData =
         "${dateDaily.year}-${dateDaily.month}-${dateDaily.day}";
 
@@ -109,11 +108,23 @@ class HomePageCalendarControllerGetxState extends GetxController {
                     ?[_formatData] !=
                 null);
 
-    if (isMarkForDay) {
+    return isMarkForDay;
+  }
+
+  ///получение событий выбранной даты +
+  //  чтобы сохранять в текущей сессии и не тянyть из базы если есть в мапе Map<String, DailyCalendarEventsModel> == год и месяц / DailyCalendarEventsModel
+  Map<String, List<DailyCalendarEventsModel?>> eventsForDay = {};
+
+  Future<List<DailyCalendarEventsModel?>> getDailyCalendarEvents(
+      {required DateTime dateDaily, bool isUpdate = false}) async {
+    String _formatData =
+        "${dateDaily.year}-${dateDaily.month}-${dateDaily.day}";
+
+    if (isMarkForDayFun(dateDay: dateDaily)) {
       ///проверяю есть ли такой лист eventsForDay в контроллере
 
       if (isUpdate ||
-          (eventsForDay[_formatData] == null &&
+          ((eventsForDay[_formatData] == null) &&
               ImplementAuthController.instance.userAuthorizedData != null)) {
         List<DailyCalendarEventsModel?> _res =
             await _services.getDailyCalendarEventsData(
@@ -286,106 +297,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
     );
   }
 
-  ///для уведомлений после календаря
-  Box?
-      _boxNotifications; //перенести на слой данных создав отелбную модель для этого
-  //Таймер уведомлений
-
-  ///инициализация данных из хранилища
-  Future<void> _initializedHiveFromLocalStorageNotifications() async {
-    await Hive.initFlutter(); //иннициализируем Hive
-
-    _boxNotifications = await Hive.openBox('Notifications');
-    update();
-    //отключить уведомления
-    isDisableNotifications =
-        _boxNotifications!.get('isDisableNotifications') ?? false;
-    update();
-    //Категории уведомлений
-    isWorkoutNotifications =
-        _boxNotifications!.get('isWorkoutNotifications') ?? true;
-    isConsultationsNotifications =
-        _boxNotifications!.get('isConsultationsNotifications') ?? true;
-    isFoodNotifications = _boxNotifications!.get('isFoodNotifications') ?? true;
-    isDeliveryNotifications =
-        _boxNotifications!.get('isDeliveryNotifications') ?? true;
-    update();
-  }
-
-  void _saveNotificationsInLocalStorage(
-      {required String notifications, required valueNotification}) {
-    if (_boxNotifications != null) {
-      _boxNotifications!.put(notifications, valueNotification);
-    }
-  }
-
-  //отключить уведомления
-  bool isDisableNotifications = false;
-
-  void changeDisableNotifications({required bool newIsDisableNotifications}) {
-    isDisableNotifications = newIsDisableNotifications;
-    update();
-    //save in local storage
-    _saveNotificationsInLocalStorage(
-      notifications: 'isDisableNotifications',
-      valueNotification: newIsDisableNotifications,
-    );
-  }
-
-  //Категории уведомлений
-  //Тренировки
-  bool isWorkoutNotifications = true;
-
-  void changeWorkoutNotifications({required bool newIsWorkoutNotifications}) {
-    isWorkoutNotifications = newIsWorkoutNotifications;
-    update();
-    //save in local storage
-    _saveNotificationsInLocalStorage(
-      notifications: 'isWorkoutNotifications',
-      valueNotification: newIsWorkoutNotifications,
-    );
-  }
-
-  //Консультации
-  bool isConsultationsNotifications = true;
-
-  void changeConsultationsNotifications(
-      {required bool newIsConsultationsNotifications}) {
-    isConsultationsNotifications = newIsConsultationsNotifications;
-    update();
-    //save in local storage
-    _saveNotificationsInLocalStorage(
-      notifications: 'isConsultationsNotifications',
-      valueNotification: newIsConsultationsNotifications,
-    );
-  }
-
-//Пища
-  bool isFoodNotifications = true;
-
-  void changeFoodNotifications({required bool newIsFoodNotifications}) {
-    isFoodNotifications = newIsFoodNotifications;
-    update();
-    //save in local storage
-    _saveNotificationsInLocalStorage(
-      notifications: 'isFoodNotifications',
-      valueNotification: newIsFoodNotifications,
-    );
-  }
-
-//Доставка
-  bool isDeliveryNotifications = true;
-
-  void changeDeliveryNotifications({required bool newIsDeliveryNotifications}) {
-    isDeliveryNotifications = newIsDeliveryNotifications;
-    update();
-    //save in local storage
-    _saveNotificationsInLocalStorage(
-      notifications: 'isDeliveryNotifications',
-      valueNotification: newIsDeliveryNotifications,
-    );
-  }
-
   ///для подсчета прогресса
   double progressValue = 1.0;
 
@@ -543,16 +454,206 @@ class HomePageCalendarControllerGetxState extends GetxController {
       description: description,
       listDishes: listDishes,
     );
-    await getMonthlyCalendarMarksForMouth(
-      dateMarksMouth: mySelectedDay,
+
+    initializeHomePageData(
       isUpdate: true,
-    ).whenComplete(
-      () {
-        getDailyCalendarEvents(
-          dateDaily: mySelectedDay,
-          isUpdate: true,
-        );
-      },
+      dateMarksMouth: mySelectedDay,
     );
+  }
+
+  ///для уведомлений
+  ///для уведомлений после календаря
+  Box?
+      _boxNotifications; //перенести на слой данных создав отелбную модель для этого
+  //Таймер уведомлений
+
+  ///инициализация данных из хранилища
+  Future<void> _initializedHiveFromLocalStorageNotifications() async {
+    await Hive.initFlutter(); //иннициализируем Hive
+
+    _boxNotifications = await Hive.openBox('Notifications');
+    update();
+    //отключить уведомления
+    isDisableNotifications =
+        _boxNotifications!.get('isDisableNotifications') ?? false;
+    update();
+    //Таймер уведомлений
+    isRemindTimeNotifications =
+        _boxNotifications!.get('isRemindTimeNotifications') ?? 5;
+    update();
+    //Категории уведомлений
+    isWorkoutNotifications =
+        _boxNotifications!.get('isWorkoutNotifications') ?? true;
+    isConsultationsNotifications =
+        _boxNotifications!.get('isConsultationsNotifications') ?? true;
+    isFoodNotifications = _boxNotifications!.get('isFoodNotifications') ?? true;
+    isDeliveryNotifications =
+        _boxNotifications!.get('isDeliveryNotifications') ?? true;
+    update();
+  }
+
+  void _saveNotificationsInLocalStorage(
+      {required String notifications, required valueNotification}) {
+    if (_boxNotifications != null) {
+      _boxNotifications!.put(notifications, valueNotification);
+    }
+  }
+
+  //отключить уведомления
+  bool isDisableNotifications = false;
+
+  void changeDisableNotifications({required bool newIsDisableNotifications}) {
+    isDisableNotifications = newIsDisableNotifications;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isDisableNotifications',
+      valueNotification: newIsDisableNotifications,
+    );
+  }
+
+  //Категории уведомлений
+  //Тренировки
+  bool isWorkoutNotifications = true;
+
+  void changeWorkoutNotifications({required bool newIsWorkoutNotifications}) {
+    isWorkoutNotifications = newIsWorkoutNotifications;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isWorkoutNotifications',
+      valueNotification: newIsWorkoutNotifications,
+    );
+  }
+
+  //Консультации
+  bool isConsultationsNotifications = true;
+
+  void changeConsultationsNotifications(
+      {required bool newIsConsultationsNotifications}) {
+    isConsultationsNotifications = newIsConsultationsNotifications;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isConsultationsNotifications',
+      valueNotification: newIsConsultationsNotifications,
+    );
+  }
+
+//Пища
+  bool isFoodNotifications = true;
+
+  void changeFoodNotifications({required bool newIsFoodNotifications}) {
+    isFoodNotifications = newIsFoodNotifications;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isFoodNotifications',
+      valueNotification: newIsFoodNotifications,
+    );
+  }
+
+//Доставка
+  bool isDeliveryNotifications = true;
+
+  void changeDeliveryNotifications({required bool newIsDeliveryNotifications}) {
+    isDeliveryNotifications = newIsDeliveryNotifications;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isDeliveryNotifications',
+      valueNotification: newIsDeliveryNotifications,
+    );
+  }
+
+  //Таймер уведомлений
+  int isRemindTimeNotifications = 5;
+
+  void changeRemindTimeNotifications(
+      {required int newIsRemindTimeNotification}) {
+    isRemindTimeNotifications = newIsRemindTimeNotification;
+    update();
+    //save in local storage
+    _saveNotificationsInLocalStorage(
+      notifications: 'isRemindTimeNotifications',
+      valueNotification: newIsRemindTimeNotification,
+    );
+  }
+
+  FlutterLocalNotificationsPlugin notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  DailyCalendarEventsModel? dailySheet;
+
+  ///Метод для отправки уведомлений пользователю с тайтлом таски
+  Future<void> scheduleNotification(
+      {required int hour, required int minutes}) async {
+    //Переменная с методом случайных значений нужна для привязки уникального id уведомлению
+    Random random = Random();
+    int idNotification = random.nextInt(100);
+    //Инициализирую переменную, которая хранит в себе значение таймера уведомлений(Hive)
+    final remindNotifications = isRemindTimeNotifications;
+    //Метод для отправки запланированных уведомлений
+    await notificationsPlugin.zonedSchedule(
+      //Id уведомления (если не указывать каждому уведомлению свой id, будет приходить только последнее записанное уведомление)
+      idNotification,
+      'Необходимо выполнить!',
+      //Вывод тайтла таски в сообщение уведомления
+      '${dailySheet?.title != null ? dailySheet?.title : ' '}',
+      //Метод для отправки уведомлений по времени с вычитанием минут из таймера уведомлений, чтобы сообщения приходили заранее (по выбору пользователя)
+      await convertTime(
+        hour: hour,
+        minutes: minutes - remindNotifications,
+      ),
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+            '${dailySheet?.targetId}', 'your channel name',
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            enableVibration: true),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: 'go',
+    );
+  }
+
+  Future<tz.TZDateTime> convertTime(
+      {required int hour, required int minutes}) async {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduleDate = await tz.TZDateTime(
+        tz.local, now.year, now.month, now.day, hour, minutes);
+    print("scheduleDate $scheduleDate");
+    return scheduleDate;
+  }
+
+  /// Инициализирую уведомления
+  Future getNotification() async {
+    AndroidInitializationSettings androidSettings =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    DarwinInitializationSettings iosSettings =
+        const DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestCriticalPermission: true,
+      requestSoundPermission: true,
+    );
+    FlutterLocalNotificationsPlugin notificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
+    InitializationSettings initializationSettings = InitializationSettings(
+      android: androidSettings,
+      iOS: iosSettings,
+    );
+    bool? initialized = await notificationsPlugin.initialize(
+        initializationSettings, onDidReceiveNotificationResponse: (response) {
+      print(response.payload.toString());
+    });
+    print('notification: $initialized');
   }
 }

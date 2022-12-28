@@ -1,6 +1,5 @@
 import 'package:business_layout/business_layout.dart';
 import 'package:data_layout/data_layout.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -44,6 +43,36 @@ class ImplementAuthController extends GetxController {
 
   //когда пользователь зарегистрировался сохранять ID в локальную базу и каждый раз при входе проверять актуальность данныхч
   ///для виджета входа
+  void codeResponseStatus401({required String codeString}) {
+    switch (codeString) {
+      case "TOKEN_EXPIRED":
+        Get.snackbar(
+          'Ошибка входа',
+          'Войдите в аккаунт!',
+          snackPosition: SnackPosition.TOP,
+        );
+        switchForm(newFormType: FormType.login);
+        break;
+      case "WRONG_DATA":
+        Get.snackbar(
+          'Проверьте данные входа',
+          'Логин или пароль неверны',
+          snackPosition: SnackPosition.TOP,
+        );
+        switchForm(newFormType: FormType.login);
+        break;
+      case "EMAIL_IS_NOT_VERIFIED":
+        Get.snackbar(
+          'Ваш email не подтвержден',
+          'Необходимо подвердить email!',
+          snackPosition: SnackPosition.TOP,
+        );
+        switchForm(newFormType: FormType.confirmMail);
+
+        break;
+    }
+  }
+
   Future<void> signInUser(
       {required String? username, required String? password}) async {
     if (username != null && password != null) {
@@ -62,41 +91,18 @@ class ImplementAuthController extends GetxController {
               update();
 
               Get.offAllNamed("/main");
-            }else{
+            } else {
               Get.snackbar(
                 'Ошибка входа',
                 'Ошибка сервера, попробуйте позже',
                 snackPosition: SnackPosition.TOP,
               );
             }
-
           } else if (newUserAuthorizedData.keys.first == '401') {
             //Обработка ошибки 401 Unathorized
             print(newUserAuthorizedData.values.first);
             String _code = newUserAuthorizedData.values.first['code'];
-
-            if (_code == "TOKEN_EXPIRED") {
-              Get.snackbar(
-                'Ошибка входа',
-                'Войдите в аккаунт!',
-                snackPosition: SnackPosition.TOP,
-              );
-              switchForm(newFormType: FormType.login);
-            } else if (_code == "EMAIL_IS_NOT_VERIFIED") {
-              Get.snackbar(
-                'Ваш email не подтвержден',
-                'Необходимо подвердить email!',
-                snackPosition: SnackPosition.TOP,
-              );
-              switchForm(newFormType: FormType.confirmMail);
-            } else if (_code == "WRONG_DATA") {
-              Get.snackbar(
-                'Проверьте данные входа',
-                'Логин или пароль неверны',
-                snackPosition: SnackPosition.TOP,
-              );
-              switchForm(newFormType: FormType.login);
-            }
+            codeResponseStatus401(codeString: _code);
           }
         },
       );
