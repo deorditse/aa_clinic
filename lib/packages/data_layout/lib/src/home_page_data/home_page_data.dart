@@ -411,13 +411,43 @@ class HomePageData {
   }
 
   ///Route for update one fitness workouts by id
-  Future<void> putFitnessWorkoutWithIdData(
-      {required String accessToken,
-      required FitnessWorkoutModel fitnessWorkout,
-      required}) async {
+  Future<void> putFitnessWorkoutWithIdData({
+    required String accessToken,
+    required FitnessWorkoutModel fitnessWorkout,
+  }) async {
     try {
-      print(fitnessWorkout.exercises);
+      print(
+          "exercises from putFitnessWorkoutWithIdData ${fitnessWorkout.exercises}");
       Uri url = urlMain(urlPath: 'api/fitnessWorkouts/${fitnessWorkout.id}');
+      List<String> changeFormatId() {
+        List<String> _res = [];
+
+        fitnessWorkout.exercises.forEach((workoutObject) async {
+          Map<String, dynamic> _resExercises = {
+            "generic": {
+              "_id": workoutObject!.generic!.id,
+              "creatorId": workoutObject.generic!.creatorId,
+              "title": workoutObject.generic!.title,
+              "image": workoutObject.generic!.image,
+              "description": workoutObject.generic!.description,
+              "tags": workoutObject.generic!.tags,
+              "instruction": workoutObject.generic!.instruction,
+              "attention": workoutObject.generic!.attention,
+              "type": workoutObject.generic!.type,
+            },
+            "sets": workoutObject.sets,
+          };
+          final str = await json.decode(_resExercises.toString());
+          _res = [
+            ..._res,
+            ...str,
+          ];
+        });
+        return _res;
+      }
+
+      List<WorkoutObject?> newExercises = (await changeFormatId()).cast<WorkoutObject?>();
+
       Map<String, dynamic> _jsonData = {
         'userId': fitnessWorkout.userId,
         "creatorId": fitnessWorkout.creatorId,
@@ -425,12 +455,14 @@ class HomePageData {
         'finishedAt': fitnessWorkout.finishedAt,
         'description': fitnessWorkout.description ?? "",
         'title': fitnessWorkout.title,
-        'exercises': fitnessWorkout.exercises,
+        'exercises': newExercises,
+        //_id вместо id
       };
       var response = await http.put(
         url,
         headers: {
           'Authorization': 'Bearer ${accessToken}',
+          "Content-Type": "application/json",
         },
         body: json.encode(_jsonData),
       );

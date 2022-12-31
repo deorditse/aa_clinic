@@ -1,21 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'package:aa_clinic/packages/data_layout/lib/data_layout.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/workout_pages/pages/about_workout_progress_page.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/home_page/pages/workout_pages/widgets/row_with_progress.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/container_for_photo.dart';
-import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/sliver_sceleton_pages/sliver_sceleton_without_borders.dart';
 import 'package:business_layout/business_layout.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:model/model.dart';
-import 'package:http/http.dart' as http;
 import 'row_with_timer.dart';
 
 class CardWithWorkoutData extends StatelessWidget {
@@ -29,7 +18,6 @@ class CardWithWorkoutData extends StatelessWidget {
 
   final Rx<bool> isComment = false.obs;
   final TextEditingController _controllerComment = TextEditingController();
-
   RxList<String> listValueWorkout = [""].obs;
   Rx<String> _messageError = "".obs;
 
@@ -45,23 +33,21 @@ class CardWithWorkoutData extends StatelessWidget {
         listValueWorkout.value = List.generate(
             approachObjectsConsisting?.target.length ?? 0, (index) => '');
 
-        return Column(
-          children: [
-            mySizedHeightBetweenContainer,
-            RowWithTimer(
-              title: 'Таймер отдыха',
-              newColor: Color.fromRGBO(14, 214, 166, 1),
-              timerSecondsValue:
-                  ((approachObjectsConsisting?.restTime == null) ||
-                          (approachObjectsConsisting!.restTime == 0))
-                      ? 30
-                      : approachObjectsConsisting.restTime!,
-            ),
-            mySizedHeightBetweenContainer,
-            if (approachObjectsConsisting != null)
-              Column(
+        return approachObjectsConsisting != null
+            ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  mySizedHeightBetweenContainer,
+                  RowWithTimer(
+                    title: 'Таймер отдыха',
+                    newColor: Color.fromRGBO(14, 214, 166, 1),
+                    timerSecondsValue:
+                        ((approachObjectsConsisting?.restTime == null) ||
+                                (approachObjectsConsisting!.restTime == 0))
+                            ? 30
+                            : approachObjectsConsisting.restTime!,
+                  ),
+                  mySizedHeightBetweenContainer,
                   Container(
                     height: 60,
                     child: Row(
@@ -80,7 +66,8 @@ class CardWithWorkoutData extends StatelessWidget {
                                   _target = approachObjectsConsisting.target;
                               return Padding(
                                 padding: const EdgeInsets.only(
-                                    right: myTopPaddingForContent),
+                                  right: myTopPaddingForContent,
+                                ),
                                 child: _rowWithRecCount(
                                   indexHorizontalList: index,
                                   containerText: _target
@@ -99,7 +86,8 @@ class CardWithWorkoutData extends StatelessWidget {
                         GestureDetector(
                           onTap: () async {
                             if (listValueWorkout.isEmpty) {
-                              _messageError.value = "*не все поля заполнены";
+                              _messageError.value =
+                                  "Заполнимте показатели тренировки";
                               return;
                             } else {
                               _messageError.value = '';
@@ -176,13 +164,15 @@ class CardWithWorkoutData extends StatelessWidget {
                   _textFieldComment(context: context),
                 ],
               )
-            else
-              Text(
-                "Все подходы выполнены",
-                style: myTextStyleFontUbuntu(context: context),
-              ),
-          ],
-        );
+            : Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: myTopPaddingForContent),
+                  child: Text(
+                    "Все подходы выполнены",
+                    style: myTextStyleFontUbuntu(context: context),
+                  ),
+                ),
+              );
       },
     );
   }
@@ -269,47 +259,3 @@ class CardWithWorkoutData extends StatelessWidget {
     );
   }
 }
-//
-// ///Route for update one fitness workouts by id
-// Future<void> putFitnessWorkoutWithIdData(
-//     {required String accessToken,
-//     required FitnessWorkoutModel fitnessWorkout,
-//     required}) async {
-//   try {
-//     print(fitnessWorkout.exercises);
-//     Uri url = urlMain(urlPath: 'api/fitnessWorkouts/${fitnessWorkout.id}');
-//     Map<String, dynamic> _jsonData = {
-//       'userId': fitnessWorkout.userId,
-//       "creatorId": fitnessWorkout.creatorId,
-//       'startedAt': fitnessWorkout.startedAt,
-//       'finishedAt': fitnessWorkout.finishedAt,
-//       'description': fitnessWorkout.description ?? "",
-//       'title': fitnessWorkout.title,
-//       'exercises': fitnessWorkout.exercises,
-//     };
-//     var response = await http.put(
-//       url,
-//       headers: {'Authorization': 'Bearer ${accessToken}'},
-//       body: json.encode(_jsonData),
-//     );
-//     print(
-//         'Response status from putFitnessWorkoutWithIdData: ${response.statusCode}');
-//     log('putFitnessWorkoutWithIdData ${response.body}');
-//
-//     if (response.statusCode == 200) {
-//     } else {
-//       Get.snackbar(
-//         'Exception',
-//         'Bad Request putFitnessWorkoutWithIdData: status ${response.statusCode}',
-//         snackPosition: SnackPosition.TOP,
-//       );
-//     }
-//   } catch (error) {
-//     Get.snackbar(
-//       'Exception',
-//       'error putFitnessWorkoutWithIdData:$error}',
-//       snackPosition: SnackPosition.TOP,
-//     );
-//     print('я в ошибке from putFitnessWorkoutWithIdData $error ');
-//   }
-// }

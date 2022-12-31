@@ -45,6 +45,15 @@ class ImplementAuthController extends GetxController {
   ///для виджета входа
   void codeResponseStatus401({required String codeString}) {
     switch (codeString) {
+      case "EMAIL_IS_NOT_VERIFIED":
+        Get.snackbar(
+          'Ваш email не подтвержден',
+          'Необходимо подвердить email!',
+          snackPosition: SnackPosition.TOP,
+        );
+        switchForm(newFormType: FormType.confirmMail);
+
+        break;
       case "TOKEN_EXPIRED":
         Get.snackbar(
           'Ошибка входа',
@@ -61,14 +70,13 @@ class ImplementAuthController extends GetxController {
         );
         switchForm(newFormType: FormType.login);
         break;
-      case "EMAIL_IS_NOT_VERIFIED":
+      case "ALREADY_REGISTERED":
         Get.snackbar(
-          'Ваш email не подтвержден',
-          'Необходимо подвердить email!',
+          'Регистрация не пройдена',
+          'Aккаунт уже зарегистрирован ',
           snackPosition: SnackPosition.TOP,
         );
-        switchForm(newFormType: FormType.confirmMail);
-
+        switchForm(newFormType: FormType.register);
         break;
     }
   }

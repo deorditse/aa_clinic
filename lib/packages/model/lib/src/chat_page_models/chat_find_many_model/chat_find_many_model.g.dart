@@ -9,6 +9,10 @@ part of 'chat_find_many_model.dart';
 _$_ChatFindManyModel _$$_ChatFindManyModelFromJson(Map<String, dynamic> json) =>
     _$_ChatFindManyModel(
       id: json['id'] as String,
+      userMinifiedData: json['userMinifiedData'] == null
+          ? null
+          : UserMinifiedDataIdModel.fromJson(
+              json['userMinifiedData'] as Map<String, dynamic>),
       specialistId: json['specialistId'] as String?,
       patientId: json['patientId'] as String?,
       isHidden: json['isHidden'] as bool? ?? false,
@@ -22,6 +26,7 @@ Map<String, dynamic> _$$_ChatFindManyModelToJson(
         _$_ChatFindManyModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'userMinifiedData': instance.userMinifiedData,
       'specialistId': instance.specialistId,
       'patientId': instance.patientId,
       'isHidden': instance.isHidden,

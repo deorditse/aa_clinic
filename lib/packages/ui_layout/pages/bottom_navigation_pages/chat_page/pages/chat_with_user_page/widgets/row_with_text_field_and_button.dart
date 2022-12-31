@@ -150,7 +150,7 @@ class RowWithTextFieldAndButton extends StatelessWidget {
                     : Theme.of(context).textTheme.headline1!.color,
                 semanticsLabel: 'forChatFile',
                 fit: BoxFit.contain,
-                height: 22,
+                height: 26,
               ),
             ),
             Expanded(
@@ -164,7 +164,7 @@ class RowWithTextFieldAndButton extends StatelessWidget {
               builder: (controllerChat) => GestureDetector(
                 onTap: () async {
                   if (!controllerChat.isSendMessageLoading) {
-                    FocusManager.instance.primaryFocus?.unfocus();
+                    // FocusManager.instance.primaryFocus?.unfocus();
                     await controllerChat.addNewMessage(
                       accessToken: ImplementAuthController
                           .instance.userAuthorizedData!.accessToken,
@@ -178,11 +178,11 @@ class RowWithTextFieldAndButton extends StatelessWidget {
                 },
                 child: controllerChat.isSendMessageLoading
                     ? Container(
-                        width: 20,
-                        height: 20,
+                        width: 26,
+                        height: 26,
                         child: CircularProgressIndicator(
                           color: myColorIsActive,
-                          strokeWidth: 3,
+                          strokeWidth: 2,
                         ),
                       )
                     : SvgPicture.asset(
@@ -192,8 +192,8 @@ class RowWithTextFieldAndButton extends StatelessWidget {
                             : Theme.of(context).textTheme.headline1!.color,
                         semanticsLabel: 'messageButton',
                         fit: BoxFit.contain,
-                        height: 22,
-                        width: Get.width,
+                        height: 30,
+                        width: double.maxFinite,
                       ),
               ),
             ),

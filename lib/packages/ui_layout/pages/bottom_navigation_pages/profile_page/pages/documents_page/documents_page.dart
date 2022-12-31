@@ -110,7 +110,7 @@ _gridWithPhoto({required List<Attachment?> attachments}) {
           decoration: myStyleContainer(context: context),
           clipBehavior: Clip.hardEdge,
           child: ContainerForPhotoFuture(
-            coverFileId: attachments[index]!.thumbnailFileId!,
+            coverFileId: attachments[index]!.fileId!,
             openView: true,
           ),
         );

@@ -17,12 +17,11 @@ class ChatPageControllerGetx extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    initialChatController();
+    getChatsFindMany();
+    _initialSocketChatController();
   }
 
-  Future<void> initialChatController() async {
-    await getChatsFindMany();
-
+  Future<void> _initialSocketChatController() async {
     print("createOfficialChatMessage socket");
     SettingPageData.socket?.on(
       'createOfficialChatMessage',
@@ -78,43 +77,77 @@ class ChatPageControllerGetx extends GetxController {
     );
   }
 
+//для поиска документов
   ///для поиска статей
-  Map<String, List<ChatFindManyModel?>?> mapNameSearchAndChatFindManyModel = {};
-
+  Map<String, Set<ChatFindManyModel>> mapNameSearchAndChatFindManyModel = {};
   String? searchingChatsText;
 
-  //для поиска документов
   void changeIsSearchingChats({String? searchText}) {
-    if (searchText != null) {
-      searchingChatsText = searchText;
-      update();
-    } else if (searchText != null && searchText != '') {
-      getChatsFindMany(searchText: searchText);
-    } else {
-      searchingChatsText = null;
-      update();
+    searchingChatsText = searchText;
+    update();
+    if (searchText != null && searchText != '' && searchText.isNotEmpty) {
+      ChatPageControllerGetx.instance.listChats.forEach(
+        (chat) {
+          if (chat == null) {
+            return;
+          }
+
+          searchText.split(' ').forEach(
+            (seText) {
+              UserMinifiedDataIdModel? _fio = chat.userMinifiedData;
+              if ((_fio?.firstName != null &&
+                      _fio!.firstName!.contains(seText.capitalizeFirst!)) ||
+                  (_fio?.middleName != null &&
+                      _fio!.middleName!.contains(seText.capitalizeFirst!)) ||
+                  (_fio?.lastName != null &&
+                      _fio!.lastName!.contains(seText.capitalizeFirst!))) {
+                print("$seText   ${chat}");
+                if (mapNameSearchAndChatFindManyModel[searchText] == null) {
+                  mapNameSearchAndChatFindManyModel[searchText] = {chat};
+                  update();
+                } else {
+                  mapNameSearchAndChatFindManyModel[searchText]!.add(chat);
+                  update();
+                }
+                print(mapNameSearchAndChatFindManyModel[searchText]);
+              }
+            },
+          );
+        },
+      );
     }
   }
 
   ///для чатов на странице со списком чатов
-  List<ChatFindManyModel?>? listChats;
+  List<ChatFindManyModel?> listChats = [];
 
-  Future<void> getChatsFindMany({String? searchText}) async {
-    if (searchText != null) {
-      ///todo chats search
-      mapNameSearchAndChatFindManyModel[searchText] =
-          await _services.getChatsData(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
-      update();
-    } else {
-      listChats = await _services.getChatsData(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
-      update();
-    }
+  Future<void> getChatsFindMany() async {
+    _services
+        .getChatsData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    )
+        .then(
+      (getListChats) {
+        if (getListChats.isNotEmpty) {
+          getListChats.forEach(
+            (chat) async {
+              if (chat != null && chat.specialistId != null) {
+                ImplementSettingGetXController.instance
+                    .getDataUserMinified(idUser: chat.specialistId!)
+                    .then(
+                  (userMD) {
+                    chat.userMinifiedData = userMD;
+                    listChats.add(chat);
+                    update();
+                  },
+                );
+              }
+            },
+          );
+        }
+      },
+    );
   }
 
   ///сохранение в локали сообщений {chatId : ChatMessagesModel?}

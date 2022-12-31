@@ -27,6 +27,14 @@ class OtherPageData {
       );
       print('Response status from updatePasswordData: ${response.statusCode}');
       log('updatePasswordData ${response.body}');
+      if(response.statusCode == 200){
+        Get.snackbar(
+          '',
+          'Пароль успешно обновлен',
+          snackPosition: SnackPosition.TOP,
+        );
+
+      }
     } catch (error) {
       Get.snackbar(
         'Exception',

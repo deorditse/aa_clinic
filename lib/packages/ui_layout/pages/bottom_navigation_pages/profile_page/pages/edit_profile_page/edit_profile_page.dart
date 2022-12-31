@@ -87,6 +87,7 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
       await ImplementSettingGetXController.instance
           .updateMeUser(editUserAllData: userEdit);
 
+
       statusMessage.value = 'Данные успешно обновлены';
       //для обновления аватарки
       if (ProfileControllerGetxState.instance.photoProfile != null) {
@@ -109,7 +110,7 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
   }
 
   var maskFormatterPhoneNumber = MaskTextInputFormatter(
-      mask: '+7 (###) ###-##-##',
+      mask: '8(###) ###-##-##',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
   var maskFormatterBdate = MaskTextInputFormatter(
@@ -234,34 +235,6 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                     const SizedBox(height: myTopPaddingForContent),
                     Flexible(
                       child: TextFormField(
-                        //for testing
-                        key: Key('fieldEmail'),
-                        cursorColor: myColorIsActive,
-
-                        onFieldSubmitted: (email) {
-                          _userForEdit.email = email;
-                        },
-                        // validator: (value) {
-                        //   if (value == '') return 'Заполните поле email';
-                        //   if (!validateEmail(
-                        //       value!)) //проверка на совпадения символам
-                        //     return 'Поле содержит недопустимые символы';
-                        //   return null;
-                        // },
-                        initialValue: userDataProfile?.email,
-                        // controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        // initialValue: '${dataProfile?.email}',
-                        decoration: myStyleTextField(
-                          context,
-                          labelText: 'Почта...',
-                          hintText: 'test@test.com',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: myTopPaddingForContent),
-                    Flexible(
-                      child: TextFormField(
                           cursorColor: myColorIsActive,
                           key: Key('fieldPhone'),
                           validator: (value) {
@@ -283,6 +256,51 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                           },
                           keyboardType: TextInputType.phone,
                           inputFormatters: [maskFormatterPhoneNumber]),
+                    ),
+                    const SizedBox(height: myTopPaddingForContent),
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              //for testing
+                              key: Key('fieldEmail'),
+                              cursorColor: myColorIsActive,
+
+                              onFieldSubmitted: (email) {
+                                _userForEdit.email = email;
+                              },
+
+                              initialValue: userDataProfile?.email,
+                              // controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              // initialValue: '${dataProfile?.email}',
+                              decoration: myStyleTextField(
+                                context,
+                                labelText: 'Почта...',
+                                hintText: 'test@test.com',
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              if (ImplementSettingGetXController.instance.userAllData?.email !=
+                                  _userForEdit.email) {
+                                await ImplementAuthController.instance
+                                    .updateEmail(newEmail: _userForEdit.email);
+                              }
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/yes-btn.svg',
+                              semanticsLabel: 'mainLogo',
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     mySizedHeightBetweenContainer,
                     _rowWithCheckBox(),

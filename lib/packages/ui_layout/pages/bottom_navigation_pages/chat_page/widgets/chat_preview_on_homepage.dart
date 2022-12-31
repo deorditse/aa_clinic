@@ -18,79 +18,71 @@ class ChatPreviewOnHomepage extends StatelessWidget {
   const ChatPreviewOnHomepage({
     Key? key,
     String? imagePathAvatar,
-    required this.index,
+    required this.chat,
   }) : super(key: key);
-  final int index;
+  final ChatFindManyModel chat;
 
   @override
   Widget build(BuildContext context) {
-    //if listChats isNotEmpty == true all for this
-    ChatFindManyModel chat = ChatPageControllerGetx.instance.listChats![index]!;
     return SizedBox(
       height: 50,
-      child: FutureBuilder<UserMinifiedDataIdModel?>(
-        future: ImplementSettingGetXController.instance
-            .getDataUserMinified(idUser: chat.specialistId!),
-        builder: (context, AsyncSnapshot<UserMinifiedDataIdModel?> snapshot) {
-          return TextButton(
-            style: ButtonStyle(
-              padding: MaterialStateProperty.all(EdgeInsets.zero),
-            ),
-            onPressed: () {
-              ChatPageControllerGetx.instance.getMessagesInChat(
-                isOfficialChat: false,
-                chatId: chat.id,
-              );
-              ChatWithUserPage.openChatWithUserPage(
-                isSpecialistOnline: chat.isSpecialistOnline,
-                context: context,
-                chatId: chat.id,
-                unreadedMessages: chat.unreadedMessages,
-                userMinified: snapshot.data,
-              );
-            },
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: photoAndMarker(
-                    isSpecialistOnline: chat.isSpecialistOnline,
-                    context: context,
-                    userMinified: snapshot.data,
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: myTopPaddingForContent / 4),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 6,
-                          child: ColumnWithFioAndMessage(
-                            fullName:
-                                "${snapshot.data?.lastName?.capitalizeFirst ?? " "} ${snapshot.data?.middleName?.capitalizeFirst ?? " "} ${snapshot.data?.firstName?.capitalizeFirst ?? ""}",
-                            lastMessageDate: chat.lastMessage,
-                          ),
-                        ),
-                        Expanded(
-                          child: _columnWithTimeAndValue(
-                            context: context,
-                            lastMessageDate: chat.lastMessageDate,
-                            unreadedMessages: chat.unreadedMessages,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      child: TextButton(
+        style: ButtonStyle(
+          padding: MaterialStateProperty.all(EdgeInsets.zero),
+        ),
+        onPressed: () {
+          ChatPageControllerGetx.instance.getMessagesInChat(
+            isOfficialChat: false,
+            chatId: chat.id,
+          );
+          ChatWithUserPage.openChatWithUserPage(
+            isSpecialistOnline: chat.isSpecialistOnline,
+            context: context,
+            chatId: chat.id,
+            unreadedMessages: chat.unreadedMessages,
+            userMinified: chat.userMinifiedData,
           );
         },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: photoAndMarker(
+                isSpecialistOnline: chat.isSpecialistOnline,
+                context: context,
+                userMinified: chat.userMinifiedData,
+              ),
+            ),
+            Expanded(
+              flex: 7,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: myTopPaddingForContent / 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: ColumnWithFioAndMessage(
+                        fullName:
+                            "${chat.userMinifiedData?.lastName?.capitalizeFirst ?? " "} ${chat.userMinifiedData?.middleName?.capitalizeFirst ?? " "} ${chat.userMinifiedData?.firstName?.capitalizeFirst ?? ""}",
+                        lastMessageDate: chat.lastMessage,
+                      ),
+                    ),
+                    Expanded(
+                      child: _columnWithTimeAndValue(
+                        context: context,
+                        lastMessageDate: chat.lastMessageDate,
+                        unreadedMessages: chat.unreadedMessages,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -114,23 +106,26 @@ class ChatPreviewOnHomepage extends StatelessWidget {
               newFontWeight: FontWeight.w300,
               context: context),
         ),
-        Container(
-          decoration: myStyleContainer(
-              color: myColorIsActive, borderRadius: 6.0, context: context),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: myTopPaddingForContent/2),
-            child: Text(
-              unreadedMessages != null ? ' $unreadedMessages' : "0",
-              overflow: TextOverflow.ellipsis,
-              style: myTextStyleFontUbuntu(
-                newFontWeight: FontWeight.w500,
-                fontSize: 14,
-                context: context,
-                textColor: Get.isDarkMode ? null : Theme.of(context).cardColor,
+        if (unreadedMessages != null && unreadedMessages != 0)
+          Container(
+            decoration: myStyleContainer(
+                color: myColorIsActive, borderRadius: 6.0, context: context),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: myTopPaddingForContent / 2),
+              child: Text(
+                ' $unreadedMessages ',
+                overflow: TextOverflow.ellipsis,
+                style: myTextStyleFontUbuntu(
+                  newFontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  context: context,
+                  textColor:
+                      Get.isDarkMode ? null : Theme.of(context).cardColor,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

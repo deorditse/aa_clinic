@@ -1,3 +1,4 @@
+import 'package:model/model.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:get/get.dart';
 import 'package:style_app/style_app.dart';
@@ -29,18 +30,21 @@ class _SearchChatsWidgetState extends State<SearchChatsWidget> {
             autofocus: true,
             controller: _searchQueryControllerDocPage,
             cursorColor: myColorIsActive,
-            decoration:
-                myStyleTextField(context, hintText: 'Поиск по документам'),
+            decoration: myStyleTextField(context, hintText: 'Поиск по чатам'),
             style: myTextStyleFontUbuntu(context: context),
-            onChanged: (query) => _searchQuery.value = query,
+            onChanged: (query) {
+              _searchQuery.value = query;
+              ChatPageControllerGetx.instance
+                  .changeIsSearchingChats(searchText: query);
+            },
             onSubmitted: (searchText) {
               FocusManager.instance.primaryFocus?.unfocus();
 
-              if (_searchQuery.value != '') {
-                ChatPageControllerGetx.instance.getChatsFindMany(
-                  searchText: searchText,
-                );
-              }
+              // if (_searchQuery.value != '') {
+              //   ChatPageControllerGetx.instance.changeIsSearchingChats(
+              //     searchText: searchText,
+              //   );
+              // }
             },
           ),
         ),

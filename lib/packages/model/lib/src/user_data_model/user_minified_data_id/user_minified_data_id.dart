@@ -6,7 +6,7 @@ part 'user_minified_data_id.g.dart';
 
 // flutter pub run build_runner build --delete-conflicting-outputs
 
-@freezed
+@unfreezed
 class UserMinifiedDataIdModel with _$UserMinifiedDataIdModel {
   factory UserMinifiedDataIdModel({
     required String id,

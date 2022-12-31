@@ -67,25 +67,26 @@ class ImplementSettingGetXController extends GetxController {
       case 0:
         print('initState BodyProfilePage');
 
-        Get.lazyPut(() => ProfileControllerGetxState());
-        Get.lazyPut(() => ActiveValueControllerProfilePage());
+        Get.put(ProfileControllerGetxState());
+        Get.put(ActiveValueControllerProfilePage());
         break;
       case 1:
         print('initState BodyChatPage');
-        Get.lazyPut(() => ChatPageControllerGetx());
+        Get.put(ChatPageControllerGetx());
         break;
       case 2:
         print('initState BodyHomePage');
-        Get.lazyPut(() => HomePageCalendarControllerGetxState());
+        Get.put(HomePageCalendarControllerGetxState());
         Get.put(RTCControllerGetxState());
+        Get.put(ActiveValueControllerProfilePage());
         break;
       case 3:
         print('initState BodyArticlesPage');
-        Get.lazyPut(() => ArticlesControllerGetxState());
+        Get.put(ArticlesControllerGetxState());
         break;
       case 4:
         print('initState BodyOtherPage');
-        Get.lazyPut(() => OtherControllerGetxState());
+        Get.put(OtherControllerGetxState());
         break;
     }
   }

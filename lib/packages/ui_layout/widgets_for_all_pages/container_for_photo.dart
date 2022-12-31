@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/image_view_page.dart';
@@ -6,7 +8,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:model/model.dart';
 
 class ContainerForPhotoFuture extends StatelessWidget {
   const ContainerForPhotoFuture(
@@ -25,39 +26,7 @@ class ContainerForPhotoFuture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageFromNetwork != null && coverFileId == null) {
-      return GestureDetector(
-        onTap: openView
-            ? () {
-                imageViewBottom(
-                  context: Get.context!,
-                  imagePathForNetworkImage: imageFromNetwork,
-                  heroTag: 'null',
-                );
-              }
-            : null,
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: double.infinity,
-          decoration: myStyleContainer(context: context).copyWith(
-            color: isCircular
-                ? Colors.transparent
-                : Theme.of(context).backgroundColor,
-          ),
-          child: CachedNetworkImage(
-            imageUrl: imageFromNetwork!,
-            imageBuilder: (context, imageProvider) => Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else if (coverFileId != null) {
+    if (coverFileId != null) {
       return FutureBuilder<Map<int, Uint8List?>?>(
         future: ImplementSettingGetXController.instance
             .getStaticFilesStorageAsUTF8(coverFileId: coverFileId!),
@@ -103,6 +72,38 @@ class ContainerForPhotoFuture extends StatelessWidget {
             return myShimmerEffectContainer(context: context);
           }
         },
+      );
+    } else if (imageFromNetwork != null && coverFileId == null) {
+      return GestureDetector(
+        onTap: openView
+            ? () {
+                imageViewBottom(
+                  context: Get.context!,
+                  imagePathForNetworkImage: imageFromNetwork,
+                  heroTag: 'null',
+                );
+              }
+            : null,
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          width: double.infinity,
+          decoration: myStyleContainer(context: context).copyWith(
+            color: isCircular
+                ? Colors.transparent
+                : Theme.of(context).backgroundColor,
+          ),
+          child: CachedNetworkImage(
+            imageUrl: imageFromNetwork!,
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
       );
     } else {
       return containerIfNotPhoto(context: context);

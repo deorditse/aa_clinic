@@ -22,11 +22,17 @@ UserMinifiedDataIdModel _$UserMinifiedDataIdModelFromJson(
 /// @nodoc
 mixin _$UserMinifiedDataIdModel {
   String get id => throw _privateConstructorUsedError;
+  set id(String value) => throw _privateConstructorUsedError;
   String? get lastName => throw _privateConstructorUsedError;
+  set lastName(String? value) => throw _privateConstructorUsedError;
   String? get firstName => throw _privateConstructorUsedError;
+  set firstName(String? value) => throw _privateConstructorUsedError;
   String? get middleName => throw _privateConstructorUsedError;
+  set middleName(String? value) => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
+  set avatar(String? value) => throw _privateConstructorUsedError;
   String? get specialist => throw _privateConstructorUsedError;
+  set specialist(String? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -179,44 +185,22 @@ class _$_UserMinifiedDataIdModel implements _UserMinifiedDataIdModel {
       _$$_UserMinifiedDataIdModelFromJson(json);
 
   @override
-  final String id;
+  String id;
   @override
-  final String? lastName;
+  String? lastName;
   @override
-  final String? firstName;
+  String? firstName;
   @override
-  final String? middleName;
+  String? middleName;
   @override
-  final String? avatar;
+  String? avatar;
   @override
-  final String? specialist;
+  String? specialist;
 
   @override
   String toString() {
     return 'UserMinifiedDataIdModel(id: $id, lastName: $lastName, firstName: $firstName, middleName: $middleName, avatar: $avatar, specialist: $specialist)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_UserMinifiedDataIdModel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.middleName, middleName) ||
-                other.middleName == middleName) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.specialist, specialist) ||
-                other.specialist == specialist));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, id, lastName, firstName, middleName, avatar, specialist);
 
   @JsonKey(ignore: true)
   @override
@@ -236,28 +220,34 @@ class _$_UserMinifiedDataIdModel implements _UserMinifiedDataIdModel {
 
 abstract class _UserMinifiedDataIdModel implements UserMinifiedDataIdModel {
   factory _UserMinifiedDataIdModel(
-      {required final String id,
-      final String? lastName,
-      final String? firstName,
-      final String? middleName,
-      final String? avatar,
-      final String? specialist}) = _$_UserMinifiedDataIdModel;
+      {required String id,
+      String? lastName,
+      String? firstName,
+      String? middleName,
+      String? avatar,
+      String? specialist}) = _$_UserMinifiedDataIdModel;
 
   factory _UserMinifiedDataIdModel.fromJson(Map<String, dynamic> json) =
       _$_UserMinifiedDataIdModel.fromJson;
 
   @override
   String get id;
+  set id(String value);
   @override
   String? get lastName;
+  set lastName(String? value);
   @override
   String? get firstName;
+  set firstName(String? value);
   @override
   String? get middleName;
+  set middleName(String? value);
   @override
   String? get avatar;
+  set avatar(String? value);
   @override
   String? get specialist;
+  set specialist(String? value);
   @override
   @JsonKey(ignore: true)
   _$$_UserMinifiedDataIdModelCopyWith<_$_UserMinifiedDataIdModel>

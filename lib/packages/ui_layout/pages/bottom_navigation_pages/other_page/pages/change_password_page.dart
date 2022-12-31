@@ -51,17 +51,21 @@ class _BodyChangePasswordOtherPageState
   bool successMessage = false;
 
   void _submit(
-
       {required String newPassword, required String lastPassword}) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-
-      setState(() {
-        successMessage = true;
+      OtherControllerGetxState.instance
+          .updatePassword(newPassword: newPassword, lastPassword: lastPassword)
+          .then((value) {
+        setState(() {
+          successMessage = true;
+          Navigator.of(context).pop();
+        });
       });
     }
   }
+
+  Rx<int> _status = 0.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +80,7 @@ class _BodyChangePasswordOtherPageState
                 child: Form(
                   key: _formKey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Flexible(
                         child: TextFormField(
@@ -83,11 +88,8 @@ class _BodyChangePasswordOtherPageState
                           controller: _oldPasswordController,
                           key: const Key('fieldPassword'),
                           validator: (value) {
-                            if (value == '')
-                              return 'Введите пароль от 6 символов';
-                            if (value!.split('').length < 6 ||
-                                value.split('').length > 15)
-                              return 'Некорректный пароль';
+                            if (value == '') return 'Введите пароль';
+
                             return null;
                           },
                           decoration: myStyleTextField(
@@ -109,11 +111,21 @@ class _BodyChangePasswordOtherPageState
                           cursorColor: myColorIsActive,
                           controller: _passwordController,
                           key: const Key('fieldPassword'),
+                          onChanged: (value) {
+                            int _length = value!.split('').length;
+
+                            if (_length > 0 && _length < 5) {
+                              _status.value = 0;
+                            } else if (_length >= 5 && _length <= 10) {
+                              _status.value = 1;
+                            } else if (_length > 10) {
+                              _status.value = 2;
+                            }
+                          },
                           validator: (value) {
                             if (value == '')
                               return 'Введите пароль от 6 символов';
-                            if (value!.split('').length < 6 ||
-                                value!.split('').length > 15)
+                            if (value!.split('').length > 15)
                               return 'Некорректный пароль';
                             return null;
                           },
@@ -161,7 +173,39 @@ class _BodyChangePasswordOtherPageState
                         ),
                       ),
                       const SizedBox(height: myTopPaddingForContent),
-                      _rowWithPhotoButton(),
+                      Obx(
+                        () => Row(
+                          children: [
+                            Text(
+                              "Пароль: ",
+                              style: myTextStyleFontUbuntu(
+                                  fontSize: 13,
+                                  newFontWeight: FontWeight.w300,
+                                  context: context),
+                            ),
+                            Text(
+                              _status.value == 0
+                                  ? 'слабый'
+                                  : _status.value == 1
+                                      ? 'средний'
+                                      : _status.value == 2
+                                          ? 'надежный'
+                                          : '',
+                              style: myTextStyleFontUbuntu(
+                                  textColor: (_status.value == 0)
+                                      ? Colors.red
+                                      : (_status.value == 1)
+                                          ? Color.fromRGBO(209, 186, 141, 1)
+                                          : _status.value == 2
+                                              ? Colors.green
+                                              : Colors.transparent,
+                                  fontSize: 13,
+                                  newFontWeight: FontWeight.w300,
+                                  context: context),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -186,43 +230,6 @@ class _BodyChangePasswordOtherPageState
           ),
         );
       },
-    );
-  }
-
-  _rowWithPhotoButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(width: myHorizontalPaddingForContainer),
-        Text(
-          'Слабый',
-          style: myTextStyleFontUbuntu(
-              textColor: Colors.red,
-              fontSize: 13,
-              newFontWeight: FontWeight.w300,
-              context: context),
-        ),
-        const SizedBox(width: 22),
-        Text(
-          'Средний',
-          style: myTextStyleFontUbuntu(
-            textColor: Color.fromRGBO(209, 186, 141, 1),
-            fontSize: 13,
-            context: context,
-            newFontWeight: FontWeight.w300,
-          ),
-        ),
-        const SizedBox(width: 22),
-        Text(
-          'Надежный',
-          style: myTextStyleFontUbuntu(
-            textColor: Colors.green,
-            fontSize: 13,
-            newFontWeight: FontWeight.w300,
-            context: context,
-          ),
-        ),
-      ],
     );
   }
 }

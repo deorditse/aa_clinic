@@ -21,13 +21,25 @@ ChatFindManyModel _$ChatFindManyModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ChatFindManyModel {
   String get id => throw _privateConstructorUsedError;
+  set id(String value) => throw _privateConstructorUsedError;
+  UserMinifiedDataIdModel? get userMinifiedData =>
+      throw _privateConstructorUsedError;
+  set userMinifiedData(UserMinifiedDataIdModel? value) =>
+      throw _privateConstructorUsedError;
   String? get specialistId => throw _privateConstructorUsedError;
+  set specialistId(String? value) => throw _privateConstructorUsedError;
   String? get patientId => throw _privateConstructorUsedError;
+  set patientId(String? value) => throw _privateConstructorUsedError;
   bool get isHidden => throw _privateConstructorUsedError;
+  set isHidden(bool value) => throw _privateConstructorUsedError;
   String? get lastMessageDate => throw _privateConstructorUsedError;
+  set lastMessageDate(String? value) => throw _privateConstructorUsedError;
   String? get lastMessage => throw _privateConstructorUsedError;
+  set lastMessage(String? value) => throw _privateConstructorUsedError;
   int? get unreadedMessages => throw _privateConstructorUsedError;
+  set unreadedMessages(int? value) => throw _privateConstructorUsedError;
   bool get isSpecialistOnline => throw _privateConstructorUsedError;
+  set isSpecialistOnline(bool value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,6 +55,7 @@ abstract class $ChatFindManyModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
+      UserMinifiedDataIdModel? userMinifiedData,
       String? specialistId,
       String? patientId,
       bool isHidden,
@@ -50,6 +63,8 @@ abstract class $ChatFindManyModelCopyWith<$Res> {
       String? lastMessage,
       int? unreadedMessages,
       bool isSpecialistOnline});
+
+  $UserMinifiedDataIdModelCopyWith<$Res>? get userMinifiedData;
 }
 
 /// @nodoc
@@ -66,6 +81,7 @@ class _$ChatFindManyModelCopyWithImpl<$Res, $Val extends ChatFindManyModel>
   @override
   $Res call({
     Object? id = null,
+    Object? userMinifiedData = freezed,
     Object? specialistId = freezed,
     Object? patientId = freezed,
     Object? isHidden = null,
@@ -79,6 +95,10 @@ class _$ChatFindManyModelCopyWithImpl<$Res, $Val extends ChatFindManyModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      userMinifiedData: freezed == userMinifiedData
+          ? _value.userMinifiedData
+          : userMinifiedData // ignore: cast_nullable_to_non_nullable
+              as UserMinifiedDataIdModel?,
       specialistId: freezed == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -109,6 +129,19 @@ class _$ChatFindManyModelCopyWithImpl<$Res, $Val extends ChatFindManyModel>
               as bool,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserMinifiedDataIdModelCopyWith<$Res>? get userMinifiedData {
+    if (_value.userMinifiedData == null) {
+      return null;
+    }
+
+    return $UserMinifiedDataIdModelCopyWith<$Res>(_value.userMinifiedData!,
+        (value) {
+      return _then(_value.copyWith(userMinifiedData: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -121,6 +154,7 @@ abstract class _$$_ChatFindManyModelCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
+      UserMinifiedDataIdModel? userMinifiedData,
       String? specialistId,
       String? patientId,
       bool isHidden,
@@ -128,6 +162,9 @@ abstract class _$$_ChatFindManyModelCopyWith<$Res>
       String? lastMessage,
       int? unreadedMessages,
       bool isSpecialistOnline});
+
+  @override
+  $UserMinifiedDataIdModelCopyWith<$Res>? get userMinifiedData;
 }
 
 /// @nodoc
@@ -142,6 +179,7 @@ class __$$_ChatFindManyModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? userMinifiedData = freezed,
     Object? specialistId = freezed,
     Object? patientId = freezed,
     Object? isHidden = null,
@@ -155,6 +193,10 @@ class __$$_ChatFindManyModelCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      userMinifiedData: freezed == userMinifiedData
+          ? _value.userMinifiedData
+          : userMinifiedData // ignore: cast_nullable_to_non_nullable
+              as UserMinifiedDataIdModel?,
       specialistId: freezed == specialistId
           ? _value.specialistId
           : specialistId // ignore: cast_nullable_to_non_nullable
@@ -190,8 +232,9 @@ class __$$_ChatFindManyModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ChatFindManyModel implements _ChatFindManyModel {
-  const _$_ChatFindManyModel(
+  _$_ChatFindManyModel(
       {required this.id,
+      this.userMinifiedData,
       this.specialistId,
       this.patientId,
       this.isHidden = false,
@@ -204,62 +247,29 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
       _$$_ChatFindManyModelFromJson(json);
 
   @override
-  final String id;
+  String id;
   @override
-  final String? specialistId;
+  UserMinifiedDataIdModel? userMinifiedData;
   @override
-  final String? patientId;
+  String? specialistId;
+  @override
+  String? patientId;
   @override
   @JsonKey()
-  final bool isHidden;
+  bool isHidden;
   @override
-  final String? lastMessageDate;
+  String? lastMessageDate;
   @override
-  final String? lastMessage;
+  String? lastMessage;
   @override
-  final int? unreadedMessages;
+  int? unreadedMessages;
   @override
-  final bool isSpecialistOnline;
+  bool isSpecialistOnline;
 
   @override
   String toString() {
-    return 'ChatFindManyModel(id: $id, specialistId: $specialistId, patientId: $patientId, isHidden: $isHidden, lastMessageDate: $lastMessageDate, lastMessage: $lastMessage, unreadedMessages: $unreadedMessages, isSpecialistOnline: $isSpecialistOnline)';
+    return 'ChatFindManyModel(id: $id, userMinifiedData: $userMinifiedData, specialistId: $specialistId, patientId: $patientId, isHidden: $isHidden, lastMessageDate: $lastMessageDate, lastMessage: $lastMessage, unreadedMessages: $unreadedMessages, isSpecialistOnline: $isSpecialistOnline)';
   }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ChatFindManyModel &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.specialistId, specialistId) ||
-                other.specialistId == specialistId) &&
-            (identical(other.patientId, patientId) ||
-                other.patientId == patientId) &&
-            (identical(other.isHidden, isHidden) ||
-                other.isHidden == isHidden) &&
-            (identical(other.lastMessageDate, lastMessageDate) ||
-                other.lastMessageDate == lastMessageDate) &&
-            (identical(other.lastMessage, lastMessage) ||
-                other.lastMessage == lastMessage) &&
-            (identical(other.unreadedMessages, unreadedMessages) ||
-                other.unreadedMessages == unreadedMessages) &&
-            (identical(other.isSpecialistOnline, isSpecialistOnline) ||
-                other.isSpecialistOnline == isSpecialistOnline));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      specialistId,
-      patientId,
-      isHidden,
-      lastMessageDate,
-      lastMessage,
-      unreadedMessages,
-      isSpecialistOnline);
 
   @JsonKey(ignore: true)
   @override
@@ -277,35 +287,47 @@ class _$_ChatFindManyModel implements _ChatFindManyModel {
 }
 
 abstract class _ChatFindManyModel implements ChatFindManyModel {
-  const factory _ChatFindManyModel(
-      {required final String id,
-      final String? specialistId,
-      final String? patientId,
-      final bool isHidden,
-      final String? lastMessageDate,
-      final String? lastMessage,
-      final int? unreadedMessages,
-      required final bool isSpecialistOnline}) = _$_ChatFindManyModel;
+  factory _ChatFindManyModel(
+      {required String id,
+      UserMinifiedDataIdModel? userMinifiedData,
+      String? specialistId,
+      String? patientId,
+      bool isHidden,
+      String? lastMessageDate,
+      String? lastMessage,
+      int? unreadedMessages,
+      required bool isSpecialistOnline}) = _$_ChatFindManyModel;
 
   factory _ChatFindManyModel.fromJson(Map<String, dynamic> json) =
       _$_ChatFindManyModel.fromJson;
 
   @override
   String get id;
+  set id(String value);
+  @override
+  UserMinifiedDataIdModel? get userMinifiedData;
+  set userMinifiedData(UserMinifiedDataIdModel? value);
   @override
   String? get specialistId;
+  set specialistId(String? value);
   @override
   String? get patientId;
+  set patientId(String? value);
   @override
   bool get isHidden;
+  set isHidden(bool value);
   @override
   String? get lastMessageDate;
+  set lastMessageDate(String? value);
   @override
   String? get lastMessage;
+  set lastMessage(String? value);
   @override
   int? get unreadedMessages;
+  set unreadedMessages(int? value);
   @override
   bool get isSpecialistOnline;
+  set isSpecialistOnline(bool value);
   @override
   @JsonKey(ignore: true)
   _$$_ChatFindManyModelCopyWith<_$_ChatFindManyModel> get copyWith =>

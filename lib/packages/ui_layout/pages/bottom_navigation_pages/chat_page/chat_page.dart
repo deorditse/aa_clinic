@@ -39,7 +39,7 @@ class ChatPage extends StatelessWidget {
   }
 
   Future<void> _updateDataPage() async {
-    await ChatPageControllerGetx.instance.initialChatController();
+    await ChatPageControllerGetx.instance.getChatsFindMany();
   }
 }
 
@@ -64,15 +64,17 @@ class _MainBodyChatPage extends StatelessWidget {
                 shrinkWrap: true,
                 primary: false,
                 padding: EdgeInsets.zero,
-                itemCount: controllerChatPage.listChats != null
-                    ? controllerChatPage.listChats!.length
-                    : 12,
+                itemCount: controllerChatPage.listChats.isNotEmpty
+                    ? controllerChatPage.listChats.length
+                    : 8,
                 itemBuilder: (context, index) {
-                  if (controllerChatPage.listChats != null) {
+                  if (controllerChatPage.listChats.isNotEmpty) {
                     return Padding(
                       padding:
                           const EdgeInsets.only(bottom: myTopPaddingForContent),
-                      child: ChatPreviewOnHomepage(index: index),
+                      child: ChatPreviewOnHomepage(
+                        chat: controllerChatPage.listChats[index]!
+                      ),
                     );
                   } else {
                     return Padding(

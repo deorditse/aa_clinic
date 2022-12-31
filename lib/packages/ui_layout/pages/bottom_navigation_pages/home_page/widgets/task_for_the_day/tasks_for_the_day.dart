@@ -96,13 +96,6 @@ class TaskForTheDay extends StatelessWidget {
                     : _barrierItemCount)
                 .obs;
 
-            String _formatData =
-                "${_mySelectedDay.year}-${_mySelectedDay.month}-${_mySelectedDay.day}";
-            bool isMarkForDay = controllerCalendar.marksCountForMonth[
-                        '${_mySelectedDay.year}-${_mySelectedDay.month}']
-                    ?[_formatData] !=
-                null;
-
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -215,17 +208,7 @@ class TaskForTheDay extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            if (DateFormat.yMd().format(DateTime.now()) ==
-                DateFormat.yMd().format(HomePageCalendarControllerGetxState
-                    .instance.mySelectedDay)) {
-              AddNewDishHomePage.addNewDishHomePage(context: context);
-            } else {
-              Get.snackbar(
-                '',
-                'Можно добавить событие только на сегодняшний день',
-                snackPosition: SnackPosition.TOP,
-              );
-            }
+            AddNewDishHomePage.addNewDishHomePage(context: context);
           },
           child: SvgPicture.asset(
             Get.isDarkMode

@@ -60,23 +60,27 @@ class ImplementWorkoutControllerHomePage extends GetxController {
 
   final Rx<int> timerData = 30.obs;
 
-  startTimer({required int timerSecondsValue, bool isStopTimer = false}) {
-    Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) {
-        if (isStopTimer) {
-          timer.cancel();
-          timerData.value = timerSecondsValue;
-          return;
-        } else {
+  void startTimer({required int timerSecondsValue, bool isStopTimer = false}) {
+    Timer? timer;
+    timer?.cancel();
+    if (!isStopTimer) {
+      timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (timer) {
           timerData.value -= 1;
           if (timerData.value <= 0) {
             timer.cancel();
             timerData.value = timerSecondsValue;
           }
-        }
-      },
-    );
+        },
+      );
+    }
+
+    if (isStopTimer) {
+      timer?.cancel();
+      timerData.value = timerSecondsValue;
+      return;
+    }
   }
 
   ///изменение данных тренировки
@@ -96,10 +100,8 @@ class ImplementWorkoutControllerHomePage extends GetxController {
     //беру первый обект с невыполннеными заданиями
     ApproachObjectsConsisting approachObjectsConsisting =
         listOfMissedWorkouts.first!;
-    startTimer(
-      timerSecondsValue: approachObjectsConsisting.restTime ?? 30,
-      isStopTimer: true,
-    );
+    startTimer(timerSecondsValue: approachObjectsConsisting.restTime ?? 30);
+
     //Увеличить fitnessWorkout.fulfillment на (1/...exercises.$.sets.COUNT/fitnessWorkout.exercises.COUNT*100).
 
     _fitnessWorkout.fulfillment += ((1 /
@@ -113,9 +115,9 @@ class ImplementWorkoutControllerHomePage extends GetxController {
         ((1 / _fitnessWorkout.exercises[indexExercises]!.sets.length) * 100)
             .toInt();
 
-    approachObjectsConsisting.finishedAt = DateTime.now().toIso8601String();
+    approachObjectsConsisting.finishedAt =
+        DateTime.now().toUtc().toIso8601String();
     approachObjectsConsisting.startedAt = _fitnessWorkout.startedAt;
-
     approachObjectsConsisting.real.forEach((key, value) {
       int index = approachObjectsConsisting.real.values.toList().indexOf(value);
       approachObjectsConsisting.real[key]!.value =
@@ -135,8 +137,6 @@ class ImplementWorkoutControllerHomePage extends GetxController {
     listOfMissedWorkouts.removeAt(0);
     listOfCompletedWorkouts.add(approachObjectsConsisting);
     update();
-    startTimer(timerSecondsValue: approachObjectsConsisting.restTime ?? 40);
-    print(mapTargetIdAndWorkoutsWithId[targetIdWorkout]!.exercises);
 
     await _services
         .putFitnessWorkoutWithIdData(

@@ -109,24 +109,26 @@ class OfficialChatPreviewOnHomepage extends StatelessWidget {
               newFontWeight: FontWeight.w300,
               context: context),
         ),
-        Container(
-          decoration: myStyleContainer(
-              color: myColorIsActive, borderRadius: 6.0, context: context),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: myTopPaddingForContent / 2),
-            child: Text(
-              unreadedMessages != null ? ' $unreadedMessages' : "0",
-              overflow: TextOverflow.ellipsis,
-              style: myTextStyleFontUbuntu(
-                newFontWeight: FontWeight.w500,
-                fontSize: 14,
-                context: context,
-                textColor: Get.isDarkMode ? null : Theme.of(context).cardColor,
+        if (unreadedMessages != null && unreadedMessages != 0)
+          Container(
+            decoration: myStyleContainer(
+                color: myColorIsActive, borderRadius: 6.0, context: context),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: myTopPaddingForContent / 2),
+              child: Text(
+                ' $unreadedMessages ',
+                overflow: TextOverflow.ellipsis,
+                style: myTextStyleFontUbuntu(
+                  newFontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  context: context,
+                  textColor:
+                      Get.isDarkMode ? null : Theme.of(context).cardColor,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

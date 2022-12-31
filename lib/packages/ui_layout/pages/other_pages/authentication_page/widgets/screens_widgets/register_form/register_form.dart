@@ -43,32 +43,21 @@ class _FormRegistrationState extends State<_FormRegistration> {
 
   Future<void> _handleSubmit(
       {required RegistrationDataModel registrationData}) async {
-    ///test key for email - как будто бы зарегались
-    ///delete after test
-    /*Future.delayed(Duration(seconds: 2)).then((value) {
-      ImplementAuthController.instance
-          .switchForm(newFormType: FormType.confirmMail);
-    });*/
-
-    ///
-
 //сначала проверим прохождение валидации
     if (_formKey.currentState!.validate() && browsingPrivacy.value) {
       bool result = await ImplementAuthController.instance
           .signUpUser(registrationData: registrationData);
-      if(result){
-        ImplementAuthController.instance
-            .switchForm(newFormType: FormType.login);
+      if (result) {
         setState(() {
           _isSuccess = true;
         });
+        ImplementAuthController.instance
+            .switchForm(newFormType: FormType.confirmMail);
       } else {
         setState(() {
           _isSuccess = false;
         });
       }
-
-
     }
   }
 
@@ -96,6 +85,7 @@ class _FormRegistrationState extends State<_FormRegistration> {
                       labelText: 'Имя...',
                       hintText: 'Ввод имени',
                     ),
+
                     validator: (value) {
                       if (value == '') return 'Введите имя';
                       return null;
@@ -209,10 +199,6 @@ class _FormRegistrationState extends State<_FormRegistration> {
                 password: _passwordController.text,
               ));
             }),
-        // if (_isSuccess)
-        //   Text('Вы успешно зарегистрировались',
-        //       style: myTextStyleFontUbuntu(
-        //           context: context, textColor: myColorIsActive)),
       ],
     );
   }

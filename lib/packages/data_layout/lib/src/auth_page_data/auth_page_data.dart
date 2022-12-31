@@ -79,8 +79,8 @@ class AuthPageData {
 
       if (response.statusCode == 200) {
         Get.snackbar(
-          'Exception',
-          'Email обновлен',
+          'Ошибка входа',
+          'Перейдите по ссылке из письма',
           snackPosition: SnackPosition.TOP,
         );
       }

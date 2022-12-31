@@ -124,12 +124,11 @@ class MenuListTileOtherPage extends StatelessWidget {
             //   Get.delete<RTCControllerGetxState>(force: true);
             // });
             ///перенести на слой бизнес логики после тестирования
-
             await Get.offAllNamed('/loginView');
-            // Timer(Duration(milliseconds: 300), () {
-            //   Get.delete<ImplementSettingGetXController>(force: true);
-            //   Get.delete<RTCControllerGetxState>(force: true);
-            // });
+            Timer(Duration(milliseconds: 300), () {
+              Get.delete<ImplementSettingGetXController>(force: true);
+              Get.delete<RTCControllerGetxState>(force: true);
+            });
           },
         ),
       ],

@@ -88,9 +88,9 @@ class ChatWithUserPage extends StatelessWidget {
         title:
             "${userMinified?.lastName ?? ""} ${userMinified?.middleName ?? ""} ${userMinified?.firstName ?? ""}",
         isSvgImage: isSvgImage,
-        subTitle: isSpecialistOnline! ? 'Онлайн' : "Не онлайн",
+        subTitle: isSpecialistOnline! ? 'Онлайн' : "Не в сети",
         imagePath: userMinified?.avatar,
-          unreadedMessages: _countUnMessage(),
+        unreadedMessages: _countUnMessage(),
       ),
     );
   }

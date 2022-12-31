@@ -20,16 +20,14 @@ void imageViewBottom({
             minScale: PhotoViewComputedScale.contained * 1,
             maxScale: PhotoViewComputedScale.contained * 3,
             backgroundDecoration: BoxDecoration(
-              color: Colors.black.withAlpha(200),
+              color: Colors.black.withOpacity(0.85),
             ),
             imageProvider: (uint8ListImageForMemoryImage != null &&
                     imagePathForNetworkImage == null)
                 ? MemoryImage(
                     uint8ListImageForMemoryImage,
                   )
-                : CachedNetworkImageProvider(
-                    imagePathForNetworkImage!,
-                  ) as ImageProvider,
+                : Image.network(imagePathForNetworkImage!) as ImageProvider,
             heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
           ),
         );

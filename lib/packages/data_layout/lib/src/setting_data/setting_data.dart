@@ -145,11 +145,7 @@ class SettingPageData {
           'phoneNumber': userEdit.phoneNumber ?? '',
         },
       );
-      //обновляю email
-      if (userEdit.email != '') {
-        await AuthPageData().updateEmailData(
-            newEmail: userEdit.email, accessToken: accessToken);
-      }
+
       print('Response status from updateMeData: ${response.statusCode}');
       log('updateMeData ${response.body}');
     } catch (error) {
@@ -206,11 +202,6 @@ class SettingPageData {
         return UserMinifiedDataIdModel.fromJson(jsonDecode(response.body));
       }
     } catch (error) {
-      Get.snackbar(
-        'Exception',
-        'get user minified error:$error}',
-        snackPosition: SnackPosition.TOP,
-      );
       print('я в ошибке from getDataUserMinifiedData $error ');
     }
     return null;

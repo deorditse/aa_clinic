@@ -21,23 +21,36 @@ NutriMealsModel _$NutriMealsModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NutriMealsModel {
   String get id => throw _privateConstructorUsedError;
+
   String get creatorId => throw _privateConstructorUsedError;
+
   String get userId => throw _privateConstructorUsedError;
+
   String get title =>
       throw _privateConstructorUsedError; //array with dishes objects
   List<NutriDishModel?> get dishes => throw _privateConstructorUsedError;
+
   String? get typeId => throw _privateConstructorUsedError;
+
   Map<dynamic, dynamic> get additionalData =>
       throw _privateConstructorUsedError;
+
   String? get description => throw _privateConstructorUsedError;
+
   String? get comment => throw _privateConstructorUsedError;
+
   String? get startedAt => throw _privateConstructorUsedError;
+
   String? get finishedAt => throw _privateConstructorUsedError;
+
   int get fulfillment => throw _privateConstructorUsedError;
+
   String? get createdAt => throw _privateConstructorUsedError;
+
   String? get updatedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $NutriMealsModelCopyWith<NutriMealsModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -48,6 +61,7 @@ abstract class $NutriMealsModelCopyWith<$Res> {
   factory $NutriMealsModelCopyWith(
           NutriMealsModel value, $Res Function(NutriMealsModel) then) =
       _$NutriMealsModelCopyWithImpl<$Res, NutriMealsModel>;
+
   @useResult
   $Res call(
       {String id,
@@ -73,6 +87,7 @@ class _$NutriMealsModelCopyWithImpl<$Res, $Val extends NutriMealsModel>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -161,6 +176,7 @@ abstract class _$$_NutriMealsModelCopyWith<$Res>
   factory _$$_NutriMealsModelCopyWith(
           _$_NutriMealsModel value, $Res Function(_$_NutriMealsModel) then) =
       __$$_NutriMealsModelCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
@@ -299,8 +315,10 @@ class _$_NutriMealsModel implements _NutriMealsModel {
   final String userId;
   @override
   final String title;
+
 //array with dishes objects
   final List<NutriDishModel?> _dishes;
+
 //array with dishes objects
   @override
   @JsonKey()
@@ -313,6 +331,7 @@ class _$_NutriMealsModel implements _NutriMealsModel {
   @override
   final String? typeId;
   final Map<dynamic, dynamic> _additionalData;
+
   @override
   @JsonKey()
   Map<dynamic, dynamic> get additionalData {
@@ -426,32 +445,46 @@ abstract class _NutriMealsModel implements NutriMealsModel {
 
   @override
   String get id;
+
   @override
   String get creatorId;
+
   @override
   String get userId;
+
   @override
   String get title;
+
   @override //array with dishes objects
   List<NutriDishModel?> get dishes;
+
   @override
   String? get typeId;
+
   @override
   Map<dynamic, dynamic> get additionalData;
+
   @override
   String? get description;
+
   @override
   String? get comment;
+
   @override
   String? get startedAt;
+
   @override
   String? get finishedAt;
+
   @override
   int get fulfillment;
+
   @override
   String? get createdAt;
+
   @override
   String? get updatedAt;
+
   @override
   @JsonKey(ignore: true)
   _$$_NutriMealsModelCopyWith<_$_NutriMealsModel> get copyWith =>
@@ -465,31 +498,51 @@ NutriDishModel _$NutriDishModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NutriDishModel {
   File? get file => throw _privateConstructorUsedError;
+
   set file(File? value) =>
       throw _privateConstructorUsedError; //для себя чтобы добавить новое событие приема пищи
   String? get title =>
       throw _privateConstructorUsedError; //для себя чтобы добавить новое событие приема пищи
   set title(String? value) => throw _privateConstructorUsedError;
+
   String? get image => throw _privateConstructorUsedError;
+
   set image(String? value) => throw _privateConstructorUsedError;
+
   String? get lifeImage => throw _privateConstructorUsedError;
+
   set lifeImage(String? value) => throw _privateConstructorUsedError;
+
   String? get thumbnail => throw _privateConstructorUsedError;
+
   set thumbnail(String? value) => throw _privateConstructorUsedError;
+
   List<String?> get tags => throw _privateConstructorUsedError;
+
   set tags(List<String?> value) => throw _privateConstructorUsedError;
+
   String? get typeId => throw _privateConstructorUsedError;
+
   set typeId(String? value) => throw _privateConstructorUsedError;
+
   int? get kcal => throw _privateConstructorUsedError;
+
   set kcal(int? value) => throw _privateConstructorUsedError;
+
   int? get mass => throw _privateConstructorUsedError;
+
   set mass(int? value) => throw _privateConstructorUsedError;
+
   String? get description => throw _privateConstructorUsedError;
+
   set description(String? value) => throw _privateConstructorUsedError;
+
   String? get comment => throw _privateConstructorUsedError;
+
   set comment(String? value) => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $NutriDishModelCopyWith<NutriDishModel> get copyWith =>
       throw _privateConstructorUsedError;
@@ -500,6 +553,7 @@ abstract class $NutriDishModelCopyWith<$Res> {
   factory $NutriDishModelCopyWith(
           NutriDishModel value, $Res Function(NutriDishModel) then) =
       _$NutriDishModelCopyWithImpl<$Res, NutriDishModel>;
+
   @useResult
   $Res call(
       {File? file,
@@ -522,6 +576,7 @@ class _$NutriDishModelCopyWithImpl<$Res, $Val extends NutriDishModel>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -595,6 +650,7 @@ abstract class _$$_NutriDishModelCopyWith<$Res>
   factory _$$_NutriDishModelCopyWith(
           _$_NutriDishModel value, $Res Function(_$_NutriDishModel) then) =
       __$$_NutriDishModelCopyWithImpl<$Res>;
+
   @override
   @useResult
   $Res call(
@@ -704,6 +760,7 @@ class _$_NutriDishModel implements _NutriDishModel {
 
   @override
   File? file;
+
 //для себя чтобы добавить новое событие приема пищи
   @override
   String? title;
@@ -765,37 +822,58 @@ abstract class _NutriDishModel implements NutriDishModel {
 
   @override
   File? get file;
+
   set file(File? value);
+
   @override //для себя чтобы добавить новое событие приема пищи
   String? get title; //для себя чтобы добавить новое событие приема пищи
   set title(String? value);
+
   @override
   String? get image;
+
   set image(String? value);
+
   @override
   String? get lifeImage;
+
   set lifeImage(String? value);
+
   @override
   String? get thumbnail;
+
   set thumbnail(String? value);
+
   @override
   List<String?> get tags;
+
   set tags(List<String?> value);
+
   @override
   String? get typeId;
+
   set typeId(String? value);
+
   @override
   int? get kcal;
+
   set kcal(int? value);
+
   @override
   int? get mass;
+
   set mass(int? value);
+
   @override
   String? get description;
+
   set description(String? value);
+
   @override
   String? get comment;
+
   set comment(String? value);
+
   @override
   @JsonKey(ignore: true)
   _$$_NutriDishModelCopyWith<_$_NutriDishModel> get copyWith =>

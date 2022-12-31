@@ -75,10 +75,6 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
     required int indexDish,
   }) async {
     if (await Permission.photos.status.isDenied) {
-      Get.snackbar(
-        'Необходим доступ к галереи',
-        'Для дабавления фото',
-      );
       await Permission.photos.request();
     } else if (await Permission.photos.isPermanentlyDenied) {
       //если навсегда отключена mediaLibrary
@@ -102,10 +98,6 @@ class _AddPhotoBottomSheetWidget extends StatelessWidget {
       {required String targetId, required int indexDish}) async {
     //проверю сначала разрешения
     if (await Permission.camera.status.isDenied) {
-      Get.snackbar(
-        'Необходим доступ к камере',
-        'Для дабавления фото',
-      );
       await Permission.camera.request();
     } else if (await Permission.camera.isPermanentlyDenied) {
       //если навсегда отключена camera

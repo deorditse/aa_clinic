@@ -93,10 +93,11 @@ class MyBottomMenuSceleton extends StatelessWidget {
                 FocusScope.of(context).unfocus();
                 //инициирую контроллеры
                 controllerSetting.initializedControllersForPage(
-                    indexPage: index);
+                  indexPage: index,
+                );
                 controllerSetting.changeBodyPageForIndex(indexPage: index);
-                print("onItemSelected $index");
 
+                print("onItemSelected $index");
               },
             ),
           ),

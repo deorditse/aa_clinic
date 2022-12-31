@@ -29,7 +29,7 @@ class HomePageCalendarControllerGetxState extends GetxController {
   void onInit() {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
-    initializeHomePageData();
+    initializeHomePageData(isUpdate: true);
     getNotification();
 
     super.onInit();
