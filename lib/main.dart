@@ -29,8 +29,8 @@ Future<void> main() async {
     (_) {
       //ориентация экрана;
       SystemChrome.setPreferredOrientations(
-              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-          .whenComplete(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+      ).whenComplete(
         () => runApp(MyGetApp()),
       );
     },
@@ -48,7 +48,9 @@ class MyGetApp extends StatelessWidget {
       theme: themeLight,
       darkTheme: themeDark,
       themeMode: ThemeMode.system,
-      onInit: () => ImplementAuthController.instance.initMainDataApp(),
+      onInit: () {
+        ImplementAuthController.instance.initMainDataApp();
+      },
       initialRoute: LoginView.id,
       getPages: [
         GetPage(

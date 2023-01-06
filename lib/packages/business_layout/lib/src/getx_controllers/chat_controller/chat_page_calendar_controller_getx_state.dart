@@ -86,7 +86,7 @@ class ChatPageControllerGetx extends GetxController {
     searchingChatsText = searchText;
     update();
     if (searchText != null && searchText != '' && searchText.isNotEmpty) {
-      ChatPageControllerGetx.instance.listChats.forEach(
+      ChatPageControllerGetx.instance.listChats?.forEach(
         (chat) {
           if (chat == null) {
             return;
@@ -119,7 +119,7 @@ class ChatPageControllerGetx extends GetxController {
   }
 
   ///для чатов на странице со списком чатов
-  List<ChatFindManyModel?> listChats = [];
+  List<ChatFindManyModel?>? listChats;
 
   Future<void> getChatsFindMany() async {
     _services
@@ -138,7 +138,7 @@ class ChatPageControllerGetx extends GetxController {
                     .then(
                   (userMD) {
                     chat.userMinifiedData = userMD;
-                    listChats.add(chat);
+                    listChats?.add(chat);
                     update();
                   },
                 );

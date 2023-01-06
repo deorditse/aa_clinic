@@ -25,16 +25,13 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: MySliverNewPageWithoutBorder(
-        primary: true,
-        titleAppBar: 'Чаты',
-        callbackTopRefreshIndicator: _updateDataPage,
-        widgetBody: _MainBodyChatPage(),
-        myNewSliverAppBar: ChatSliverAppBar(title: 'Чаты', myContext: context),
-        widgetRightAppBar: myIconSearchForAppBar(context: context),
-      ),
+    return MySliverNewPageWithoutBorder(
+      primary: true,
+      titleAppBar: 'Чаты',
+      callbackTopRefreshIndicator: _updateDataPage,
+      widgetBody: _MainBodyChatPage(),
+      myNewSliverAppBar: ChatSliverAppBar(title: 'Чаты', myContext: context),
+      widgetRightAppBar: myIconSearchForAppBar(context: context),
     );
   }
 
@@ -60,33 +57,40 @@ class _MainBodyChatPage extends StatelessWidget {
                 controllerChatPage.searchingChatsText != '')
               ListViewIfSearchActiveFromChats()
             else
-              ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                padding: EdgeInsets.zero,
-                itemCount: controllerChatPage.listChats.isNotEmpty
-                    ? controllerChatPage.listChats.length
-                    : 8,
-                itemBuilder: (context, index) {
-                  if (controllerChatPage.listChats.isNotEmpty) {
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(bottom: myTopPaddingForContent),
-                      child: ChatPreviewOnHomepage(
-                        chat: controllerChatPage.listChats[index]!
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding:
-                          const EdgeInsets.only(top: myTopPaddingForContent),
-                      child: myShimmerEffectContainer(
-                        context: context,
-                        newHeight: 60,
-                      ),
-                    );
-                  }
-                },
+              Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    padding: EdgeInsets.zero,
+                    itemCount: controllerChatPage.listChats == null
+                        ? 8
+                        : controllerChatPage.listChats!.isNotEmpty
+                            ? controllerChatPage.listChats!.length
+                            : 1,
+                    itemBuilder: (context, index) {
+                      if (controllerChatPage.listChats == null) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              top: myTopPaddingForContent),
+                          child: myShimmerEffectContainer(
+                            context: context,
+                            newHeight: 60,
+                          ),
+                        );
+                      } else if (controllerChatPage.listChats!.isNotEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: myTopPaddingForContent),
+                          child: ChatPreviewOnHomepage(
+                              chat: controllerChatPage.listChats![index]!),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ],
               ),
           ],
         );

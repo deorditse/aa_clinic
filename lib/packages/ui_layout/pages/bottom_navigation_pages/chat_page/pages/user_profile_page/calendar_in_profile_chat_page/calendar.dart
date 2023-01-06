@@ -31,21 +31,8 @@ class _CalendarChatPageState extends State<CalendarChatPage> {
   void initState() {
     super.initState();
 
-    ImplementationCalendarEventsChatPage.instance
-        .initCalendarChatUserEvents(specialistId: widget.specialistId);
-
-    ImplementationCalendarEventsChatPage.instance
-        .getMonthlyCalendarMarksForMouth(
-      specialistId: widget.specialistId!,
-      dateMarksMouth: DateTime.now(),
-    )
-        .whenComplete(
-      () {
-        ImplementationCalendarEventsChatPage.instance.getDailyCalendarEvents(
-          specialistId: widget.specialistId!,
-          dateDaily: DateTime.now(),
-        );
-      },
+    ImplementationCalendarEventsChatPage.instance.initCalendarChatUserEvents(
+      specialistId: widget.specialistId,
     );
   }
 

@@ -43,6 +43,7 @@ class RowWithTask extends StatelessWidget {
         await HomePageCalendarControllerGetxState.instance.scheduleNotification(
           hour: int.parse(myTime.toString().split(':')[0]),
           minutes: int.parse(myTime.toString().split(':')[1]),
+          title: dailySheet!.title,
         );
         print("from initColorIndicator ${myTime}");
       }

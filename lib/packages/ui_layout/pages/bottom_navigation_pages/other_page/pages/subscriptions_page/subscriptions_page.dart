@@ -65,9 +65,14 @@ class _BodySubscriptionsOtherPageState
               (BuildContext context, int index) {
                 return isListSubscriptions
                     ? CardSubscription(index: index)
-                    : myShimmerEffectContainer(
-                        context: context,
-                        newHeight: Get.size.height / 3.5,
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: myTopPaddingForContent,
+                        ),
+                        child: myShimmerEffectContainer(
+                          context: context,
+                          newHeight: Get.size.height / 3.5,
+                        ),
                       );
               },
             ),

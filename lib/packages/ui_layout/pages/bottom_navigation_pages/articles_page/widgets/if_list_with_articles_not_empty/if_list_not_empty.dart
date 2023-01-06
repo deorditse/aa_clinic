@@ -85,7 +85,9 @@ class _IfListNotEmptyState extends State<IfListNotEmpty> {
                             .totalPages) &&
                     index > 6) {
                   return myShimmerEffectContainer(
-                      context: context, newHeight: 308);
+                    context: context,
+                    newHeight: 308,
+                  );
                 } else {
                   return const SizedBox();
                 }

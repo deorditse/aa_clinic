@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:business_layout/business_layout.dart';
 import 'package:data_layout/data_layout.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:model/model.dart';
@@ -24,7 +21,7 @@ class ImplementSettingGetXController extends GetxController {
   int controllerTabIndex = 2;
 
   @override
-  void onInit() async {
+  Future<void> onInit() async {
     super.onInit();
 
     // инициирую сокет для всего приложения
@@ -33,8 +30,9 @@ class ImplementSettingGetXController extends GetxController {
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
     );
-    getFindMe(isUpdateData: true);
-    initializedControllersForPage();
+    getFindMe(isUpdateData: true).whenComplete(() {
+      initializedControllersForPage();
+    });
   }
 
   void goToScreenBody({required BodyScreens bodyScreens}) {
@@ -66,7 +64,6 @@ class ImplementSettingGetXController extends GetxController {
     switch (indexPage) {
       case 0:
         print('initState BodyProfilePage');
-
         Get.put(ProfileControllerGetxState());
         Get.put(ActiveValueControllerProfilePage());
         break;
@@ -76,7 +73,7 @@ class ImplementSettingGetXController extends GetxController {
         break;
       case 2:
         print('initState BodyHomePage');
-        Get.put(HomePageCalendarControllerGetxState());
+
         Get.put(RTCControllerGetxState());
         Get.put(ActiveValueControllerProfilePage());
         break;

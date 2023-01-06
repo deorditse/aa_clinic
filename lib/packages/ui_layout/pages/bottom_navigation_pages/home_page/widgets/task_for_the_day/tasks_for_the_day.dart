@@ -34,7 +34,7 @@ _goToPage({
       break;
     case 'workout':
       print('Тренировка');
-      Get.lazyPut(() => ImplementWorkoutControllerHomePage());
+      Get.put(ImplementWorkoutControllerHomePage());
       WorkoutPageFromHomePage.openWorkoutPageFromHomePage(
           context: context, title: title, targetId: targetId);
       //при переходе делаю запрос на получение данных события Тренировка

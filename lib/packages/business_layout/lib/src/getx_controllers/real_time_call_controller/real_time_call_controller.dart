@@ -15,7 +15,6 @@ import 'package:vibration/vibration.dart';
 
 class RTCControllerGetxState extends GetxController {
   static RTCControllerGetxState instance = Get.find<RTCControllerGetxState>();
-
   RealTimeCall? incomingRealTimeCall;
   RealTimeCallSocketEvent? incomingRealTimeCallFromSocket;
   UserMinifiedDataIdModel? RTCFromUser;

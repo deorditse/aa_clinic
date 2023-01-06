@@ -15,26 +15,27 @@ class ImplementationCalendarEventsChatPage extends GetxController {
   // final HomePageData _services = HomePageData();
   final CalendarUserChatData _services = CalendarUserChatData();
 
-  initCalendarChatUserEvents(
-      {required String specialistId,
-      DateTime? dateMarks,
-      bool isUpdate = false}) {
-    getMonthlyCalendarMarksForMouth(
+  initCalendarChatUserEvents({
+    required String specialistId,
+    DateTime? dateMarks,
+    bool isUpdate = false,
+  }) async {
+    await getMonthlyCalendarMarksForMouth(
       specialistId: specialistId,
       isUpdate: isUpdate,
-      dateMarksMouth: dateMarks ?? DateTime.now(),
+      dateMarksMouth: dateMarks ?? DateTime.now().toUtc(),
     ).whenComplete(
-      () {
-        getDailyCalendarEvents(
+      () async {
+        await getDailyCalendarEvents(
           isUpdate: isUpdate,
           specialistId: specialistId,
-          dateDaily: dateMarks ?? DateTime.now(),
+          dateDaily: dateMarks ?? DateTime.now().toUtc(),
         );
       },
     );
   }
 
-  DateTime mySelectedDay = DateTime.now();
+  DateTime mySelectedDay = DateTime.now().toUtc();
 
   void changeMySelectedDay({required DateTime newDateTime}) {
     mySelectedDay = newDateTime;
@@ -67,8 +68,7 @@ class ImplementationCalendarEventsChatPage extends GetxController {
         dateMark: dateMarksMouth,
         specialistId: specialistId,
       );
-      print(
-          "marksCountForMonth from getMonthlyCalendarMarksForMouth $marksCountForMonth");
+
       update();
     }
   }
@@ -150,14 +150,15 @@ class ImplementationCalendarEventsChatPage extends GetxController {
                 dateDaily: appointmentStartTime!,
                 specialistId: specialistId,
                 isUpdate: true)
-            .whenComplete(() {
-          appointmentStartTime = null;
-          appointmentEndTime = null;
-          scheduleId = null;
-
-          update();
-          changeMySelectedDay(newDateTime: DateTime.now());
-        });
+            .whenComplete(
+          () {
+            appointmentStartTime = null;
+            appointmentEndTime = null;
+            scheduleId = null;
+            update();
+            changeMySelectedDay(newDateTime: DateTime.now().toUtc());
+          },
+        );
         HomePageCalendarControllerGetxState.instance.initializeHomePageData(
           dateMarksMouth: appointmentStartTime!,
           isUpdate: true,

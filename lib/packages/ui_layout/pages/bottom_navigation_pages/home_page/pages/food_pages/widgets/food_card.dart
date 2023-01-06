@@ -65,12 +65,12 @@ class FoodCard extends StatelessWidget {
                   SvgPicture.asset(
                     'assets/icons/foodIsComplete.svg',
                     semanticsLabel: 'foodIsComplete',
-                    color: dish.lifeImage != null
+                    color: dish.lifeImage == null
                         ? myColorIsActive
                         : Theme.of(context).textTheme.headline3!.color,
                   ),
                   myIconForward(
-                    color: dish.lifeImage != null
+                    color: dish.lifeImage == null
                         ? myColorIsActive
                         : Theme.of(context).textTheme.headline3!.color,
                     context: context,

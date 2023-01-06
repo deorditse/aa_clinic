@@ -35,10 +35,10 @@ class MySliverAppBar extends StatelessWidget with PreferredSizeWidget {
       leading: onlyBack
           ? GestureDetector(
               onTap: () {
-                if (bodyScreens != null) //меняю индекс для таб бара
-                  ImplementSettingGetXController.instance.goToScreenBody(
-                    bodyScreens: bodyScreens!,
-                  );
+                // if (bodyScreens != null) //меняю индекс для таб бара
+                //   ImplementSettingGetXController.instance.goToScreenBody(
+                //     bodyScreens: bodyScreens!,
+                //   );
                 if (onlyBack) Navigator.of(context).pop();
               },
               child: Container(

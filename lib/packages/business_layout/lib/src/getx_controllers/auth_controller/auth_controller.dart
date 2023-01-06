@@ -88,7 +88,7 @@ class ImplementAuthController extends GetxController {
           .postSignInUserDataAuth(username: username, password: password)
           .then(
         (Map<String, Map<String, dynamic>> newUserAuthorizedData) async {
-          await _savePassAndLoginInLocalStorage(
+          await savePassAndLoginInLocalStorage(
             username: username.trim(),
             newPassword: password.trim(),
           );
@@ -98,7 +98,7 @@ class ImplementAuthController extends GetxController {
                   newUserAuthorizedData.values.first);
               update();
 
-              Get.offAllNamed("/main");
+              Get.offAllNamed("/");
             } else {
               Get.snackbar(
                 'Ошибка входа',
@@ -117,7 +117,7 @@ class ImplementAuthController extends GetxController {
     }
   }
 
-  Future<void> _savePassAndLoginInLocalStorage(
+  Future<void> savePassAndLoginInLocalStorage(
       {required String? username, required String? newPassword}) async {
     userName = username;
     password = newPassword;
@@ -166,23 +166,16 @@ class ImplementAuthController extends GetxController {
   Future<void> signOut() async {
     userAuthorizedData = null;
     update();
-    // userAuthorizedData = null;
-    // update();
-    // // обнуляю пароли
-
-    // await _savePassAndLoginInLocalStorage(
-    //   username: userName,
-    //   newPassword: null,
-    // );
-    //
-    // await Get.deleteAll(force: true); //deleting all controllers
-    // Phoenix.rebirth(Get.context!); // Restarting app
-    // Get.reset(); // resetting getx
-    // print('signOut');
   }
 
-  ///для верификации почты
-  Future<void> verifyEmail({required String code}) async {
-    await _services.verifyEmailData(code: code);
+  ///Роут для сброса пароля +
+  Future<void> postResetPassword({required String code}) async {
+    await _services.postResetPasswordData(code: code);
+  }
+
+  ///Роут для запроса на сброс пароля +
+  Future<Map<String, String?>> postResetPasswordRequest(
+      {required String emailUser}) {
+    return _services.postResetPasswordRequestData(emailUser: emailUser);
   }
 }

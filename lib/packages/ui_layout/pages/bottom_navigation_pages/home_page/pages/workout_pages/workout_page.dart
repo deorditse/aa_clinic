@@ -81,7 +81,7 @@ class _BodyWorkoutPageFromHomePage extends StatelessWidget {
               padding: EdgeInsets.zero,
               primary: false,
               itemCount:
-                  isDataForPage ? dataFitnessWorkout.exercises.length : 3,
+                  isDataForPage ? dataFitnessWorkout.exercises.length : 1,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(

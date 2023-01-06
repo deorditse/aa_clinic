@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:data_layout/data_layout.dart';
@@ -19,9 +20,8 @@ class AuthPageData {
           'password': "$password",
         },
       );
-      print(
-          'Response status from postSignInUserDataAuth: ${response.statusCode}');
-      log('postSignInUserDataAuth UserAuthorizedModel ${response.body}');
+
+      log('Response status from postSignInUserDataAuth: ${response.statusCode} ${response.body}');
 
       return {'${response.statusCode}': json.decode(response.body)};
     } catch (error) {
@@ -36,9 +36,8 @@ class AuthPageData {
     try {
       Uri url = urlMain(urlPath: 'api/auth/signup');
       var response = await http.post(url, body: registrationData.toJson());
-      print(
-          'Response status from postSignUpUserDataAuth: ${response.statusCode}');
-      log('postSignUpUserDataAuth ${response.body}');
+
+      log('Response status from postSignUpUserDataAuth: ${response.statusCode} ${response.body}');
 
       if (response.statusCode == 201) {
         Get.snackbar(
@@ -74,8 +73,7 @@ class AuthPageData {
       }, body: {
         "email": newEmail.toLowerCase(),
       });
-      print('Response status from updateEmailData: ${response.statusCode}');
-      log('updateEmailData ${response.body}');
+      log('Response status from updateEmailData: ${response.statusCode} updateEmailData ${response.body}');
 
       if (response.statusCode == 200) {
         Get.snackbar(
@@ -95,5 +93,35 @@ class AuthPageData {
   }
 
   ///для верификации почты (отправка кода
-  Future<void> verifyEmailData({required String code}) async {}
+  Future<void> postResetPasswordData({required String code}) async {}
+
+  ///Роут для запроса на сброс пароля +
+  Future<Map<String, String?>> postResetPasswordRequestData(
+      {required String emailUser}) async {
+    try {
+      Uri url = urlMain(urlPath: 'api/resetPasswordRequest');
+      var response = await http.post(
+        url,
+        body: {"email": emailUser.toLowerCase()},
+      );
+      log('Response status from postResetPasswordRequestData: ${response.statusCode} updateEmailData ${response.body}');
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          '',
+          'Код был отправлен на почту',
+          snackPosition: SnackPosition.TOP,
+        );
+      }
+      return {'${response.statusCode}': response.body};
+    } catch (error) {
+      Get.snackbar(
+        'Exception',
+        'error from postResetPasswordRequestData: $error}',
+        snackPosition: SnackPosition.TOP,
+      );
+      print('я в ошибке from postResetPasswordRequestData $error ');
+      return {};
+    }
+  }
 }

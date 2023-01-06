@@ -39,7 +39,9 @@ class BottomSheetCalendarDocumentsProfilePage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(child: myBackLineInAppBar(context: context)),
+        Center(
+          child: myBackLineInAppBar(context: context),
+        ),
         CalendarProfilePage(),
         Center(
           child: ElevatedButton(
@@ -65,13 +67,13 @@ class BottomSheetCalendarDocumentsProfilePage extends StatelessWidget {
     return result.join('&');
   }
 
-  void _submit({required BuildContext context}) {
+  Future<void> _submit({required BuildContext context}) async {
     Navigator.of(context).pop();
-    getDocumentsListData(
+    await getDocumentsListData(
       accessToken:
           ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      lower: ProfileControllerGetxState.instance.rangeStartForSearch,
-      greater: ProfileControllerGetxState.instance.rangeEndForSearch,
+      lower: ProfileControllerGetxState.instance.rangeStartForSearch.toUtc(),
+      greater: ProfileControllerGetxState.instance.rangeEndForSearch?.toUtc(),
       page: 1,
       perPage: 6,
     );
@@ -87,33 +89,30 @@ Future<DocumentsListModel?> getDocumentsListData({
   required DateTime? lower,
 }) async {
   try {
-    Map<String, dynamic> queryParameters = {
-      'page': "$page",
-      'perPage': '$perPage',
-    };
+    Map<String, dynamic> queryParameters = {};
 
     if (lower != null) {
-      print(lower.toIso8601String());
-      print(greater?.toIso8601String());
+      print(lower.toLocal());
+      print(greater?.toLocal());
       queryParameters = {
-        ...queryParameters,
-        'filter[createdAt][lower]': "${lower.toIso8601String}",
-        'filter[createdAt][greater]':
-            "${greater?.toIso8601String ?? DateTime.now().toIso8601String}",
+        'page': "$page",
+        'perPage': '$perPage',
+        "filter[createdAt][lower]": "${lower.toLocal}",
+        "filter[createdAt][greater]": "${greater?.toLocal ?? DateTime.now()}",
       };
-      print(queryParameters);
     }
-
     Uri url = urlMain(
         urlPath: 'api/patientDocuments', queryParameters: queryParameters);
-
-    var response = await http.get(url, headers: {
-      "Authorization": "Bearer ${accessToken}",
-    });
+    var response = await http.get(
+      url,
+      headers: {
+        "Authorization": "Bearer ${accessToken}",
+        "Content-Type": "application/json",
+      },
+    );
 
     print(
-        'Response status from getPatientDocumentsByUserIdData: ${response.statusCode}');
-    log('getPatientDocumentsByUserIdData DocumentsListModel ${response.body}');
+        'Response status from getPatientDocumentsByUserIdData: DocumentsListModel ${response.statusCode} ${response.body}');
 
     if (response.statusCode == 200) {
       DocumentsListModel _res =

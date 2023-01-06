@@ -39,12 +39,10 @@ List<Widget> screensBottomNavigation = [
   ArticlesPage(),
   OtherPage(),
 ];
-PersistentTabController _controllerTabIndex = PersistentTabController(
-  initialIndex: ImplementSettingGetXController.instance.controllerTabIndex,
-);
 
 class MyBottomMenuSceleton extends StatelessWidget {
-  static const String id = '/main';
+  static const String id = '/';
+  PersistentTabController _controllerTabIndex = PersistentTabController();
 
   MyBottomMenuSceleton({Key? key}) : super(key: key);
 
@@ -235,7 +233,11 @@ List<PersistentBottomNavBarItem> _myTabBar(
       ),
       PersistentBottomNavBarItem(
         title: ('Главная'),
+        onPressed: (value){
+          print('ГлавнаяГлавнаяГлавнаяГлавнаяvv');
+        },
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
+
           initialRoute: MyBottomMenuSceleton.id,
           routes: {
             HomePage.id: (final context) => const HomePage(),

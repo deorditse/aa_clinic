@@ -37,7 +37,6 @@ class _LoginViewState extends State<LoginView> {
       isSafeArea: false,
       paddingHorizontalContent: 0,
       widgetBody: LoginViewBody(),
-      // imageBackgroundName:
     );
   }
 }

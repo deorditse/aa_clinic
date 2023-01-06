@@ -31,7 +31,7 @@ class DocumentsList extends StatelessWidget {
         //для динамического изменения высоты
         padding: EdgeInsets.zero,
         primary: false,
-        itemCount: 5,
+        itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),

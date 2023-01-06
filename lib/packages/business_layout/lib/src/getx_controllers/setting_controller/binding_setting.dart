@@ -4,6 +4,6 @@ import 'package:business_layout/business_layout.dart'; //импортить то
 class SettingBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ImplementSettingGetXController(), fenix: true);
+    Get.put(ImplementSettingGetXController());
   }
 }

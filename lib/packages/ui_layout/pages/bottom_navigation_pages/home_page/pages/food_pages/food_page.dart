@@ -68,7 +68,7 @@ class _BodyFoodPage extends StatelessWidget {
               //для динамического изменения высоты
               padding: EdgeInsets.zero,
               primary: false,
-              itemCount: isDataForPage ? dataNutriMeal.dishes.length : 3,
+              itemCount: isDataForPage ? dataNutriMeal.dishes.length : 1,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.only(top: myTopPaddingForContent),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PasswordRecovery extends StatelessWidget {
   const PasswordRecovery({Key? key}) : super(key: key);
@@ -36,72 +37,43 @@ class PasswordRecovery extends StatelessWidget {
   }
 }
 
-class _SendCode extends StatefulWidget {
-  const _SendCode({Key? key}) : super(key: key);
+class _SendCode extends StatelessWidget {
+  _SendCode({Key? key}) : super(key: key);
 
-  @override
-  State<_SendCode> createState() => _SendCodeState();
-}
-
-class _SendCodeState extends State<_SendCode> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _codeController = TextEditingController();
 
-  bool timeMessage = false;
+  // final TextEditingController _codeController = TextEditingController();
+  Rx<String> _codeController = ' '.obs;
 
-  ///Роут для запроса на сброс пароля +
-  Future<Map<String, String?>> postResetPasswordRequestData(
-      {required String emailUser}) async {
-    try {
-      Uri url = urlMain(urlPath: 'api/resetPasswordRequest');
-      var response = await http.post(
-        url,
-        body: {"email": emailUser.toLowerCase()},
-      );
-      print(
-          'Response status from postResetPasswordRequestData: ${response.statusCode}');
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          '',
-          'Код был отправлен на почту',
-          snackPosition: SnackPosition.TOP,
-        );
-
-        print(response.body);
-      } else {
-        print(
-            'Bad Request postResetPasswordRequestData: ${response.statusCode} ${response.body}');
-      }
-      return {'${response.statusCode}': response.body};
-    } catch (error) {
-      Get.snackbar(
-        'Exception',
-        'error from postResetPasswordRequestData: $error}',
-        snackPosition: SnackPosition.TOP,
-      );
-      print('я в ошибке from postResetPasswordRequestData $error ');
-      return {};
-    }
-  }
+  Rx<bool> timeMessage = false.obs;
 
   void _submit() async {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      await postResetPasswordRequestData(emailUser: '${_emailController.text}')
+      await ImplementAuthController.instance
+          .postResetPasswordRequest(
+        emailUser: '${_emailController.text}',
+      )
           .then(
         (value) {
           if (value.keys.first == '200') {
-            setState(() {
-              timeMessage = true;
-            });
+            timeMessage.value = true;
+
             _timerPeriodicForCode();
           } else if (value.keys.first == '404') {
             Get.snackbar(
               '',
               'Пользователь не найден (проверьте email или зарегистрируйтесь)',
+              snackPosition: SnackPosition.TOP,
+            );
+          } else if (value.keys.first == '429') {
+            Get.snackbar(
+              '',
+              'Частые запросы кода, подождите',
               snackPosition: SnackPosition.TOP,
             );
           } else {
@@ -125,127 +97,128 @@ class _SendCodeState extends State<_SendCode> {
         timer.cancel();
         _timerData.value = 45;
 
-        setState(() {
-          timeMessage = false;
-        });
+        timeMessage.value = false;
       }
     });
   }
 
+  var maskFormatterCode = MaskTextInputFormatter(
+    mask: '### ###',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Flexible(
-                  child: TextFormField(
-                    //for testing
-                    key: Key('fieldEmail'),
-                    cursorColor: myColorIsActive,
-                    validator: (value) {
-                      if (value == '') return 'Введите логин';
-                      if (!validateEmail(
-                          value!)) //проверка на совпадения символам
-                        return 'Поле содержит недопустимые символы';
-                      return null;
-                    },
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: myStyleTextField(
-                      context,
-                      labelText: 'Введите логин...',
-                      hintText: '',
-                      // helperText: 'Поле для поиска заметок',
+    return Obx(
+      () => Column(
+        children: [
+          Expanded(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Flexible(
+                    child: TextFormField(
+                      //for testing
+                      key: Key('fieldEmail'),
+                      cursorColor: myColorIsActive,
+                      validator: (value) {
+                        if (value == '') return 'Введите логин';
+                        if (!validateEmail(
+                            value!)) //проверка на совпадения символам
+                          return 'Поле содержит недопустимые символы';
+                        return null;
+                      },
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: myStyleTextField(
+                        context,
+                        labelText: 'Введите логин...',
+                        hintText: '',
+                        // helperText: 'Поле для поиска заметок',
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: myTopPaddingForContent),
-                Flexible(
-                  child: IntrinsicWidth(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Obx(
-                            () => ElevatedButton(
-                              child: Text('ОТПРАВИТЬ КОД'),
-                              onPressed:
-                                  _timerData.value == 45 ? _submit : null,
+                  const SizedBox(height: myTopPaddingForContent),
+                  Flexible(
+                    child: IntrinsicWidth(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Obx(
+                              () => ElevatedButton(
+                                child: Text('ОТПРАВИТЬ КОД'),
+                                onPressed:
+                                    _timerData.value == 45 ? _submit : null,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: myTopPaddingForContent),
-                        Flexible(
-                          child: TextField(
-                            controller: _codeController,
-                            cursorColor: myColorIsActive,
-                            key: Key('fieldCode'),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            decoration: myStyleTextField(
-                              context,
-                              labelText: 'Код...',
-                              hintText: '',
+                          const SizedBox(height: myTopPaddingForContent),
+                          Flexible(
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              // controller: _codeController,
+                              cursorColor: myColorIsActive,
+                              key: Key('fieldCode'),
+                              inputFormatters: [maskFormatterCode],
+                              keyboardType: TextInputType.number,
+                              decoration: myStyleTextField(
+                                context,
+                                labelText: 'Код...',
+                                hintText: '',
+                              ),
+                              onChanged: (code) {
+                                _codeController.value = code;
+                              },
+                              onTap: () {
+                                timeMessage.value = false;
+                              },
                             ),
-                            onSubmitted: (value) {
-                              if (timeMessage) {
-                                ///ToDo: create send method
-                                print(value);
-                              }
-                            },
-                            // validator: (value) {
-                            //   if (value == '') return 'введите код';
-                            //   return null;
-                            // },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                if (timeMessage)
-                  FittedBox(
-                    child: Obx(
-                      () => Container(
-                          child: Padding(
-                        padding: const EdgeInsets.only(top: 4.0),
-                        child: Text(
-                          _timerData.value <= 45
-                              ? '00 : ${_timerData < 10 ? '0' : ''}${_timerData}'
-                              : 'запросите заново',
-                          style: myTextStyleFontUbuntu(
-                            context: context,
-                            textColor: Color.fromRGBO(134, 134, 134, 1),
+                  if (timeMessage.value)
+                    FittedBox(
+                      child: Obx(
+                        () => Container(
+                            child: Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            _timerData.value <= 45
+                                ? '00 : ${_timerData < 10 ? '0' : ''}${_timerData}'
+                                : 'запросите заново',
+                            style: myTextStyleFontUbuntu(
+                              context: context,
+                              textColor: Color.fromRGBO(134, 134, 134, 1),
+                            ),
                           ),
-                        ),
-                      )),
+                        )),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: _UpdatePassword(
-            statusValidate: timeMessage,
-            email: _emailController.text,
-            code: _codeController.text,
+          Expanded(
+            child: _UpdatePassword(
+              statusValidate: _formKey.currentState?.validate() ?? false,
+              email: _emailController.text.toLowerCase(),
+              code: _codeController.value.removeAllWhitespace,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
-class _UpdatePassword extends StatefulWidget {
-  const _UpdatePassword({
+class _UpdatePassword extends StatelessWidget {
+  _UpdatePassword({
     Key? key,
     required this.email,
     required this.code,
@@ -256,23 +229,21 @@ class _UpdatePassword extends StatefulWidget {
   final String? email;
   final bool statusValidate;
 
-  @override
-  State<_UpdatePassword> createState() => _UpdatePasswordState();
-}
-
-class _UpdatePasswordState extends State<_UpdatePassword> {
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _passwordControllerRepeat =
       TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   bool successMessage = false;
 
   ///Роут для сброса пароля +
-  Future<Map<String, String?>> postResetPasswordData(
-      {required String emailUser,
-      required String code,
-      required String password}) async {
+  Future<Map<String, String?>> postResetPasswordData({
+    required String emailUser,
+    required String code,
+    required String password,
+  }) async {
     try {
       Uri url = urlMain(urlPath: 'api/resetPassword');
       var response = await http.post(
@@ -285,18 +256,7 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
       );
       print(
           'Response status from postResetPasswordData: ${response.statusCode}');
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          '',
-          'Код был отправлен на почту',
-          snackPosition: SnackPosition.TOP,
-        );
 
-        print(response.body);
-      } else {
-        print(
-            'Bad Request postResetPasswordData: ${response.statusCode} ${response.body}');
-      }
       return {'${response.statusCode}': response.body};
     } catch (error) {
       Get.snackbar(
@@ -309,27 +269,38 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
     }
   }
 
-  _submit() async {
-    Future.delayed(Duration(seconds: 2)).then((value) {
-      ImplementAuthController.instance.switchForm(newFormType: FormType.login);
-    });
-
+  _submitResetPassword({
+    required String emailUser,
+    required String code,
+    required String password,
+  }) async {
+    print(email!);
+    print(code);
+    print(_passwordController.text);
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (widget.code != null &&
-          widget.email != null &&
-          widget.statusValidate) {
+      if (code != null && email != null && statusValidate) {
         postResetPasswordData(
-          emailUser: widget.email!,
-          code: widget.code!,
-          password: _passwordController.text,
+          emailUser: emailUser,
+          code: code,
+          password: password,
         ).then(
-          (value) {
+          (value) async {
             if (value.keys.first == '200') {
-              setState(() {
-                successMessage = true;
-              });
+              Get.snackbar(
+                '',
+                'Пароль успешно обновлен',
+                snackPosition: SnackPosition.TOP,
+              );
+              await ImplementAuthController.instance
+                  .savePassAndLoginInLocalStorage(
+                username: emailUser,
+                newPassword: password,
+              );
+              ImplementAuthController.instance
+                  .switchForm(newFormType: FormType.login);
             } else if (value.keys.first == '404') {
               Get.snackbar(
                 '',
@@ -411,7 +382,7 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
           ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStatePropertyAll(
-                widget.statusValidate
+                statusValidate
                     ? null
                     : Theme.of(context)
                         .textTheme
@@ -423,14 +394,14 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
             child: Text(
               'ДАЛЕЕ',
             ),
-            onPressed: widget.statusValidate ? _submit : null,
+            onPressed: statusValidate
+                ? () => _submitResetPassword(
+                      emailUser: email!,
+                      code: code!,
+                      password: _passwordController.text,
+                    )
+                : null,
           ),
-          if (successMessage)
-            Text(
-              'Пароль успешно обновлен',
-              style: myTextStyleFontUbuntu(
-                  context: context, textColor: myColorIsActive),
-            ),
         ],
       ),
     );

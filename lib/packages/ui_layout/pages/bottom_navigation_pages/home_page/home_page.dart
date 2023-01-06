@@ -34,8 +34,6 @@ class HomePage extends StatelessWidget {
 
   Future<void> _updateDataPage() async {
     HomePageCalendarControllerGetxState.instance.initializeHomePageData(
-      dateMarksMouth:
-          HomePageCalendarControllerGetxState.instance.mySelectedDay!,
       isUpdate: true,
     );
   }
@@ -46,7 +44,7 @@ class _MainBodyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get.put(HomePageCalendarControllerGetxState());
+    Get.put(HomePageCalendarControllerGetxState());
     return GetBuilder<HomePageCalendarControllerGetxState>(
         builder: (controllerCalendar) {
       bool? isDataActions =

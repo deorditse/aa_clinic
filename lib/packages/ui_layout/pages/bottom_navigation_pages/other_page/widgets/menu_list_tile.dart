@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/other_page/pages/orders_page/orders_history_page.dart';
 import 'package:aa_clinic/packages/ui_layout/pages/other_pages/authentication_page/main_login_page.dart';
 import 'package:business_layout/business_layout.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import '../pages/change_password_page.dart';
 import '../pages/subscriptions_page/subscriptions_page.dart';
 
@@ -124,11 +122,14 @@ class MenuListTileOtherPage extends StatelessWidget {
             //   Get.delete<RTCControllerGetxState>(force: true);
             // });
             ///перенести на слой бизнес логики после тестирования
+            // Get.reset;
+
+            // Get.offAll(() => const LoginView());
+            // Get.offUntil(
+            //   GetPageRoute(page: () => LoginView()),
+            //   ModalRoute.withName('/loginView'),
+            // );
             await Get.offAllNamed('/loginView');
-            Timer(Duration(milliseconds: 300), () {
-              Get.delete<ImplementSettingGetXController>(force: true);
-              Get.delete<RTCControllerGetxState>(force: true);
-            });
           },
         ),
       ],

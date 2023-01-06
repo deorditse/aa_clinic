@@ -124,7 +124,7 @@ _buttonRow({
       ElevatedButton(
         onPressed: () {
           voidCallbackToAccept();
-          Get.offAndToNamed('/main');
+          Get.offAndToNamed('/');
         },
         child: Text('СОГЛАСИТЬСЯ'),
       ),

@@ -94,8 +94,7 @@ class SettingPageData {
           );
         http.StreamedResponse response = await request.send();
         print(
-            'Response status from postAttachmentsAndGetIdImageData: ${response.statusCode} mimeType: $mimeType');
-        log('postAttachmentsAndGetIdImageData ${response.reasonPhrase}');
+            'Response status from postStaticFilesAndGetIdImageData: ${response.statusCode} mimeType: $mimeType body: ${response.reasonPhrase}');
 
         if (response.statusCode == 201) {
           var responseData = await response.stream.toBytes();
@@ -113,10 +112,10 @@ class SettingPageData {
     } catch (error) {
       Get.snackbar(
         'Exception',
-        'error from postAttachmentsAndGetIdImageData:$error}',
+        'error from postStaticFilesAndGetIdImageData:$error}',
         snackPosition: SnackPosition.TOP,
       );
-      print('я в ошибке from postAttachmentsAndGetIdImageData $error');
+      print('я в ошибке from postStaticFilesAndGetIdImageData $error');
       return null;
     }
     return null;

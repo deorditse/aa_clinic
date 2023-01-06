@@ -91,16 +91,17 @@ class ImplementWorkoutControllerHomePage extends GetxController {
     required String? comment,
   }) async {
     if (mapTargetIdAndWorkoutsWithId[targetIdWorkout] == null) {
-      print("mapTargetIdAndWorkoutsWithId[targetIdForChange]  == null");
+      print("mapTargetIdAndWorkoutsWithId[targetIdForChange] == null");
       return;
     }
 
     FitnessWorkoutModel _fitnessWorkout =
         mapTargetIdAndWorkoutsWithId[targetIdWorkout]!;
     //беру первый обект с невыполннеными заданиями
-    ApproachObjectsConsisting approachObjectsConsisting =
+    ApproachObjectsConsisting _approachObjectsConsisting =
         listOfMissedWorkouts.first!;
-    startTimer(timerSecondsValue: approachObjectsConsisting.restTime ?? 30);
+
+    startTimer(timerSecondsValue: _approachObjectsConsisting.restTime ?? 30);
 
     //Увеличить fitnessWorkout.fulfillment на (1/...exercises.$.sets.COUNT/fitnessWorkout.exercises.COUNT*100).
 
@@ -115,27 +116,28 @@ class ImplementWorkoutControllerHomePage extends GetxController {
         ((1 / _fitnessWorkout.exercises[indexExercises]!.sets.length) * 100)
             .toInt();
 
-    approachObjectsConsisting.finishedAt =
+    _approachObjectsConsisting.finishedAt =
         DateTime.now().toUtc().toIso8601String();
-    approachObjectsConsisting.startedAt = _fitnessWorkout.startedAt;
-    approachObjectsConsisting.real.forEach((key, value) {
-      int index = approachObjectsConsisting.real.values.toList().indexOf(value);
-      approachObjectsConsisting.real[key]!.value =
+    _approachObjectsConsisting.startedAt = _fitnessWorkout.startedAt;
+    _approachObjectsConsisting.real.forEach((key, value) {
+      int index =
+          _approachObjectsConsisting.real.values.toList().indexOf(value);
+      _approachObjectsConsisting.real[key]!.value =
           int.parse(listValueWorkout[index]);
     });
 
     if (comment != null && comment != "") {
-      approachObjectsConsisting.comment = comment;
+      _approachObjectsConsisting.comment = comment;
     }
 
     mapTargetIdAndWorkoutsWithId[targetIdWorkout] = _fitnessWorkout;
     mapTargetIdAndWorkoutsWithId[targetIdWorkout]!
         .exercises[indexExercises]!
         .sets
-        .first = approachObjectsConsisting;
+        .first = _approachObjectsConsisting;
     update();
     listOfMissedWorkouts.removeAt(0);
-    listOfCompletedWorkouts.add(approachObjectsConsisting);
+    listOfCompletedWorkouts.add(_approachObjectsConsisting);
     update();
 
     await _services

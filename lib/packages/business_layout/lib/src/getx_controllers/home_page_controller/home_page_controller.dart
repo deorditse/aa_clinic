@@ -18,48 +18,50 @@ class HomePageCalendarControllerGetxState extends GetxController {
       Get.find<HomePageCalendarControllerGetxState>();
 
   final HomePageData _services = HomePageData();
-  DateTime mySelectedDay = DateTime.now();
+  DateTime mySelectedDay = DateTime.now().toUtc();
 
   void changeMySelectedDay({required DateTime newDateTime}) {
     mySelectedDay = newDateTime;
     update();
   }
 
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  // }
+
   @override
-  void onInit() {
+  void onReady() {
     print('initializeProfileData HomePageCalendarControllerGetxState');
 
     initializeHomePageData(isUpdate: true);
     getNotification();
-
-    super.onInit();
+    super.onReady();
   }
 
   ///  инициaлизация данных контроллера
   Future<void> initializeHomePageData(
       {DateTime? dateMarksMouth, bool isUpdate = false}) async {
-    if (ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-        null) {
-      //инициирую марки задач в календаре
-      getMonthlyCalendarMarksForMouth(
-        dateMarksMouth: dateMarksMouth ?? DateTime.now(),
-        isUpdate: isUpdate,
-      ).whenComplete(
-        () async {
-          //загружаю задачи на сегодняшний день
-          await getDailyCalendarEvents(
-            dateDaily: dateMarksMouth ?? DateTime.now(),
-            isUpdate: isUpdate,
-          );
-        },
-      );
+    //инициирую марки задач в календаре
+    getMonthlyCalendarMarksForMouth(
+      dateMarksMouth: dateMarksMouth ?? DateTime.now(),
+      isUpdate: isUpdate,
+    ).whenComplete(
+      () {
+        //загружаю задачи на сегодняшний день
+        getDailyCalendarEvents(
+          dateDaily: dateMarksMouth ?? DateTime.now(),
+          isUpdate: isUpdate,
+        );
+      },
+    );
 
-      //отправка данных здоровья на сервер при инициализации приложения
-      await HealthSnapshotsLoaderData().safeFetchData(
-        accessToken:
-            ImplementAuthController.instance.userAuthorizedData!.accessToken,
-      );
-    }
+    //отправка данных здоровья на сервер при инициализации приложения
+    await HealthSnapshotsLoaderData().safeFetchData(
+      accessToken:
+          ImplementAuthController.instance.userAuthorizedData!.accessToken,
+    );
+
     await _initializedHiveFromLocalStorageNotifications();
   }
 
@@ -76,17 +78,14 @@ class HomePageCalendarControllerGetxState extends GetxController {
 
     final Map<String, int>? _marksForMonth = marksCountForMonth[_formatData];
 
-    if ((_marksForMonth == null || isUpdate) &&
-        ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-            null) {
+    if (_marksForMonth == null || isUpdate) {
       marksCountForMonth[_formatData] =
           await _services.getMonthlyCalendarMarksData(
         accessToken:
             ImplementAuthController.instance.userAuthorizedData!.accessToken,
         dateMark: dateMarksMouth,
       );
-      print(
-          "marksCountForMonth from getMonthlyCalendarMarksForMouth $marksCountForMonth");
+
       update();
     }
   }
@@ -441,7 +440,6 @@ class HomePageCalendarControllerGetxState extends GetxController {
   }
 
   ///новое создание приема еды NutriMeals +
-
   Future<void> postNutriMeals({
     required String title,
     required String? description,
@@ -454,10 +452,9 @@ class HomePageCalendarControllerGetxState extends GetxController {
       description: description,
       listDishes: listDishes,
     );
-
     initializeHomePageData(
       isUpdate: true,
-      dateMarksMouth: mySelectedDay,
+      dateMarksMouth: DateTime.now(),
     );
   }
 
@@ -586,27 +583,25 @@ class HomePageCalendarControllerGetxState extends GetxController {
 
   ///Метод для отправки уведомлений пользователю с тайтлом таски
   Future<void> scheduleNotification(
-      {required int hour, required int minutes}) async {
+      {required int hour, required int minutes, required String title}) async {
     //Переменная с методом случайных значений нужна для привязки уникального id уведомлению
     Random random = Random();
     int idNotification = random.nextInt(100);
     //Инициализирую переменную, которая хранит в себе значение таймера уведомлений(Hive)
-    final remindNotifications = isRemindTimeNotifications;
+    final remindNotifications =
+        HomePageCalendarControllerGetxState.instance.isRemindTimeNotifications;
     //Метод для отправки запланированных уведомлений
     await notificationsPlugin.zonedSchedule(
       //Id уведомления (если не указывать каждому уведомлению свой id, будет приходить только последнее записанное уведомление)
       idNotification,
       'Необходимо выполнить!',
       //Вывод тайтла таски в сообщение уведомления
-      '${dailySheet?.title != null ? dailySheet?.title : ' '}',
+      title,
       //Метод для отправки уведомлений по времени с вычитанием минут из таймера уведомлений, чтобы сообщения приходили заранее (по выбору пользователя)
-      await convertTime(
-        hour: hour,
-        minutes: minutes - remindNotifications,
-      ),
+      await convertTime(hour: hour, minutes: minutes - remindNotifications),
       NotificationDetails(
         android: AndroidNotificationDetails(
-            '${dailySheet?.targetId}', 'your channel name',
+            'your channel id', 'your channel name',
             channelDescription: 'your channel description',
             importance: Importance.max,
             priority: Priority.high,

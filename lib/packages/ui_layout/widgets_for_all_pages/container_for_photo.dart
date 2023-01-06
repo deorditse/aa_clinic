@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aa_clinic/packages/style_app/lib/style_app.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/my_shimmer_effect_container.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/image_view_page.dart';
@@ -98,7 +96,7 @@ class ContainerForPhotoFuture extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: imageProvider,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
