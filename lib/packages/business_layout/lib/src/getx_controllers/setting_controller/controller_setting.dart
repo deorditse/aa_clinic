@@ -73,7 +73,7 @@ class ImplementSettingGetXController extends GetxController {
         break;
       case 2:
         print('initState BodyHomePage');
-
+        // Get.put(HomePageCalendarControllerGetxState());
         Get.put(RTCControllerGetxState());
         Get.put(ActiveValueControllerProfilePage());
         break;

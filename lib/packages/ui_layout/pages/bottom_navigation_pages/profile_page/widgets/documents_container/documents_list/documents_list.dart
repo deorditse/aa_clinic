@@ -57,15 +57,6 @@ class DocumentsList extends StatelessWidget {
               );
             },
           );
-        } else if (controllerProfile.documentList != null) {
-          return WidgetListViewBuilder(
-            documentList: controllerProfile.documentList!,
-            onTapNext: () {
-              controllerProfile.getDocumentsList(
-                currentDocsPage: controllerProfile.documentList!.page + 1,
-              );
-            },
-          );
         } else if (controllerProfile.rangeFromCalendarDocumentList != null) {
           return WidgetListViewBuilder(
             documentList: controllerProfile.rangeFromCalendarDocumentList!,
@@ -73,7 +64,18 @@ class DocumentsList extends StatelessWidget {
               controllerProfile.getDocumentsList(
                 currentDocsPage:
                     controllerProfile.rangeFromCalendarDocumentList!.page + 1,
+                lower: controllerProfile.rangeStartForSearch.toUtc(),
+                greater: controllerProfile.rangeEndForSearch?.toUtc(),
                 updateRangeFromCalendarDocumentList: true,
+              );
+            },
+          );
+        } else if (controllerProfile.documentList != null) {
+          return WidgetListViewBuilder(
+            documentList: controllerProfile.documentList!,
+            onTapNext: () {
+              controllerProfile.getDocumentsList(
+                currentDocsPage: controllerProfile.documentList!.page + 1,
               );
             },
           );

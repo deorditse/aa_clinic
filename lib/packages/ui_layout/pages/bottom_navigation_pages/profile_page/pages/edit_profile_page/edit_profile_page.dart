@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/top_proile_widget/row_with_photo_and_progress.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/bottom_navigation_pages/profile_page/top_proile_widget/top_proile_widget.dart';
 import 'package:aa_clinic/packages/ui_layout/widgets_for_all_pages/sceleton_pages/material_sceleton_pages/sceleton_show_bottomSheet.dart';
 import 'package:business_layout/business_layout.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,12 +7,9 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:model/model.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/other_pages/authentication_page/main_login_page.dart';
-import 'package:aa_clinic/packages/ui_layout/pages/other_pages/authentication_page/utils/validate_email.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'widgets/add_photo_bottom_sheet_widget_edit_photo.dart';
-import 'package:http/http.dart' as http;
 
 class BodyEditProfilePage extends StatelessWidget {
   static const String id = '/bodyEditProfilePage';
@@ -83,10 +78,10 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
       _formKey.currentState!.save();
 
       statusMessage.value = 'Обновление...';
+      print(userEdit);
 
       await ImplementSettingGetXController.instance
           .updateMeUser(editUserAllData: userEdit);
-
 
       statusMessage.value = 'Данные успешно обновлены';
       //для обновления аватарки
@@ -143,17 +138,18 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                     const SizedBox(height: myTopPaddingForContent),
                     Flexible(
                       child: TextFormField(
-                        initialValue: userDataProfile?.lastName,
+                        initialValue:
+                            userDataProfile?.lastName?.capitalizeFirst,
                         cursorColor: myColorIsActive,
                         key: Key('fieldLastName'),
                         validator: (value) {
                           if (value == '') return 'Введите фамилию';
                           return null;
                         },
-                        onFieldSubmitted: (lastName) {
+
+                        onChanged: (lastName) {
                           _userForEdit.lastName = lastName;
                         },
-
                         //если нет контроллера, можно делать через initialValue
                         decoration: myStyleTextField(
                           context,
@@ -165,14 +161,16 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                     Flexible(
                       child: TextFormField(
                         cursorColor: myColorIsActive,
-                        initialValue: userDataProfile?.firstName,
+                        initialValue:
+                            userDataProfile?.firstName.capitalizeFirst,
                         key: Key('fieldName'),
                         //for testing
                         decoration: myStyleTextField(
                           context,
                           labelText: 'Имя...',
                         ),
-                        onFieldSubmitted: (firstName) {
+
+                        onChanged: (firstName) {
                           _userForEdit.firstName = firstName;
                         },
 
@@ -188,9 +186,10 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                         cursorColor: myColorIsActive,
                         key: Key('patronymic'),
                         //for testing
-                        initialValue: userDataProfile?.middleName,
+                        initialValue:
+                            userDataProfile?.middleName?.capitalizeFirst,
 
-                        onFieldSubmitted: (middleName) {
+                        onChanged: (middleName) {
                           _userForEdit.middleName = middleName;
                         },
                         decoration: myStyleTextField(
@@ -216,12 +215,13 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                           return null;
                         },
                         initialValue: _getInitialValuebBdate(),
-                        onFieldSubmitted: (bdate) {
+                        onChanged: (bdate) {
                           if (bdate.length == 10) {
                             List<String?> _res = bdate.split('.').toList();
                             _userForEdit.bdate =
                                 '${_res[2] ?? ''}-${_res[1] ?? ''}-${_res[0] ?? ''}';
                           }
+                          print(bdate);
                         },
                         decoration: myStyleTextField(
                           context,
@@ -239,8 +239,8 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                           key: Key('fieldPhone'),
                           validator: (value) {
                             //if (value == '') return 'Введите телефон';
-
-                            if (value != '' && value!.length.toInt() < 18)
+                            print(value?.length);
+                            if (value != '' && value!.length.toInt() < 16)
                               return 'Некорректный номер телефона';
                             return null;
                           },
@@ -248,10 +248,10 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                           decoration: myStyleTextField(
                             context,
                             labelText: 'Телефон...',
-                            hintText: '+7 (123) 456-78-90',
+                            hintText: '8(495) 777-77-77',
                             // helperText: 'Поле для поиска заметок',
                           ),
-                          onFieldSubmitted: (phoneNumber) {
+                          onChanged: (phoneNumber) {
                             _userForEdit.phoneNumber = phoneNumber;
                           },
                           keyboardType: TextInputType.phone,
@@ -267,7 +267,7 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                               key: Key('fieldEmail'),
                               cursorColor: myColorIsActive,
 
-                              onFieldSubmitted: (email) {
+                              onChanged: (email) {
                                 _userForEdit.email = email;
                               },
 
@@ -287,7 +287,8 @@ class _UserDataEditingFormsState extends State<_UserDataEditingForms> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              if (ImplementSettingGetXController.instance.userAllData?.email !=
+                              if (ImplementSettingGetXController
+                                      .instance.userAllData?.email !=
                                   _userForEdit.email) {
                                 await ImplementAuthController.instance
                                     .updateEmail(newEmail: _userForEdit.email);

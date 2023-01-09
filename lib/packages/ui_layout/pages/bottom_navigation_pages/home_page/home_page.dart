@@ -44,64 +44,60 @@ class _MainBodyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomePageCalendarControllerGetxState());
-    return GetBuilder<HomePageCalendarControllerGetxState>(
-        builder: (controllerCalendar) {
-      bool? isDataActions =
-          ImplementAuthController.instance.userAuthorizedData?.accessToken !=
-              null;
+    bool? isDataActions =
+        ImplementAuthController.instance.userAuthorizedData?.accessToken !=
+            null;
 
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (Platform.isAndroid) mySizedHeightBetweenContainer,
-          SizedBox(
-            height: Get.size.height / 7, // 120,
-            child: Row(
-              children: [
-                Expanded(
-                  child: isDataActions
-                      ? Container(
-                          decoration: myStyleContainer(context: context),
-                          child: progressIndicator(context: context),
-                        )
-                      : myShimmerEffectContainer(context: context),
-                ),
-                SizedBox(
-                  width: mySizedHeightBetweenContainer.height,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: isDataActions
-                      ? Container(
-                          decoration: myStyleContainer(context: context),
-                          child: const HealthAssessment(),
-                        )
-                      : myShimmerEffectContainer(context: context),
-                ),
-              ],
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (Platform.isAndroid) mySizedHeightBetweenContainer,
+        SizedBox(
+          height: Get.size.height / 7, // 120,
+          child: Row(
+            children: [
+              Expanded(
+                child: isDataActions
+                    ? Container(
+                        decoration: myStyleContainer(context: context),
+                        child: progressIndicator(context: context),
+                      )
+                    : myShimmerEffectContainer(context: context),
+              ),
+              SizedBox(
+                width: mySizedHeightBetweenContainer.height,
+              ),
+              Expanded(
+                flex: 2,
+                child: isDataActions
+                    ? Container(
+                        decoration: myStyleContainer(context: context),
+                        child: const HealthAssessment(),
+                      )
+                    : myShimmerEffectContainer(context: context),
+              ),
+            ],
           ),
-          mySizedHeightBetweenContainer,
-          isDataActions
-              ? Container(
-                  decoration: myStyleContainer(context: context),
-                  child: CalendarHomePage(),
-                )
-              : myShimmerEffectContainer(
-                  context: context,
-                  newHeight: Get.height / 3,
-                ),
-          mySizedHeightBetweenContainer,
-          isDataActions
-              ? TaskForTheDay()
-              : myShimmerEffectContainer(
-                  context: context,
-                  newHeight: Get.height / 3,
-                ),
-          mySizedHeightBetweenContainer,
-        ],
-      );
-    });
+        ),
+        mySizedHeightBetweenContainer,
+        isDataActions
+            ? Container(
+                decoration: myStyleContainer(context: context),
+                child: CalendarHomePage(),
+              )
+            : myShimmerEffectContainer(
+                context: context,
+                newHeight: Get.height / 3,
+              ),
+        mySizedHeightBetweenContainer,
+        isDataActions
+            ? TaskForTheDay()
+            : myShimmerEffectContainer(
+                context: context,
+                newHeight: Get.height / 3,
+              ),
+        mySizedHeightBetweenContainer,
+      ],
+    );
   }
 }

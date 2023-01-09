@@ -96,6 +96,9 @@ class MyBottomMenuSceleton extends StatelessWidget {
                 controllerSetting.changeBodyPageForIndex(indexPage: index);
 
                 print("onItemSelected $index");
+                if (index == _controllerTabIndex.index) {
+                  Navigator.pushNamed(context, MyBottomMenuSceleton.id);
+                }
               },
             ),
           ),
@@ -233,11 +236,10 @@ List<PersistentBottomNavBarItem> _myTabBar(
       ),
       PersistentBottomNavBarItem(
         title: ('Главная'),
-        onPressed: (value){
+        onPressed: (value) {
           print('ГлавнаяГлавнаяГлавнаяГлавнаяvv');
         },
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
-
           initialRoute: MyBottomMenuSceleton.id,
           routes: {
             HomePage.id: (final context) => const HomePage(),

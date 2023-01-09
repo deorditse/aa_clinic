@@ -46,12 +46,15 @@ class ProfilePageData {
     return null;
   }
 
-  ///роут для получения доков выбранного промежутка и поиска доков
+  ///роут для получения доков и поиска доков
   Future<DocumentsListModel?> getDocumentsListData({
     required String accessToken,
     required int page,
     required int perPage,
     required String? searchText,
+    //для выбора промежутка дат
+    required DateTime? greater,
+    required DateTime? lower,
   }) async {
     try {
       Map<String, dynamic> queryParameters = {
@@ -63,6 +66,15 @@ class ProfilePageData {
         queryParameters = {...queryParameters, 'search': searchText};
       }
 
+      if (lower != null) {
+        queryParameters = {
+          ...queryParameters,
+          "filter[createdAt][lower]":
+              "${greater?.toIso8601String() ?? lower.add(Duration(days: 1)).toIso8601String()}",
+          "filter[createdAt][greater]": "${lower.toIso8601String()}",
+        };
+      }
+
       Uri url = urlMain(
           urlPath: 'api/patientDocuments', queryParameters: queryParameters);
 
@@ -71,11 +83,14 @@ class ProfilePageData {
       });
 
       print(
-          'Response status from getPatientDocumentsByUserIdData: ${response.statusCode}');
-      log('getPatientDocumentsByUserIdData DocumentsListModel ${response.body}');
+          'Response status from getPatientDocumentsByUserIdData: ${response.statusCode} DocumentsListModel ${response.body}');
 
       if (response.statusCode == 200) {
-        return DocumentsListModel.fromJson(jsonDecode(response.body));
+        DocumentsListModel _res =
+            DocumentsListModel.fromJson(jsonDecode(response.body));
+        print("get doc length ${_res.docs.length}");
+
+        return _res;
       }
     } catch (error) {
       Get.snackbar(

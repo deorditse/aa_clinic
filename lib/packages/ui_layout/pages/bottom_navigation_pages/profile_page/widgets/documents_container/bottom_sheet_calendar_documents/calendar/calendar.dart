@@ -29,15 +29,37 @@ class _CalendarProfilePageState extends State<CalendarProfilePage> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                'Выбор даты:',
-                style: myTextStyleFontUbuntu(
-                  context: context,
-                  newFontWeight: FontWeight.w400,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    'Выбор даты:',
+                    style: myTextStyleFontUbuntu(
+                      context: context,
+                      newFontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
-              ),
+                if (controllerProfile.rangeFromCalendarDocumentList != null)
+                  TextButton(
+                    onPressed: () {
+                      //обнуление перед новым запросом
+                      Navigator.of(context).pop();
+                      ProfileControllerGetxState.instance
+                          .deleteRangeFromCalendarDocumentList(isDelete: true);
+                    },
+                    child: Text(
+                      'Сбросить',
+                      style: myTextStyleFontUbuntu(
+                        context: context,
+                        textColor: myColorIsActive,
+                        newFontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+              ],
             ),
             mySizedHeightBetweenContainer,
             Row(

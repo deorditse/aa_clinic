@@ -86,7 +86,7 @@ class ChatPageControllerGetx extends GetxController {
     searchingChatsText = searchText;
     update();
     if (searchText != null && searchText != '' && searchText.isNotEmpty) {
-      ChatPageControllerGetx.instance.listChats?.forEach(
+      listChats?.forEach(
         (chat) {
           if (chat == null) {
             return;
@@ -129,6 +129,8 @@ class ChatPageControllerGetx extends GetxController {
     )
         .then(
       (getListChats) {
+        listChats = [];
+        update();
         if (getListChats.isNotEmpty) {
           getListChats.forEach(
             (chat) async {
@@ -138,7 +140,7 @@ class ChatPageControllerGetx extends GetxController {
                     .then(
                   (userMD) {
                     chat.userMinifiedData = userMD;
-                    listChats?.add(chat);
+                    listChats!.add(chat);
                     update();
                   },
                 );

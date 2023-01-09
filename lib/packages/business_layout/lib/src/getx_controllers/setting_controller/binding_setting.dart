@@ -4,6 +4,7 @@ import 'package:business_layout/business_layout.dart'; //импортить то
 class SettingBinding implements Bindings {
   @override
   void dependencies() {
+    Get.put(HomePageCalendarControllerGetxState());
     Get.put(ImplementSettingGetXController());
   }
 }

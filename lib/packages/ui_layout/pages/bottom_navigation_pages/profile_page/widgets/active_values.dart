@@ -4,8 +4,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:style_app/style_app.dart';
 import 'package:flutter/material.dart';
 import 'package:business_layout/business_layout.dart';
-import 'package:model/model.dart';
-import 'package:hive/hive.dart';
+
 
 class ActiveValues extends StatelessWidget {
   static const String id = '/activeValues';

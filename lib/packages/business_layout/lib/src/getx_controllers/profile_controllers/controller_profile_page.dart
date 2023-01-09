@@ -163,6 +163,13 @@ class ProfileControllerGetxState extends GetxController {
   DateTime rangeStartForSearch = DateTime.now().add(const Duration(days: -6));
   DateTime? rangeEndForSearch = DateTime.now();
 
+  void deleteRangeFromCalendarDocumentList({required bool isDelete}) {
+    if (isDelete) {
+      rangeFromCalendarDocumentList = null;
+      update();
+    }
+  }
+
   void changeRangeDateTimeForSortDocumentsList({
     required DateTime newRangeStartForSearch,
     required DateTime? newRangeEndForSearch,
@@ -179,6 +186,9 @@ class ProfileControllerGetxState extends GetxController {
     bool updateRangeFromCalendarDocumentList = false,
     bool updateSearchResultDocumentList = false,
     bool isReloatForAddNewDocument = false,
+    //для выбора промежутка дат
+    DateTime? greater,
+    DateTime? lower,
   }) async {
     //везде где вызываю этот метод, обновлять _mapKeyDocumentsListAndCurrentPageAndDocumentsListModel
     _services
@@ -188,6 +198,8 @@ class ProfileControllerGetxState extends GetxController {
       page: currentDocsPage,
       perPage: 6,
       searchText: searchText,
+      greater: greater,
+      lower: lower,
     )
         .then(
       (DocumentsListModel? newDocumentsList) {
